@@ -9,11 +9,11 @@
   <title>C Summarize | lacsscal&#39;s blog</title>
   <meta name="author" content="chen">
   
-  <meta name="description" content="0. 写在前面(序)
+  <meta name="description" content="写在前面(序)
   对于C的学习，已经反复好多次了，前面一直想要做个系统的梳理，但总是会出各种状况。之前有过跟着视频学习，自己对着书看写例程写课后题等等，最完整的一次梳理是在2020年的寒假，那次花了比较多的时间，从重看翁恺老师的视频开始，后续继续看了《K&amp;amp;R》《C陷阱与缺陷》《C和指针》《C专家编程》等书。前期跟视频以及看《K&amp;amp;R》可能算是做到了专注，精读，但后面有完成任务式的阅读，最终感觉效果不佳。当然，那段时间确实感觉有较大的提升，可后面因为一些事情耽误，很长一段时间没有再碰过。
 最近打算重新系统梳理相关知识。这次打算配合最近捡起的知识点及写的程序，对C做大致的总结梳理。(总结自用，可能不甚严谨)
 
-1. 概念们0.历史1234Ken Thompson为了游戏(Space Travel)Multics -&amp;gt; Unics(最初汇编PDP-7,移植性问题-&amp;gt;发明BCPL:B语言)-&amp;gt;Dennis Ritchie加入Dennis Ritchie-&amp;gt;B不适合Unics(内核)开发:发明C -&amp;gt; 用C重写Unics更名为Unix
+正文0.历史1234Ken Thompson为了游戏(Space Travel)Multics -&amp;gt; Unics(最初汇编PDP-7,移植性问题-&amp;gt;发明BCPL:B语言)-&amp;gt;Dennis Ritchie加入Dennis Ritchie-&amp;gt;B不适合Unics(内核)开发:发明C -&amp;gt; 用C重写Unics更名为Unix
 
 
 结论： C用来开发系统软件 (重写Unics系统,而此系统是K为了发挥PDP-7的全部性能以玩游戏而产生的)：       
@@ -127,11 +127,11 @@
 	<div class="mypage">		
 	  		
 
-	  <h2 id="0-写在前面-序"><a href="#0-写在前面-序" class="headerlink" title="0. 写在前面(序)"></a>0. 写在前面(序)</h2><blockquote>
+	  <h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
 <p>  对于C的学习，已经反复好多次了，前面一直想要做个系统的梳理，但总是会出各种状况。之前有过跟着视频学习，自己对着书看写例程写课后题等等，最完整的一次梳理是在2020年的寒假，那次花了比较多的时间，从重看翁恺老师的视频开始，后续继续看了《K&amp;R》《C陷阱与缺陷》《C和指针》《C专家编程》等书。前期跟视频以及看《K&amp;R》可能算是做到了专注，精读，但后面有完成任务式的阅读，最终感觉效果不佳。当然，那段时间确实感觉有较大的提升，可后面因为一些事情耽误，很长一段时间没有再碰过。</p>
 <p>最近打算重新系统梳理相关知识。这次打算配合最近捡起的知识点及写的程序，对C做大致的总结梳理。(总结自用，可能不甚严谨)</p>
 </blockquote>
-<h2 id="1-概念们"><a href="#1-概念们" class="headerlink" title="1. 概念们"></a>1. 概念们</h2><h3 id="0-历史"><a href="#0-历史" class="headerlink" title="0.历史"></a>0.历史</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ken Thompson为了游戏(Space Travel)</span><br><span class="line">Multics -&gt; Unics(最初汇编PDP-7,移植性问题-&gt;发明BCPL:B语言)-&gt;</span><br><span class="line">Dennis Ritchie加入</span><br><span class="line">Dennis Ritchie-&gt;B不适合Unics(内核)开发:发明C -&gt; 用C重写Unics更名为Unix</span><br></pre></td></tr></table></figure>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-历史"><a href="#0-历史" class="headerlink" title="0.历史"></a>0.历史</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ken Thompson为了游戏(Space Travel)</span><br><span class="line">Multics -&gt; Unics(最初汇编PDP-7,移植性问题-&gt;发明BCPL:B语言)-&gt;</span><br><span class="line">Dennis Ritchie加入</span><br><span class="line">Dennis Ritchie-&gt;B不适合Unics(内核)开发:发明C -&gt; 用C重写Unics更名为Unix</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>结论： C用来<strong>开发系统软件</strong> (重写Unics系统,而此系统是K为了发挥PDP-7的全部性能以玩游戏而产生的)：       </p>
@@ -165,7 +165,7 @@
 <p>6.<br><code>while do-while for</code> 之间的替换问题<br>由于<code>for(int i = 0; i &lt; n; ++i)</code>//将循环条件的改变放在语句中 所以在使用continue;时不要用它做替换</p>
 <p>7.<br>为什么数组元素需要类型相同(一片连续内存，并且它被划分为大小相等的小空间)<br>为了随机访问-&gt;寻址公式:<code> address_i = base_address + i * sizeof(type);</code><br>为什么数组下标从0开始？<br>也是为了实现寻址公式。从1开始寻址会变为<code>address_i = base_address + (i-1) * sizeof(type); </code><br>或者不用第一个空间(浪费)则公式不变<code>address_i = base_address + i * sizeof(type);</code></p>
 <ol start="8">
-<li>为什么函数不返回数组(做参数带出是可以的)<br>要让它做返回值，说明是在这个函数周期内声明的?函数返回时，本地变量生存期结束，回收返回野指针?</li>
+<li>为什么函数不返回数组(做参数带出是可以的)<br> 要让它做返回值，说明是在这个函数周期内声明的?函数返回时，本地变量生存期结束，回收返回野指针?</li>
 </ol>
   <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">findMinMax</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line"> <span class="comment">/*** WRONG ***/</span></span><br><span class="line"> <span class="keyword">int</span> result[<span class="number">2</span>];</span><br><span class="line"> result[<span class="number">0</span>] = result[<span class="number">1</span>] = arr[<span class="number">0</span>];</span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">     <span class="keyword">if</span> (arr[i] &lt; result[<span class="number">0</span>])</span><br><span class="line">         result[<span class="number">0</span>] = arr[i];</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">if</span> (arr[i] &gt; result[<span class="number">1</span>])</span><br><span class="line">         result[<span class="number">1</span>] = arr[i];</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>  这样返回的指针也是指向当前函数的栈帧区域的，函数返回，这片区域不可控，变为野指针</p>
@@ -249,7 +249,7 @@
 
     
     
-    <a href="/2022/02/13/Linux-summarize/" type="button" class="btn btn-default"><i
+    <a href="/2022/02/17/C-Summarize-with-code/" type="button" class="btn btn-default"><i
                 class="fa fa-arrow-circle-o-left"></i> Prev</a>
     
 

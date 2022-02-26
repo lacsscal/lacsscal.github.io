@@ -12,7 +12,11 @@
   <meta name="description" content="写在前面(序)
 接上篇总结1 上篇更多偏向文字叙述，以及一些概念方面的整理与思考，本篇结合一些常用的数据结构以及算法，换一个论述点再做一些整理
 
-正文1.基本数据结构2. 常见排序算法
+正文1.基本数据结构1....
+
+
+
+2. 常见排序算法
 关于排序算法分析
 1.时间复杂度
 冒泡排序，插入排序，简单选择排序无法突破O(n2)时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。
@@ -51,9 +55,7 @@ bubble
 
 有序度是数组中具有有序关系的元素对的个数。如果一个数组完全有序，有序度就是Cn2 = n(n-1)/2，这种叫做满有序度。
 对于冒泡排序来说，交换会导致：有序度+1， 逆序度-1.
-所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 =  n(n-1)/4 比较的次数肯定比交换的次数多，但少于 n(n-1)/2所以平均情况下，时间复杂度为O(n2)
-
-selection"> 
+所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 =  n(n-1)/4 比较的次数肯定比交换的次数多，但少于 n(n-1)/2所以平均情况下，时间复杂度为O(n2)"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -160,7 +162,11 @@ selection">
 	  <h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
 <p>接上篇<a target="_blank" rel="noopener" href="https://lacsscal.github.io/2022/02/10/C-Summarize/">总结1</a> 上篇更多偏向文字叙述，以及一些概念方面的整理与思考，本篇结合一些常用的数据结构以及算法，换一个论述点再做一些整理</p>
 </blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h3><h3 id="2-常见排序算法"><a href="#2-常见排序算法" class="headerlink" title="2. 常见排序算法"></a>2. 常见排序算法</h3><blockquote>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-常见排序算法"><a href="#2-常见排序算法" class="headerlink" title="2. 常见排序算法"></a>2. 常见排序算法</h3><blockquote>
 <p>关于排序算法分析</p>
 <p>1.时间复杂度</p>
 <p>冒泡排序，插入排序，简单选择排序无法突破<code>O(n2)</code>时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。</p>
@@ -304,7 +310,18 @@ selection">
 
 
 
-<h3 id="3-其他"><a href="#3-其他" class="headerlink" title="3. 其他"></a>3. 其他</h3><p>​            文件操作</p>
+<h3 id="3-其他"><a href="#3-其他" class="headerlink" title="3. 其他"></a>3. 其他</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">......</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
 <h2 id="写在后面-结"><a href="#写在后面-结" class="headerlink" title="写在后面(结)"></a>写在后面(结)</h2><blockquote>
 <p>本次关于C的整理梳理工作暂时告一段落，总的来说，起初的基础知识方面的整理有些浮躁，不耐烦，但是在重看过程中发现了不少之前未注意到的点，多对自己提问，试图站在作者的角度思考这个问题的产生与解决，分析需求并给出解决办法是有好处的，新的视角会带来一些未曾有过的思考。</p>
 <p>同时也发现学过或者说学过不止一遍不代表就是懂得，就是精通。越发感觉此前的学习方式存在不少问题。<strong>Talk is cheap. Show me the code.</strong></p>
@@ -329,12 +346,13 @@ selection">
 
     
     
-    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    <a href="/2022/02/26/Unix-Linux-file-management/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2022/02/13/Linux-summarize/" type="button" class="btn btn-default ">Next<i
+    <a href="/2022/02/10/C-Summarize/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
