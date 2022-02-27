@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title>Unix/Linux-file-management</title>
+      <title>6.Unix/Linux-file-management</title>
       <link href="/2022/02/26/6.Unix-Linux-file-management/"/>
       <url>/2022/02/26/6.Unix-Linux-file-management/</url>
       
@@ -17,7 +17,7 @@
     
     
     <entry>
-      <title>C_Summarize_with_code</title>
+      <title>5.C_Summarize_with_code</title>
       <link href="/2022/02/17/5.C-Summarize-with-code/"/>
       <url>/2022/02/17/5.C-Summarize-with-code/</url>
       
@@ -30,7 +30,7 @@
     
     
     <entry>
-      <title>C Summarize</title>
+      <title>4.C Summarize</title>
       <link href="/2022/02/10/4.C-Summarize/"/>
       <url>/2022/02/10/4.C-Summarize/</url>
       
@@ -43,11 +43,11 @@
     
     
     <entry>
-      <title>Hello New Worldhistory</title>
+      <title>3.Hello New Worldhistory</title>
       <link href="/2022/01/22/3.Hello-New-Worldhistory/"/>
       <url>/2022/01/22/3.Hello-New-Worldhistory/</url>
       
-        <content type="html"><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/60578464">参考</a><br><a href="https://ares-x.com/2019/12/29/freemind-bithack-readme-zh/">主题参考</a><br><a href="https://lacsscal.github.io/">实现效果</a></p><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote><p>之前搭过一次，效果不是很好，写了一些可以说是废话的blog，并没有起到总结学习知识点的作用，此后尽量精简，减少引用，对能百度，Google到的知识点用自己的话整理总结。不要有大段的复制粘贴。<br>准备重新开始，blog不用实时更新，但每次写作尽量做到言之有物，至少能对学习成果做些总结内化以及沉淀的作用，再折腾这一次，后面尽量稳定下来。<br>原理：本地撰写MarkDown文档，Hexo解析渲染成具有主题样式的HTML静态网页，推送至GitHub完成发布。</p></blockquote><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol><li> 环境 nodejs, git</li><li> 连接GitHub</li><li> 添加Github SSH秘钥 并验证连接</li><li> 创建GitHub仓库</li><li> 本地安装Hexo博客并测试</li><li> <strong>部署</strong>注意分支名(main/master）到github上</li><li> 验证</li></ol><h2 id="本地Hexo"><a href="#本地Hexo" class="headerlink" title="本地Hexo"></a>本地Hexo</h2><blockquote><p>前面的准备过程跳过，以前搭过，环境还在，环境配置也不难<br>下面从Hexo本地安装开始<br>因为Hexo是基于Node.js的静态博客框架，可以经由npm一键安装</p></blockquote><pre><code>npm install -g hexo-cli #安装命令</code></pre><p>安装好后初始化即可，选一个空文件夹初始化并安装所需组件</p><pre><code>hexo init      # 初始化npm install    # 安装组件</code></pre><p>生成页面并启动，本地安装完成 可访问 <a href="http://localhost:4000/%E9%AA%8C%E8%AF%81">http://localhost:4000/验证</a></p><pre><code>hexo g   # 生成页面hexo s   # 启动预览(本地，Ctrl+C结束)</code></pre><p>后面要更新，删除博客方案类似</p><pre><code>hexo g   # 生成页面(增删都是)先渲染？大概hexo d   # 发布[注]自行添加一段名字与时间戳方便归档，或者使用命令生成自行添加：---title: 给个名字date: 2022-01-22 14:16:19tags:---命令生成：hexo new &quot;给个名字&quot;</code></pre><h2 id="部署Hexo"><a href="#部署Hexo" class="headerlink" title="部署Hexo"></a>部署Hexo</h2><p>一般来说<a href="http://localhost:4000能访问成功说明本地安装完成，之后部署到Github上即可，此前已经建好仓库并且配置好SSH秘钥">http://localhost:4000能访问成功说明本地安装完成，之后部署到Github上即可，此前已经建好仓库并且配置好SSH秘钥</a><br>再安装组件</p><pre><code>npm install hexo-deployer-git --save</code></pre><p>并修改  _config.yml 配置文件末尾的 Deployment 部分，<br>修改成如下：</p><pre><code>deploy:  type: git  repository: git@github.com:用户名/用户名.github.io.git  branch: master/main</code></pre><p>完成后执行</p><pre><code>hexo d</code></pre><p>访问https://用户名.github.io 验证，一般要等待几分钟到十几分钟不等<em>我在搭建时先在本地置换了主题并验证成功后部署，但是在经过15以上页面才渲染成功</em></p><h3 id="关于主题更换"><a href="#关于主题更换" class="headerlink" title="关于主题更换"></a>关于主题更换</h3><blockquote><p>可以放在部署之前进行，也能在部署之后进行<br>我找了个FREEMIND-BITHACK主题，参考<a href="https://ares-x.com/2019/12/29/freemind-bithack-readme-zh/">主题参考</a>，<br>下载好的主题放在X:\blog\themes文件夹下并修改配置主题文件夹名与配置文件_config.yml中主题名一致。</p></blockquote><h1 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h1><p>后续还有一些细节，暂时不想折腾了，后续完善再说吧<br>目前简单实用可以</p><p>1.post文件夹下新增 .md文件<br>2.git bash here<br>3.hexo g 生成页面<br>4.hexo d 同步发布</p>]]></content>
+        <content type="html"><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/60578464">参考</a><br><a href="https://ares-x.com/2019/12/29/freemind-bithack-readme-zh/">主题参考</a><br><a href="https://lacsscal.github.io/">实现效果</a></p><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote><p>之前搭过一次，效果不是很好，写了一些可以说是废话的blog，并没有起到总结学习知识点的作用，此后尽量精简，减少引用，对能百度，Google到的知识点用自己的话整理总结。不要有大段的复制粘贴。<br>准备重新开始，blog不用实时更新，但每次写作尽量做到言之有物，至少能对学习成果做些总结内化以及沉淀的作用，再折腾这一次，后面尽量稳定下来。<br>原理：本地撰写MarkDown文档，Hexo解析渲染成具有主题样式的HTML静态网页，推送至GitHub完成发布。</p></blockquote><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol><li> 环境 nodejs, git</li><li> 连接GitHub</li><li> 添加Github SSH秘钥 并验证连接</li><li> 创建GitHub仓库</li><li> 本地安装Hexo博客并测试</li><li> <strong>部署</strong>注意分支名(main/master）到github上</li><li> 验证</li></ol><h2 id="本地Hexo"><a href="#本地Hexo" class="headerlink" title="本地Hexo"></a>本地Hexo</h2><blockquote><p>前面的准备过程跳过，以前搭过，环境还在，环境配置也不难<br>下面从Hexo本地安装开始<br>因为Hexo是基于Node.js的静态博客框架，可以经由npm一键安装</p></blockquote><pre><code>npm install -g hexo-cli #安装命令</code></pre><p>安装好后初始化即可，选一个空文件夹初始化并安装所需组件</p><pre><code>hexo init      # 初始化npm install    # 安装组件</code></pre><p>生成页面并启动，本地安装完成 可访问 <a href="http://localhost:4000/%E9%AA%8C%E8%AF%81">http://localhost:4000/验证</a></p><pre><code>hexo g   # 生成页面hexo s   # 启动预览(本地，Ctrl+C结束)</code></pre><p>​<br>后面要更新，删除博客方案类似</p><pre><code>hexo g   # 生成页面(增删都是)先渲染？大概hexo d   # 发布[注]自行添加一段名字与时间戳方便归档，或者使用命令生成自行添加：---title: 给个名字date: 2022-01-22 14:16:19tags:---命令生成：hexo new &quot;给个名字&quot;</code></pre><p>​    </p><h2 id="部署Hexo"><a href="#部署Hexo" class="headerlink" title="部署Hexo"></a>部署Hexo</h2><p>一般来说<a href="http://localhost:4000能访问成功说明本地安装完成，之后部署到Github上即可，此前已经建好仓库并且配置好SSH秘钥">http://localhost:4000能访问成功说明本地安装完成，之后部署到Github上即可，此前已经建好仓库并且配置好SSH秘钥</a><br>再安装组件</p><pre><code>npm install hexo-deployer-git --save</code></pre><p>​<br>并修改  _config.yml 配置文件末尾的 Deployment 部分，<br>修改成如下：</p><pre><code>deploy:  type: git  repository: git@github.com:用户名/用户名.github.io.git  branch: master/main</code></pre><p>完成后执行</p><pre><code>hexo d</code></pre><p>访问https://用户名.github.io 验证，一般要等待几分钟到十几分钟不等<em>我在搭建时先在本地置换了主题并验证成功后部署，但是在经过15以上页面才渲染成功</em></p><h3 id="关于主题更换"><a href="#关于主题更换" class="headerlink" title="关于主题更换"></a>关于主题更换</h3><blockquote><p>可以放在部署之前进行，也能在部署之后进行<br>我找了个FREEMIND-BITHACK主题，参考<a href="https://ares-x.com/2019/12/29/freemind-bithack-readme-zh/">主题参考</a>，<br>下载好的主题放在X:\blog\themes文件夹下并修改配置主题文件夹名与配置文件_config.yml中主题名一致。</p></blockquote><h1 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h1><p>后续还有一些细节，暂时不想折腾了，后续完善再说吧<br>目前简单实用可以</p><p>1.post文件夹下新增 .md文件<br>2.git bash here<br>3.hexo g 生成页面<br>4.hexo d 同步发布</p>]]></content>
       
       
       
@@ -56,7 +56,7 @@
     
     
     <entry>
-      <title>test2</title>
+      <title>2.test2</title>
       <link href="/2022/01/22/2.test2/"/>
       <url>/2022/01/22/2.test2/</url>
       
@@ -69,7 +69,7 @@
     
     
     <entry>
-      <title>Hello World</title>
+      <title>1.Hello World</title>
       <link href="/2022/01/22/1.hello-world/"/>
       <url>/2022/01/22/1.hello-world/</url>
       
