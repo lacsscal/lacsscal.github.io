@@ -152,7 +152,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 <h3 id="2-架构"><a href="#2-架构" class="headerlink" title="2.架构"></a>2.架构</h3><blockquote>
 <p>这是一张来自《Advanced Programing in the UNIX Environment》的图</p>
 </blockquote>
-<p><img src="!%5BUnix%E6%9E%B6%E6%9E%84.png%5D(https://s2.loli.net/2022/02/26/C9K4lRans1u6hU7.png" alt="架构图"></p>
+<p><img src="https://s2.loli.net/2022/02/26/C9K4lRans1u6hU7.png" alt="架构图"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Kernel：OS内核：管理硬件资源，给上层程序提供运行环境(所以有很多驱动，提供很多接口，服务)</span><br><span class="line">System calls：系统调用：内核给上层程序提供的接口(有些繁琐复杂，做些封装-&gt;系统库)程序由系统调用使用内核提供的功能</span><br><span class="line">Library routines:库函数 (printf, scanf:对系统调用做一次封装)上层程序不能直接与硬件交互，需调用底层接口(对System calls封装)</span><br><span class="line">Shell：命令行解释器(bash:Bourne-again shell:/bin/bash):命令，脚本(命令的集合)， 访问内核资源</span><br><span class="line">Applications:应用程序:可以直接使用系统调用调用内核功能，也能使用系统库提供内核功能</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -182,7 +182,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 	</div>
 
 	
-	<span id="/2022/02/26/Unix-Linux-file-management/" class="leancloud-visitors view" data-flag-title="Unix/Linux-file-management">
+	<span id="/2022/02/26/6.Unix-Linux-file-management/" class="leancloud-visitors view" data-flag-title="Unix/Linux-file-management">
 		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
 	</span>
 	
@@ -198,7 +198,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2022/02/17/C-Summarize-with-code/" type="button" class="btn btn-default ">Next<i
+    <a href="/2022/02/17/5.C-Summarize-with-code/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
