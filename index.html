@@ -130,20 +130,21 @@
 	
 	
 		<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p><em>go on</em></p>
-<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、线程基础"><a href="#一、线程基础" class="headerlink" title="一、线程基础"></a>一、线程基础</h2><blockquote>
-<p>在Linux中线程是轻量级的进程(LWP:Low-weight-Process),它也拥有独立的task_struct作为独立的动态执行流方便CPU进行调度<br>进程除了作为独立的执行流外，还是资源分配的基本单位，使用线程并非要取代进程，而是让一个进程中存在多个线程，它们共享内存资源，同时把CPU的调度单位细化为线程。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、线程基础"><a href="#一、线程基础" class="headerlink" title="一、线程基础"></a>一、线程基础</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><blockquote>
+<p>在Linux中线程是轻量级的进程(LWP:Low-weight-Process)减少进程切换的开销,它也拥有独立的task_struct作为独立的动态执行流(同属于一个进程的多个线程task_struct中有大量字段相同或共享)方便CPU进行调度。</p>
+<p>进程除了作为独立的执行流外，还是资源分配的基本单位，使用线程并非要取代进程，而是让一个进程中存在多个线程，它们共享内存资源(线程有独立的栈但堆，数据段，代码段，文件描述符，信号屏蔽字等共享)，同时把CPU的调度单位细化为线程。</p>
+<p>分析性能时，计算机将大量的时间花费在进程切换上(上下文切换:CPU寄存器中大量信息:堆栈，代码段…:寄存器与内存间的保存与载入工作；进程切换虚拟内存页表切换)</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/进程管理/线程模型.jpg" alt="线程" style="zoom:80%;">
+
+<blockquote>
+<p>同一个进程的多个线程各自拥有自己的栈，这些栈虽然是独立的，但是都位于同一个地址空间中，所以一个线程可以通过地址去访问另一个线程的栈区。</p>
+</blockquote>
+<blockquote>
 <p>多线程天生就能利用多核的CPU架构，此前的进程都可以认为是单线程进程</p>
 <p>使用线程库NPTL(Native Posix Threads Library)</p>
 </blockquote>
-<blockquote>
-<p>接口</p>
-</blockquote>
-<p><code>pthread_creat 创建一个线程</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_create</span><span class="params">(<span class="keyword">pthread_t</span> *thread, <span class="keyword">const</span> <span class="keyword">pthread_attr_t</span> *attr, <span class="keyword">void</span> *(*start_routine) (<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line">                                                                                                           |</span><br><span class="line">                                                                                              传指针或传长整型(<span class="number">8B</span>)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">传指针</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">threadFunc</span><span class="params">(<span class="keyword">void</span> *parg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *p = (<span class="keyword">char</span> *)parg;<span class="comment">//用时再强转回来，这样void*的参数能传递所有类型</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;I am child, p = %s\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">strcpy</span>(p,<span class="string">&quot;world&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">char</span> *p = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">1024</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(p, <span class="string">&quot;hello&quot;</span>);                 <span class="comment">//|-&gt;线程入口函数     |-&gt;线程函数所用参数, 传参时强转</span></span><br><span class="line">    <span class="keyword">int</span> ret = pthread_create(&amp;tid, <span class="literal">NULL</span>, threadFunc, (<span class="keyword">void</span> *)p);</span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;I am main, p = %s\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">传长整型为*惯用法* 长整型与指针型都是<span class="number">8B</span>，不会有信息丢失，传递时用<span class="keyword">void</span>*,实际上并不指向任何地址空间，使用时再强转回<span class="keyword">long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">threadFunc</span><span class="params">(<span class="keyword">void</span> *arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> val = (<span class="keyword">long</span>)arg;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;I am child, val = %ld\n&quot;</span>, val);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">long</span> val = <span class="number">1001</span>;</span><br><span class="line">    pthread_create(&amp;tid,<span class="literal">NULL</span>,threadFunc,(<span class="keyword">void</span> *)val);</span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>pthread_exit 线程的主动退出</code></p>
+<h3 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h3>
 	
 
 	</div>
@@ -156,20 +157,21 @@
 	
 	
 		<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p><em>go on</em></p>
-<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、线程基础"><a href="#一、线程基础" class="headerlink" title="一、线程基础"></a>一、线程基础</h2><blockquote>
-<p>在Linux中线程是轻量级的进程(LWP:Low-weight-Process),它也拥有独立的task_struct作为独立的动态执行流方便CPU进行调度<br>进程除了作为独立的执行流外，还是资源分配的基本单位，使用线程并非要取代进程，而是让一个进程中存在多个线程，它们共享内存资源，同时把CPU的调度单位细化为线程。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、线程基础"><a href="#一、线程基础" class="headerlink" title="一、线程基础"></a>一、线程基础</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><blockquote>
+<p>在Linux中线程是轻量级的进程(LWP:Low-weight-Process)减少进程切换的开销,它也拥有独立的task_struct作为独立的动态执行流(同属于一个进程的多个线程task_struct中有大量字段相同或共享)方便CPU进行调度。</p>
+<p>进程除了作为独立的执行流外，还是资源分配的基本单位，使用线程并非要取代进程，而是让一个进程中存在多个线程，它们共享内存资源(线程有独立的栈但堆，数据段，代码段，文件描述符，信号屏蔽字等共享)，同时把CPU的调度单位细化为线程。</p>
+<p>分析性能时，计算机将大量的时间花费在进程切换上(上下文切换:CPU寄存器中大量信息:堆栈，代码段…:寄存器与内存间的保存与载入工作；进程切换虚拟内存页表切换)</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/进程管理/线程模型.jpg" alt="线程" style="zoom:80%;">
+
+<blockquote>
+<p>同一个进程的多个线程各自拥有自己的栈，这些栈虽然是独立的，但是都位于同一个地址空间中，所以一个线程可以通过地址去访问另一个线程的栈区。</p>
+</blockquote>
+<blockquote>
 <p>多线程天生就能利用多核的CPU架构，此前的进程都可以认为是单线程进程</p>
 <p>使用线程库NPTL(Native Posix Threads Library)</p>
 </blockquote>
-<blockquote>
-<p>接口</p>
-</blockquote>
-<p><code>pthread_creat 创建一个线程</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_create</span><span class="params">(<span class="keyword">pthread_t</span> *thread, <span class="keyword">const</span> <span class="keyword">pthread_attr_t</span> *attr, <span class="keyword">void</span> *(*start_routine) (<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line">                                                                                                           |</span><br><span class="line">                                                                                              传指针或传长整型(<span class="number">8B</span>)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">传指针</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">threadFunc</span><span class="params">(<span class="keyword">void</span> *parg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *p = (<span class="keyword">char</span> *)parg;<span class="comment">//用时再强转回来，这样void*的参数能传递所有类型</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;I am child, p = %s\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">strcpy</span>(p,<span class="string">&quot;world&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">char</span> *p = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">1024</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(p, <span class="string">&quot;hello&quot;</span>);                 <span class="comment">//|-&gt;线程入口函数     |-&gt;线程函数所用参数, 传参时强转</span></span><br><span class="line">    <span class="keyword">int</span> ret = pthread_create(&amp;tid, <span class="literal">NULL</span>, threadFunc, (<span class="keyword">void</span> *)p);</span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;I am main, p = %s\n&quot;</span>, p);</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">传长整型为*惯用法* 长整型与指针型都是<span class="number">8B</span>，不会有信息丢失，传递时用<span class="keyword">void</span>*,实际上并不指向任何地址空间，使用时再强转回<span class="keyword">long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">threadFunc</span><span class="params">(<span class="keyword">void</span> *arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> val = (<span class="keyword">long</span>)arg;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;I am child, val = %ld\n&quot;</span>, val);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">long</span> val = <span class="number">1001</span>;</span><br><span class="line">    pthread_create(&amp;tid,<span class="literal">NULL</span>,threadFunc,(<span class="keyword">void</span> *)val);</span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>pthread_exit 线程的主动退出</code></p>
+<h3 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h3>
 	
 	</div>
   <a type="button" href="/2022/03/07/8.Unix-Linux-Thread/#more" class="btn btn-default more">Read More</a>
@@ -737,9 +739,9 @@ npm install    # 安装组件
 		
 			<li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
 		
-			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
-		
 			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>3</span></a></li>
+		
+			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
 		
 		 
 		</ul>
