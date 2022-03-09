@@ -114,6 +114,80 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2022/03/09/9.APUE-1-Overview/" >APUE_1_Overview</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-03-09  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>不同版本UNIX操作系统提供的服务</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/APUE/Unix%E6%9E%B6%E6%9E%84.png" alt="架构图"></p>
+<blockquote>
+<p>一些概念摘抄</p>
+<p>逻辑上可以认为每个目录项包含一个文件名，以及说明该文件属性的信息</p>
+<p>登录时，工作目录设置为起始目录，从口令文件<code>/etc/passwd</code>中相应用户登录项获取</p>
+<p>文件描述符<code>file discriptor</code>内核用以标识特定进程正在访问的文件,对内核而言，所有打开的文件都用文件描述符引用</p>
+<p>标准I/O 不带缓冲I/O<code>unbuffered I/O</code></p>
+<p>程序是存储在磁盘上某个目录中的可执行文件，内核使用<code>exec</code>函数将程序读入内存</p>
+<p>之所以使用用户ID和组ID是历史原因，存储两个值4字节，存储完整的用户名和组名需要更多磁盘空间，检查权限时，比较字符串比比较整型数更耗时间</p>
+<p>从实现者的角度看，系统调用和库函数之间有根本的区别，但从用户的角度看，其区别并不重要；系统调用通常提供一种最小接口，而库函数则提供比较复杂的功能。</p>
+<p><code>POSIX : Portable Operating System Interface</code></p>
+<p>每个打开的文件都有一个与其相关联的”当前文件偏移量”(<code>current file offset</code>)通常，读写操作都从当前文件偏移量处开始，并使偏移量增加所读写的字节数。</p>
+<p>文件偏移量可以大于文件的当前长度，在此情况下对该文件的下一次写将加长该文件并在文件中构成文件空洞(文件空洞不要求在磁盘上占存储区，只做定位具体处理方式看文件系统的实现)</p>
+</blockquote>
+
+	
+
+	</div>
+  <a type="button" href="/2022/03/09/9.APUE-1-Overview/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>不同版本UNIX操作系统提供的服务</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/APUE/Unix%E6%9E%B6%E6%9E%84.png" alt="架构图"></p>
+<blockquote>
+<p>一些概念摘抄</p>
+<p>逻辑上可以认为每个目录项包含一个文件名，以及说明该文件属性的信息</p>
+<p>登录时，工作目录设置为起始目录，从口令文件<code>/etc/passwd</code>中相应用户登录项获取</p>
+<p>文件描述符<code>file discriptor</code>内核用以标识特定进程正在访问的文件,对内核而言，所有打开的文件都用文件描述符引用</p>
+<p>标准I/O 不带缓冲I/O<code>unbuffered I/O</code></p>
+<p>程序是存储在磁盘上某个目录中的可执行文件，内核使用<code>exec</code>函数将程序读入内存</p>
+<p>之所以使用用户ID和组ID是历史原因，存储两个值4字节，存储完整的用户名和组名需要更多磁盘空间，检查权限时，比较字符串比比较整型数更耗时间</p>
+<p>从实现者的角度看，系统调用和库函数之间有根本的区别，但从用户的角度看，其区别并不重要；系统调用通常提供一种最小接口，而库函数则提供比较复杂的功能。</p>
+<p><code>POSIX : Portable Operating System Interface</code></p>
+<p>每个打开的文件都有一个与其相关联的”当前文件偏移量”(<code>current file offset</code>)通常，读写操作都从当前文件偏移量处开始，并使偏移量增加所读写的字节数。</p>
+<p>文件偏移量可以大于文件的当前长度，在此情况下对该文件的下一次写将加长该文件并在文件中构成文件空洞(文件空洞不要求在磁盘上占存储区，只做定位具体处理方式看文件系统的实现)</p>
+</blockquote>
+
+	
+	</div>
+  <a type="button" href="/2022/03/09/9.APUE-1-Overview/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2022/03/07/8.Unix-Linux-Thread/" >8.Unix-Linux-Thread</a>
 		</h3>
 		</div>
@@ -737,11 +811,13 @@ npm install    # 安装组件
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
+			<li><a href="/tags/Unix-Linux-APUE/">Unix/Linux APUE<span>1</span></a></li>
 		
 			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>3</span></a></li>
 		
 			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
+		
+			<li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
 		
 		 
 		</ul>
@@ -753,6 +829,10 @@ npm install    # 安装组件
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2022/03/09/9.APUE-1-Overview/" ><i class="fa fa-file-o"></i>APUE_1_Overview</a>
+      </li>
     
       <li>
         <a href="/2022/03/07/8.Unix-Linux-Thread/" ><i class="fa fa-file-o"></i>8.Unix-Linux-Thread</a>
@@ -768,10 +848,6 @@ npm install    # 安装组件
     
       <li>
         <a href="/2022/02/17/5.C-Summarize-with-code/" ><i class="fa fa-file-o"></i>C_Summarize_with_code</a>
-      </li>
-    
-      <li>
-        <a href="/2022/02/10/4.C-Summarize/" ><i class="fa fa-file-o"></i>C Summarize</a>
       </li>
     
   </ul>
