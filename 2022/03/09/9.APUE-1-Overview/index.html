@@ -23,7 +23,21 @@
 从实现者的角度看，系统调用和库函数之间有根本的区别，但从用户的角度看，其区别并不重要；系统调用通常提供一种最小接口，而库函数则提供比较复杂的功能。
 POSIX : Portable Operating System Interface
 每个打开的文件都有一个与其相关联的”当前文件偏移量”(current file offset)通常，读写操作都从当前文件偏移量处开始，并使偏移量增加所读写的字节数。
-文件偏移量可以大于文件的当前长度，在此情况下对该文件的下一次写将加长该文件并在文件中构成文件空洞(文件空洞不要求在磁盘上占存储区，只做定位具体处理方式看文件系统的实现)"> 
+文件偏移量可以大于文件的当前长度，在此情况下对该文件的下一次写将加长该文件并在文件中构成文件空洞(文件空洞不要求在磁盘上占存储区，只做定位具体处理方式看文件系统的实现)
+
+
+文件操作
+
+
+
+Linux 采用一个与文件系统无关的i节点和一个与文件系统相关的i节点
+任何多于一个函数调用的操作都不是原子操作，因为在两个函数调用之间，内核可能临时挂起进程。
+/dev/fd目录中，目录项为0， 1， 2等文件， 打开/dev/fd/n等效于复制描述符n
+12345678910[scallacs@VM-16-8-ubuntu /dev/fd\ []$ ls0  1  2  255[scallacs@VM-16-8-ubuntu /dev/fd\ []$ lltotal 0dr-x------ 2 scallacs scallacs  0 Mar 10 14:47 ./dr-xr-xr-x 9 scallacs scallacs  0 Mar 10 14:26 ../lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 0 -&amp;gt; /dev/pts/4lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 1 -&amp;gt; /dev/pts/4lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 2 -&amp;gt; /dev/pts/4lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 255 -&amp;gt; /dev/pts/4
+
+它把文件描述符映射为指向底层物理文件的符号链接
+read, write都在内核执行，所以成为不带缓冲的I/O函数
+为了执行程序，内核必须理解二进制可执行文件的格式，所有二进制可执行文件都遵循一种标准化的格式，这种格式使内核能确定程序文本和数据的加载位置。"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -144,6 +158,20 @@ POSIX : Portable Operating System Interface
 <p>每个打开的文件都有一个与其相关联的”当前文件偏移量”(<code>current file offset</code>)通常，读写操作都从当前文件偏移量处开始，并使偏移量增加所读写的字节数。</p>
 <p>文件偏移量可以大于文件的当前长度，在此情况下对该文件的下一次写将加长该文件并在文件中构成文件空洞(文件空洞不要求在磁盘上占存储区，只做定位具体处理方式看文件系统的实现)</p>
 </blockquote>
+<blockquote>
+<p>文件操作</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/APUE/%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E7%9A%84%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.jpg" alt="打开文件的内核数据结构"></p>
+<blockquote>
+<p>Linux 采用一个与文件系统无关的i节点和一个与文件系统相关的i节点</p>
+<p>任何多于一个函数调用的操作都不是原子操作，因为在两个函数调用之间，内核可能临时挂起进程。</p>
+<p><code>/dev/fd</code>目录中，目录项为0， 1， 2等文件， 打开<code>/dev/fd/n</code>等效于复制描述符n</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[scallacs@VM-16-8-ubuntu /dev/fd\ []$ ls</span><br><span class="line">0  1  2  255</span><br><span class="line">[scallacs@VM-16-8-ubuntu /dev/fd\ []$ ll</span><br><span class="line">total 0</span><br><span class="line">dr-x------ 2 scallacs scallacs  0 Mar 10 14:47 ./</span><br><span class="line">dr-xr-xr-x 9 scallacs scallacs  0 Mar 10 14:26 ../</span><br><span class="line">lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 0 -&gt; /dev/pts/4</span><br><span class="line">lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 1 -&gt; /dev/pts/4</span><br><span class="line">lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 2 -&gt; /dev/pts/4</span><br><span class="line">lrwx------ 1 scallacs scallacs 64 Mar 10 14:47 255 -&gt; /dev/pts/4</span><br></pre></td></tr></table></figure>
+
+<p>它把文件描述符映射为指向底层物理文件的符号链接</p>
+<p><code>read, write</code>都在内核执行，所以成为不带缓冲的I/O函数</p>
+<p>为了执行程序，内核必须理解二进制可执行文件的格式，所有二进制可执行文件都遵循一种标准化的格式，这种格式使内核能确定程序文本和数据的加载位置。</p>
+</blockquote>
 
 	  <div class="article-footer-copyright">
 
@@ -214,7 +242,7 @@ POSIX : Portable Operating System Interface
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/Unix-Linux-APUE/">Unix/Linux APUE<span>1</span></a></li>
+  <li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
     </ul>
 	</div>
 		
