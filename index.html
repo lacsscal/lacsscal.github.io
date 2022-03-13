@@ -114,6 +114,104 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2022/03/13/10.Unix-Linux-Network-Programming/" >Unix-Linux-Network-Programming</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-03-13  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p><em>go on</em></p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、基础"><a href="#一、基础" class="headerlink" title="一、基础"></a>一、基础</h2><h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h3><blockquote>
+<p>Berkeley socket 伯克利套接字，网络编程的实施标准</p>
+<p>socket是网络中用来建立连接，网络通信的设备，用户创建socket可以通过其发起或接受TCP连接，可以向TCP的<strong>发送和接收缓冲区中读写TCP数据段</strong>，或者UCP文本</p>
+<p>大小端问题(一个源于商业的历史遗留问题)一般主机使用小端法(主机字节序)，而用于网络传输，使用大端法(网络字节序) 判断方式如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0x12345678</span>;</span><br><span class="line">    <span class="keyword">char</span> *c=(<span class="keyword">char</span> *)&amp;i; </span><br><span class="line">    <span class="keyword">if</span>(*c == <span class="number">0x12</span>)&#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;big ending!&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;little ending!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">scallacs@scallacs:~/testendong ./isBigEnding </span><br><span class="line">little ending!</span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+<h3 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h3><blockquote>
+<p>设计网络需要的几个结构体(设置地址信息)</p>
+<p>通用的地址结构 <code>struct sockadd</code> 但是过于通用导致设置复杂，惯用法是通过以下两个结构体来构造地址，利用其<strong>内存布局一致的特点</strong>强转为<code>struct sockaddr </code>作为参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//man 7 ip </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span> </span><br><span class="line">    <span class="keyword">sa_family_t</span> sin_family; <span class="comment">/* address family: AF_INET */</span> </span><br><span class="line">    <span class="keyword">in_port_t</span> sin_port; <span class="comment">/* port in network byte order */</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span> <span class="comment">/* internet address */</span> </span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* Internet address. */</span> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint32_t</span> s_addr; <span class="comment">/* address in network byte order */</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>整数大小端转化接口</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">htonl</span><span class="params">(<span class="keyword">uint32_t</span> hostlong)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">htons</span><span class="params">(<span class="keyword">uint16_t</span> hostshort)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">ntohl</span><span class="params">(<span class="keyword">uint32_t</span> netlong)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">ntohs</span><span class="params">(<span class="keyword">uint16_t</span> netshort)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>网络字节序IP与点分十进制IP转化接口</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">inet_aton</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *cp, struct in_addr *inp)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">inet_ntoa</span><span class="params">(struct in_addr in)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>使用域名获取IP的接口</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct hostent *<span class="title">gethostbyname</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>; </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hostent</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> *h_name; <span class="comment">/* official name of host */</span> </span><br><span class="line">    <span class="keyword">char</span> **h_aliases; <span class="comment">/* alias list */</span> </span><br><span class="line">    <span class="keyword">int</span> h_addrtype; <span class="comment">/* host address type */</span> </span><br><span class="line">    <span class="keyword">int</span> h_length; <span class="comment">/* length of address */</span> </span><br><span class="line">    <span class="keyword">char</span> **h_addr_list; <span class="comment">/* list of addresses */</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="3-TCP"><a href="#3-TCP" class="headerlink" title="3. TCP"></a>3. TCP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">把TCP的通信机制看做两条管道，通信双方为A和B，三次握手分别做了一下几件事</span><br><span class="line">第一次握手A-&gt;B : 现在B知道了A-&gt;B 的通信是正常的  即B知道:A的发送B的接收正常</span><br><span class="line">第二次握手B-&gt;A : 现在A知道了A-&gt;B 与 B-&gt;A的通信是正常的 即A知道:A与B的收发都正常，但B不能确定A的收正常</span><br><span class="line">第三次握手A-&gt;B : 现在A知道自己的收发和B的收发都没有问题，而B还需确认A的接收能力。</span><br><span class="line"></span><br><span class="line">如果只有两次握手，那么B是没能确认A的接收能力的，如果认为两次握手后通信无误，那么A可能只是发了连接请求就关闭了此时认为连接建立成功的B只能永久等待</span><br></pre></td></tr></table></figure>
+	
+
+	</div>
+  <a type="button" href="/2022/03/13/10.Unix-Linux-Network-Programming/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p><em>go on</em></p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、基础"><a href="#一、基础" class="headerlink" title="一、基础"></a>一、基础</h2><h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h3><blockquote>
+<p>Berkeley socket 伯克利套接字，网络编程的实施标准</p>
+<p>socket是网络中用来建立连接，网络通信的设备，用户创建socket可以通过其发起或接受TCP连接，可以向TCP的<strong>发送和接收缓冲区中读写TCP数据段</strong>，或者UCP文本</p>
+<p>大小端问题(一个源于商业的历史遗留问题)一般主机使用小端法(主机字节序)，而用于网络传输，使用大端法(网络字节序) 判断方式如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0x12345678</span>;</span><br><span class="line">    <span class="keyword">char</span> *c=(<span class="keyword">char</span> *)&amp;i; </span><br><span class="line">    <span class="keyword">if</span>(*c == <span class="number">0x12</span>)&#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;big ending!&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;little ending!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">scallacs@scallacs:~/testendong ./isBigEnding </span><br><span class="line">little ending!</span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+<h3 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h3><blockquote>
+<p>设计网络需要的几个结构体(设置地址信息)</p>
+<p>通用的地址结构 <code>struct sockadd</code> 但是过于通用导致设置复杂，惯用法是通过以下两个结构体来构造地址，利用其<strong>内存布局一致的特点</strong>强转为<code>struct sockaddr </code>作为参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//man 7 ip </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span> </span><br><span class="line">    <span class="keyword">sa_family_t</span> sin_family; <span class="comment">/* address family: AF_INET */</span> </span><br><span class="line">    <span class="keyword">in_port_t</span> sin_port; <span class="comment">/* port in network byte order */</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span> <span class="comment">/* internet address */</span> </span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* Internet address. */</span> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint32_t</span> s_addr; <span class="comment">/* address in network byte order */</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>整数大小端转化接口</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">htonl</span><span class="params">(<span class="keyword">uint32_t</span> hostlong)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">htons</span><span class="params">(<span class="keyword">uint16_t</span> hostshort)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">ntohl</span><span class="params">(<span class="keyword">uint32_t</span> netlong)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">ntohs</span><span class="params">(<span class="keyword">uint16_t</span> netshort)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>网络字节序IP与点分十进制IP转化接口</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">inet_aton</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *cp, struct in_addr *inp)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">inet_ntoa</span><span class="params">(struct in_addr in)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>使用域名获取IP的接口</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct hostent *<span class="title">gethostbyname</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>; </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hostent</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> *h_name; <span class="comment">/* official name of host */</span> </span><br><span class="line">    <span class="keyword">char</span> **h_aliases; <span class="comment">/* alias list */</span> </span><br><span class="line">    <span class="keyword">int</span> h_addrtype; <span class="comment">/* host address type */</span> </span><br><span class="line">    <span class="keyword">int</span> h_length; <span class="comment">/* length of address */</span> </span><br><span class="line">    <span class="keyword">char</span> **h_addr_list; <span class="comment">/* list of addresses */</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="3-TCP"><a href="#3-TCP" class="headerlink" title="3. TCP"></a>3. TCP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">把TCP的通信机制看做两条管道，通信双方为A和B，三次握手分别做了一下几件事</span><br><span class="line">第一次握手A-&gt;B : 现在B知道了A-&gt;B 的通信是正常的  即B知道:A的发送B的接收正常</span><br><span class="line">第二次握手B-&gt;A : 现在A知道了A-&gt;B 与 B-&gt;A的通信是正常的 即A知道:A与B的收发都正常，但B不能确定A的收正常</span><br><span class="line">第三次握手A-&gt;B : 现在A知道自己的收发和B的收发都没有问题，而B还需确认A的接收能力。</span><br><span class="line"></span><br><span class="line">如果只有两次握手，那么B是没能确认A的接收能力的，如果认为两次握手后通信无误，那么A可能只是发了连接请求就关闭了此时认为连接建立成功的B只能永久等待</span><br></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2022/03/13/10.Unix-Linux-Network-Programming/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2022/03/09/9.APUE-1-Overview/" >APUE_1_Overview</a>
 		</h3>
 		</div>
@@ -839,13 +937,13 @@ npm install    # 安装组件
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
+			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
+		
+			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>4</span></a></li>
 		
 			<li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
 		
-			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
-		
-			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>3</span></a></li>
+			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -857,6 +955,10 @@ npm install    # 安装组件
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2022/03/13/10.Unix-Linux-Network-Programming/" ><i class="fa fa-file-o"></i>Unix-Linux-Network-Programm...</a>
+      </li>
     
       <li>
         <a href="/2022/03/09/9.APUE-1-Overview/" ><i class="fa fa-file-o"></i>APUE_1_Overview</a>
@@ -872,10 +974,6 @@ npm install    # 安装组件
     
       <li>
         <a href="/2022/02/26/6.Unix-Linux-file-management/" ><i class="fa fa-file-o"></i>Unix/Linux-file-management</a>
-      </li>
-    
-      <li>
-        <a href="/2022/02/17/5.C-Summarize-with-code/" ><i class="fa fa-file-o"></i>C_Summarize_with_code</a>
       </li>
     
   </ul>
