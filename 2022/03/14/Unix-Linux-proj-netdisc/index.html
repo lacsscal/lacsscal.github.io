@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>netdisk | lacsscal&#39;s blog</title>
+  <meta name="author" content="chen">
+  
+  <meta name="description" content="v1
+目标：写客户端，服务端，服务端响应客户端命令请求 + 密码验证，登录，日志，断点续传，大文件mmap
+
+
+整合此前的各个库函数与系统调用实现的命令，搭建基本的服务端框架和客户端雏形，使得客户端发出指令，服务端能够解析他们并做出对应的功能响应。
+命令包括 cd, ls, pwd, mkdir, rm, puts, gets...
+
+1.搭建服务端框架
+
+服务端需要维护一个线程池做业务处理
+
+整体代码结构
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657## 最终定下的代码结构如下.├── client│   ├── include│   │   ├── head.h│   │   └── train.h│   ├── obj│   └── src│       ├── client.c│       ├── download.c│       ├── recv.c│       ├── send.c│       └── upload.c├── Makefile└── server    ├── server    │   ├── include    │   │   ├── factory.h       - 整个线程池的共享资源信息    │   │   ├── head.h          - 项目头文件，封装好，其余程序只需引用此文件即可    │   │   ├── netList.h       - !用户连接成功加入，为什么一个任务完成就要移除?     │   │   ├── taskQueue.h     - 每个功能的对应函数要执行时建立一个!task，主线程专用一个线程来调!parse    │   │   └── train.h         - 封装的火车头文件传输协议    ├── repository              - 资源仓库    │   ├── dir1    │   │   ├── file2    │   │   └── file3    │   ├── dir2    │   │   └── file4    │   └── file1    └── src        ├── epollFunc.c         - 封装多路复用        ├── factoryInit.c       - 封装共享资源初始化        ├── freeTask.c          - !在线程创建函数中，线程执行结束调用，释放分配的堆区内存，!mallocTaskArg        ├── getTaskArg.c        - !strtok涉及二级指针和内存分配        ├── mallocTaskArg.c     - !strtok涉及二级指针和内存分配        ├── makeWorker.c        - 创建子线程        ├── netInsert.c         - 链表节点入队操作        ├── netRemove.c         - 链表节点出队操作 思路要清晰        ├── parse.c             - 主线程调用的专用于解析命令的功能函数，取参数把对应功能加入任务队列        ├── get.c               - 服务端发送文件给客户端        ├── put.c               - 服务端接收文件，对应客户端的功能        ├── mkDir.c             - 目录流,...        ├── cd.c                - 目录流,考虑正常切换，错误切换，在根往前切换...        ├── rm.c                - 目录流,...        ├── ls.c                - 目录流,注意统一客户端与服务端的信息传输        ├── pwd.c               - 理论上不需要服务端做什么        ├── enter.c             - 登录注册        ├── quit.c			   - 退出        ├── recv.c              - 封装的收发信息接口        ├── send.c              - 封装的收发信息接口        ├── server.c            - 线程池主要逻辑，将此前的事件处理封装成结构体， 再理一下思路        ├── taskDequeue.c       - 线程被唤醒，会从任务队列中出队一个任务， 执行完释放        ├── taskEnqueue.c       - 有功能函数要调用时，将它入队，在这个函数中分配内存，创建任务        ├── tcpInit.c           - 封装服务端网络初始化操作        └── threadFunc.c        - 线程创建函数，涉及条件变量，锁的使用
+
+
+
+
+
+server
+
+服务端关于netFd 与 netList的设计 
+对于netFd，用户连接成功时加入netList，为什么在epoll监听的新命令就绪即有用户指令到达时要将netFd移出netList?因为主线程监听到netFd(已登录套接字就绪)有命令到，会调用taskEnque让专用于解析命令的功能函数parse作为一个任务入队。执行parse的线程走完，会让一个命令(用户想要执行的)作为一个任务加入任务队列。而加入任务队列的这些命令(功能函数，包括parse解析到非系统命令的情况)末尾的代码逻辑是让netFd重新加入监听。所以在server主线程中需要在命令执行前将netFd移除，它将在任务执行完毕时加入，而处理任务时出队，处理完再入队是符合逻辑的。"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="netdisk"/>
+  <meta property="og:site_name" content="lacsscal&#39;s blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="lacsscal&#39;s blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">lacsscal&#39;s blog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> netdisk</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h1 id="v1"><a href="#v1" class="headerlink" title="v1"></a>v1</h1><blockquote>
+<p>目标：写客户端，服务端，服务端响应客户端命令请求 + 密码验证，登录，日志，断点续传，大文件<code>mmap</code></p>
+</blockquote>
+<blockquote>
+<p>整合此前的各个库函数与系统调用实现的<strong>命令</strong>，搭建基本的服务端框架和客户端雏形，使得客户端发出指令，服务端能够解析他们并做出对应的功能响应。</p>
+<p>命令包括<code> cd, ls, pwd, mkdir, rm, puts, gets...</code></p>
+</blockquote>
+<h2 id="1-搭建服务端框架"><a href="#1-搭建服务端框架" class="headerlink" title="1.搭建服务端框架"></a>1.搭建服务端框架</h2><p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/%E6%95%B4%E4%BD%93%E6%A8%A1%E5%9E%8B.jpg" alt="大致线程池模型"></p>
+<blockquote>
+<p>服务端需要维护一个线程池做业务处理</p>
+</blockquote>
+<p><code>整体代码结构</code></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">## 最终定下的代码结构如下</span><br><span class="line">.</span><br><span class="line">├── client</span><br><span class="line">│   ├── include</span><br><span class="line">│   │   ├── head<span class="selector-class">.h</span></span><br><span class="line">│   │   └── train<span class="selector-class">.h</span></span><br><span class="line">│   ├── obj</span><br><span class="line">│   └── <span class="attribute">src</span></span><br><span class="line">│       ├── client<span class="selector-class">.c</span></span><br><span class="line">│       ├── download<span class="selector-class">.c</span></span><br><span class="line">│       ├── recv<span class="selector-class">.c</span></span><br><span class="line">│       ├── send<span class="selector-class">.c</span></span><br><span class="line">│       └── upload<span class="selector-class">.c</span></span><br><span class="line">├── Makefile</span><br><span class="line">└── server</span><br><span class="line">    ├── server</span><br><span class="line">    │   ├── include</span><br><span class="line">    │   │   ├── factory<span class="selector-class">.h</span>       - 整个线程池的共享资源信息</span><br><span class="line">    │   │   ├── head<span class="selector-class">.h</span>          - 项目头文件，封装好，其余程序只需引用此文件即可</span><br><span class="line">    │   │   ├── netList<span class="selector-class">.h</span>       - !用户连接成功加入，为什么一个任务完成就要移除? </span><br><span class="line">    │   │   ├── taskQueue<span class="selector-class">.h</span>     - 每个功能的对应函数要执行时建立一个!task，主线程专用一个线程来调!parse</span><br><span class="line">    │   │   └── train<span class="selector-class">.h</span>         - 封装的火车头文件传输协议</span><br><span class="line">    ├── repository              - 资源仓库</span><br><span class="line">    │   ├── dir1</span><br><span class="line">    │   │   ├── file2</span><br><span class="line">    │   │   └── file3</span><br><span class="line">    │   ├── dir2</span><br><span class="line">    │   │   └── file4</span><br><span class="line">    │   └── file1</span><br><span class="line">    └── <span class="attribute">src</span></span><br><span class="line">        ├── epollFunc<span class="selector-class">.c</span>         - 封装多路复用</span><br><span class="line">        ├── factoryInit<span class="selector-class">.c</span>       - 封装共享资源初始化</span><br><span class="line">        ├── freeTask<span class="selector-class">.c</span>          - !在线程创建函数中，线程执行结束调用，释放分配的堆区内存，!mallocTaskArg</span><br><span class="line">        ├── getTaskArg<span class="selector-class">.c</span>        - !strtok涉及二级指针和内存分配</span><br><span class="line">        ├── mallocTaskArg<span class="selector-class">.c</span>     - !strtok涉及二级指针和内存分配</span><br><span class="line">        ├── makeWorker<span class="selector-class">.c</span>        - 创建子线程</span><br><span class="line">        ├── netInsert<span class="selector-class">.c</span>         - 链表节点入队操作</span><br><span class="line">        ├── netRemove<span class="selector-class">.c</span>         - 链表节点出队操作 思路要清晰</span><br><span class="line">        ├── parse<span class="selector-class">.c</span>             - 主线程调用的专用于解析命令的功能函数，取参数把对应功能加入任务队列</span><br><span class="line">        ├── get<span class="selector-class">.c</span>               - 服务端发送文件给客户端</span><br><span class="line">        ├── put<span class="selector-class">.c</span>               - 服务端接收文件，对应客户端的功能</span><br><span class="line">        ├── mkDir<span class="selector-class">.c</span>             - 目录流,...</span><br><span class="line">        ├── cd<span class="selector-class">.c</span>                - 目录流,考虑正常切换，错误切换，在根往前切换...</span><br><span class="line">        ├── rm<span class="selector-class">.c</span>                - 目录流,...</span><br><span class="line">        ├── ls<span class="selector-class">.c</span>                - 目录流,注意统一客户端与服务端的信息传输</span><br><span class="line">        ├── pwd<span class="selector-class">.c</span>               - 理论上不需要服务端做什么</span><br><span class="line">        ├── enter<span class="selector-class">.c</span>             - 登录注册</span><br><span class="line">        ├── quit<span class="selector-class">.c</span>			   - 退出</span><br><span class="line">        ├── recv<span class="selector-class">.c</span>              - 封装的收发信息接口</span><br><span class="line">        ├── send<span class="selector-class">.c</span>              - 封装的收发信息接口</span><br><span class="line">        ├── server<span class="selector-class">.c</span>            - 线程池主要逻辑，将此前的事件处理封装成结构体， 再理一下思路</span><br><span class="line">        ├── taskDequeue<span class="selector-class">.c</span>       - 线程被唤醒，会从任务队列中出队一个任务， 执行完释放</span><br><span class="line">        ├── taskEnqueue<span class="selector-class">.c</span>       - 有功能函数要调用时，将它入队，在这个函数中分配内存，创建任务</span><br><span class="line">        ├── tcpInit<span class="selector-class">.c</span>           - 封装服务端网络初始化操作</span><br><span class="line">        └── threadFunc<span class="selector-class">.c</span>        - 线程创建函数，涉及条件变量，锁的使用</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><code>server</code></p>
+<blockquote>
+<p>服务端关于<code>netFd </code>与<code> netList</code>的设计 </p>
+<p>对于<code>netFd</code>，用户连接成功时加入<code>netList</code>，为什么在<code>epoll</code>监听的新命令就绪即有用户指令到达时要将<code>netFd</code>移出<code>netList?</code><br>因为主线程监听到<code>netFd</code>(已登录套接字就绪)有命令到，会调用<code>taskEnque</code>让专用于解析命令的功能函数<code>parse</code>作为一个任务入队。执行<code>parse</code>的线程走完，会让一个命令(用户想要执行的)作为一个任务加入任务队列。而加入任务队列的这些命令(功能函数，包括<code>parse</code>解析到非系统命令的情况)末尾的代码逻辑是让<code>netFd</code>重新加入监听。<br>所以在<code>server</code>主线程中需要在命令执行前将<code>netFd</code>移除，它将在任务执行完毕时加入，而处理任务时出队，处理完再入队是符合逻辑的。</p>
+</blockquote>
+<blockquote>
+<pre><code>`freeTask.c          !在线程创建函数中，线程执行结束调用，释放分配的堆区内存，!mallocTaskArg`
+`getTaskArg.c        !strtok涉及二级指针和内存分配`
+`mallocTaskArg.c     !strtok涉及二级指针和内存分配`
+
+这几个涉及功能函数参数的内存分配与释放
+</code></pre>
+</blockquote>
+<blockquote>
+<p>解决粘包问题，封装“火车头”传输协议<code>send.c, recv.c</code></p>
+</blockquote>
+<blockquote>
+<p>文件上传下载</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220327214949923.png" alt="send&recv" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220327215204477.png" alt="mmap" style="zoom:80%;" />
+
+<h1 id="v2"><a href="#v2" class="headerlink" title="v2"></a>v2</h1><blockquote>
+<p>数据库实现用户登录注册，结合数据库用一张表实现虚拟文件系统并由sql语句实现此前的基础命令</p>
+<p>文件传输</p>
+</blockquote>
+<h1 id="v3"><a href="#v3" class="headerlink" title="v3"></a>v3</h1><blockquote>
+<p>长短命令分离(文件传输为长命令) + 超时断开连接</p>
+</blockquote>
+<p>​                    </p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2022/03/14/Unix-Linux-proj-netdisc/" class="leancloud-visitors view" data-flag-title="netdisk">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2022/03/14/11.Unix-Linux-NetworkProgramming-II/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2022/03/13/10.Unix-Linux-Network-Programming/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2022-03-14 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Proj/">Proj<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2022 chen's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

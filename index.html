@@ -114,6 +114,236 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2022/03/26/Unix-Linux-proj-netDsic-II/" >Unix-Linux-proj-netDsic-II</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-03-26  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1>
+	
+
+	</div>
+  <a type="button" href="/2022/03/26/Unix-Linux-proj-netDsic-II/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1>
+	
+	</div>
+  <a type="button" href="/2022/03/26/Unix-Linux-proj-netDsic-II/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2022/03/14/database/" >database</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-03-14  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="Navicat-连接mysql"><a href="#Navicat-连接mysql" class="headerlink" title="Navicat 连接mysql"></a>Navicat 连接mysql</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 安装C-sql依赖的dev</span></span><br><span class="line"></span><br><span class="line">[scallacs@scallacs ~\ []$ sudo apt install libmysqlclient-dev</span><br><span class="line"></span><br><span class="line"><span class="comment">## 修改配置文件</span></span><br><span class="line">[scallacs@scallacs ~\ []$ <span class="built_in">cd</span> /etc/mysql/mysql.conf.d/</span><br><span class="line">[scallacs@scallacs /etc/mysql/mysql.conf.d\ []$ sudo vim mysqld.cnf </span><br><span class="line">[sudo] password <span class="keyword">for</span> scallacs: </span><br><span class="line">[scallacs@scallacs /etc/mysql/mysql.conf.d\ []$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220326150818014.png" alt="image-20220326150818014"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 修改mysql配置</span></span><br><span class="line">$ mysql -u root -p</span><br><span class="line">&gt; use mysql;</span><br><span class="line">&gt; select host, user from user;</span><br><span class="line"></span><br><span class="line"><span class="comment">## 将表项  localhost 改为 % , 重启服务，或者刷新权限</span></span><br><span class="line">&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220323171238791.png" alt="image-20220323171238791" style="zoom: 80%;">
+
+<img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220323171301807.png" alt="image-20220323171301807" style="zoom: 80%;">
+
+	
+
+	</div>
+  <a type="button" href="/2022/03/14/database/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="Navicat-连接mysql"><a href="#Navicat-连接mysql" class="headerlink" title="Navicat 连接mysql"></a>Navicat 连接mysql</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 安装C-sql依赖的dev</span></span><br><span class="line"></span><br><span class="line">[scallacs@scallacs ~\ []$ sudo apt install libmysqlclient-dev</span><br><span class="line"></span><br><span class="line"><span class="comment">## 修改配置文件</span></span><br><span class="line">[scallacs@scallacs ~\ []$ <span class="built_in">cd</span> /etc/mysql/mysql.conf.d/</span><br><span class="line">[scallacs@scallacs /etc/mysql/mysql.conf.d\ []$ sudo vim mysqld.cnf </span><br><span class="line">[sudo] password <span class="keyword">for</span> scallacs: </span><br><span class="line">[scallacs@scallacs /etc/mysql/mysql.conf.d\ []$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220326150818014.png" alt="image-20220326150818014"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 修改mysql配置</span></span><br><span class="line">$ mysql -u root -p</span><br><span class="line">&gt; use mysql;</span><br><span class="line">&gt; select host, user from user;</span><br><span class="line"></span><br><span class="line"><span class="comment">## 将表项  localhost 改为 % , 重启服务，或者刷新权限</span></span><br><span class="line">&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+
+<img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220323171238791.png" alt="image-20220323171238791" style="zoom: 80%;">
+
+<img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220323171301807.png" alt="image-20220323171301807" style="zoom: 80%;">
+
+	
+	</div>
+  <a type="button" href="/2022/03/14/database/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2022/03/14/11.Unix-Linux-NetworkProgramming-II/" >Unix-Linux-NetworkProgramming-II</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-03-14  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p><em>go on</em></p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、select-epoll对比"><a href="#一、select-epoll对比" class="headerlink" title="一、select epoll对比"></a>一、select epoll对比</h2><p>?不需询问没就绪的 网络连接高并发 <strong>epoll原理</strong></p>
+<p><strong>触发方式</strong></p>
+<h2 id="二、-进程池-amp-线程池"><a href="#二、-进程池-amp-线程池" class="headerlink" title="二、 进程池&amp;线程池"></a>二、 进程池&amp;线程池</h2><h3 id="第一版"><a href="#第一版" class="headerlink" title="第一版"></a>第一版</h3><h4 id="0-makefile"><a href="#0-makefile" class="headerlink" title="0.makefile"></a>0.makefile</h4><blockquote>
+<p>复杂的应用重新写一下makefile</p>
+</blockquote>
+	
+
+	</div>
+  <a type="button" href="/2022/03/14/11.Unix-Linux-NetworkProgramming-II/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p><em>go on</em></p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、select-epoll对比"><a href="#一、select-epoll对比" class="headerlink" title="一、select epoll对比"></a>一、select epoll对比</h2><p>?不需询问没就绪的 网络连接高并发 <strong>epoll原理</strong></p>
+<p><strong>触发方式</strong></p>
+<h2 id="二、-进程池-amp-线程池"><a href="#二、-进程池-amp-线程池" class="headerlink" title="二、 进程池&amp;线程池"></a>二、 进程池&amp;线程池</h2><h3 id="第一版"><a href="#第一版" class="headerlink" title="第一版"></a>第一版</h3><h4 id="0-makefile"><a href="#0-makefile" class="headerlink" title="0.makefile"></a>0.makefile</h4><blockquote>
+<p>复杂的应用重新写一下makefile</p>
+</blockquote>
+	
+	</div>
+  <a type="button" href="/2022/03/14/11.Unix-Linux-NetworkProgramming-II/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2022/03/14/Unix-Linux-proj-netdisc/" >netdisk</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-03-14  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="v1"><a href="#v1" class="headerlink" title="v1"></a>v1</h1><blockquote>
+<p>目标：写客户端，服务端，服务端响应客户端命令请求 + 密码验证，登录，日志，断点续传，大文件<code>mmap</code></p>
+</blockquote>
+<blockquote>
+<p>整合此前的各个库函数与系统调用实现的<strong>命令</strong>，搭建基本的服务端框架和客户端雏形，使得客户端发出指令，服务端能够解析他们并做出对应的功能响应。</p>
+<p>命令包括<code> cd, ls, pwd, mkdir, rm, puts, gets...</code></p>
+</blockquote>
+<h2 id="1-搭建服务端框架"><a href="#1-搭建服务端框架" class="headerlink" title="1.搭建服务端框架"></a>1.搭建服务端框架</h2><p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/%E6%95%B4%E4%BD%93%E6%A8%A1%E5%9E%8B.jpg" alt="大致线程池模型"></p>
+<blockquote>
+<p>服务端需要维护一个线程池做业务处理</p>
+</blockquote>
+<p><code>整体代码结构</code></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">## 最终定下的代码结构如下</span><br><span class="line">.</span><br><span class="line">├── client</span><br><span class="line">│   ├── include</span><br><span class="line">│   │   ├── head<span class="selector-class">.h</span></span><br><span class="line">│   │   └── train<span class="selector-class">.h</span></span><br><span class="line">│   ├── obj</span><br><span class="line">│   └── <span class="attribute">src</span></span><br><span class="line">│       ├── client<span class="selector-class">.c</span></span><br><span class="line">│       ├── download<span class="selector-class">.c</span></span><br><span class="line">│       ├── recv<span class="selector-class">.c</span></span><br><span class="line">│       ├── send<span class="selector-class">.c</span></span><br><span class="line">│       └── upload<span class="selector-class">.c</span></span><br><span class="line">├── Makefile</span><br><span class="line">└── server</span><br><span class="line">    ├── server</span><br><span class="line">    │   ├── include</span><br><span class="line">    │   │   ├── factory<span class="selector-class">.h</span>       - 整个线程池的共享资源信息</span><br><span class="line">    │   │   ├── head<span class="selector-class">.h</span>          - 项目头文件，封装好，其余程序只需引用此文件即可</span><br><span class="line">    │   │   ├── netList<span class="selector-class">.h</span>       - !用户连接成功加入，为什么一个任务完成就要移除? </span><br><span class="line">    │   │   ├── taskQueue<span class="selector-class">.h</span>     - 每个功能的对应函数要执行时建立一个!task，主线程专用一个线程来调!parse</span><br><span class="line">    │   │   └── train<span class="selector-class">.h</span>         - 封装的火车头文件传输协议</span><br><span class="line">    ├── repository              - 资源仓库</span><br><span class="line">    │   ├── dir1</span><br><span class="line">    │   │   ├── file2</span><br><span class="line">    │   │   └── file3</span><br><span class="line">    │   ├── dir2</span><br><span class="line">    │   │   └── file4</span><br><span class="line">    │   └── file1</span><br><span class="line">    └── <span class="attribute">src</span></span><br><span class="line">        ├── epollFunc<span class="selector-class">.c</span>         - 封装多路复用</span><br><span class="line">        ├── factoryInit<span class="selector-class">.c</span>       - 封装共享资源初始化</span><br><span class="line">        ├── freeTask<span class="selector-class">.c</span>          - !在线程创建函数中，线程执行结束调用，释放分配的堆区内存，!mallocTaskArg</span><br><span class="line">        ├── getTaskArg<span class="selector-class">.c</span>        - !strtok涉及二级指针和内存分配</span><br><span class="line">        ├── mallocTaskArg<span class="selector-class">.c</span>     - !strtok涉及二级指针和内存分配</span><br><span class="line">        ├── makeWorker<span class="selector-class">.c</span>        - 创建子线程</span><br><span class="line">        ├── netInsert<span class="selector-class">.c</span>         - 链表节点入队操作</span><br><span class="line">        ├── netRemove<span class="selector-class">.c</span>         - 链表节点出队操作 思路要清晰</span><br><span class="line">        ├── parse<span class="selector-class">.c</span>             - 主线程调用的专用于解析命令的功能函数，取参数把对应功能加入任务队列</span><br><span class="line">        ├── get<span class="selector-class">.c</span>               - 服务端发送文件给客户端</span><br><span class="line">        ├── put<span class="selector-class">.c</span>               - 服务端接收文件，对应客户端的功能</span><br><span class="line">        ├── mkDir<span class="selector-class">.c</span>             - 目录流,...</span><br><span class="line">        ├── cd<span class="selector-class">.c</span>                - 目录流,考虑正常切换，错误切换，在根往前切换...</span><br><span class="line">        ├── rm<span class="selector-class">.c</span>                - 目录流,...</span><br><span class="line">        ├── ls<span class="selector-class">.c</span>                - 目录流,注意统一客户端与服务端的信息传输</span><br><span class="line">        ├── pwd<span class="selector-class">.c</span>               - 理论上不需要服务端做什么</span><br><span class="line">        ├── enter<span class="selector-class">.c</span>             - 登录注册</span><br><span class="line">        ├── quit<span class="selector-class">.c</span>			   - 退出</span><br><span class="line">        ├── recv<span class="selector-class">.c</span>              - 封装的收发信息接口</span><br><span class="line">        ├── send<span class="selector-class">.c</span>              - 封装的收发信息接口</span><br><span class="line">        ├── server<span class="selector-class">.c</span>            - 线程池主要逻辑，将此前的事件处理封装成结构体， 再理一下思路</span><br><span class="line">        ├── taskDequeue<span class="selector-class">.c</span>       - 线程被唤醒，会从任务队列中出队一个任务， 执行完释放</span><br><span class="line">        ├── taskEnqueue<span class="selector-class">.c</span>       - 有功能函数要调用时，将它入队，在这个函数中分配内存，创建任务</span><br><span class="line">        ├── tcpInit<span class="selector-class">.c</span>           - 封装服务端网络初始化操作</span><br><span class="line">        └── threadFunc<span class="selector-class">.c</span>        - 线程创建函数，涉及条件变量，锁的使用</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><code>server</code></p>
+<blockquote>
+<p>服务端关于<code>netFd </code>与<code> netList</code>的设计 </p>
+<p>对于<code>netFd</code>，用户连接成功时加入<code>netList</code>，为什么在<code>epoll</code>监听的新命令就绪即有用户指令到达时要将<code>netFd</code>移出<code>netList?</code><br>因为主线程监听到<code>netFd</code>(已登录套接字就绪)有命令到，会调用<code>taskEnque</code>让专用于解析命令的功能函数<code>parse</code>作为一个任务入队。执行<code>parse</code>的线程走完，会让一个命令(用户想要执行的)作为一个任务加入任务队列。而加入任务队列的这些命令(功能函数，包括<code>parse</code>解析到非系统命令的情况)末尾的代码逻辑是让<code>netFd</code>重新加入监听。<br>所以在<code>server</code>主线程中需要在命令执行前将<code>netFd</code>移除，它将在任务执行完毕时加入，而处理任务时出队，处理完再入队是符合逻辑的。</p>
+</blockquote>
+	
+
+	</div>
+  <a type="button" href="/2022/03/14/Unix-Linux-proj-netdisc/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="v1"><a href="#v1" class="headerlink" title="v1"></a>v1</h1><blockquote>
+<p>目标：写客户端，服务端，服务端响应客户端命令请求 + 密码验证，登录，日志，断点续传，大文件<code>mmap</code></p>
+</blockquote>
+<blockquote>
+<p>整合此前的各个库函数与系统调用实现的<strong>命令</strong>，搭建基本的服务端框架和客户端雏形，使得客户端发出指令，服务端能够解析他们并做出对应的功能响应。</p>
+<p>命令包括<code> cd, ls, pwd, mkdir, rm, puts, gets...</code></p>
+</blockquote>
+<h2 id="1-搭建服务端框架"><a href="#1-搭建服务端框架" class="headerlink" title="1.搭建服务端框架"></a>1.搭建服务端框架</h2><p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/%E6%95%B4%E4%BD%93%E6%A8%A1%E5%9E%8B.jpg" alt="大致线程池模型"></p>
+<blockquote>
+<p>服务端需要维护一个线程池做业务处理</p>
+</blockquote>
+<p><code>整体代码结构</code></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">## 最终定下的代码结构如下</span><br><span class="line">.</span><br><span class="line">├── client</span><br><span class="line">│   ├── include</span><br><span class="line">│   │   ├── head<span class="selector-class">.h</span></span><br><span class="line">│   │   └── train<span class="selector-class">.h</span></span><br><span class="line">│   ├── obj</span><br><span class="line">│   └── <span class="attribute">src</span></span><br><span class="line">│       ├── client<span class="selector-class">.c</span></span><br><span class="line">│       ├── download<span class="selector-class">.c</span></span><br><span class="line">│       ├── recv<span class="selector-class">.c</span></span><br><span class="line">│       ├── send<span class="selector-class">.c</span></span><br><span class="line">│       └── upload<span class="selector-class">.c</span></span><br><span class="line">├── Makefile</span><br><span class="line">└── server</span><br><span class="line">    ├── server</span><br><span class="line">    │   ├── include</span><br><span class="line">    │   │   ├── factory<span class="selector-class">.h</span>       - 整个线程池的共享资源信息</span><br><span class="line">    │   │   ├── head<span class="selector-class">.h</span>          - 项目头文件，封装好，其余程序只需引用此文件即可</span><br><span class="line">    │   │   ├── netList<span class="selector-class">.h</span>       - !用户连接成功加入，为什么一个任务完成就要移除? </span><br><span class="line">    │   │   ├── taskQueue<span class="selector-class">.h</span>     - 每个功能的对应函数要执行时建立一个!task，主线程专用一个线程来调!parse</span><br><span class="line">    │   │   └── train<span class="selector-class">.h</span>         - 封装的火车头文件传输协议</span><br><span class="line">    ├── repository              - 资源仓库</span><br><span class="line">    │   ├── dir1</span><br><span class="line">    │   │   ├── file2</span><br><span class="line">    │   │   └── file3</span><br><span class="line">    │   ├── dir2</span><br><span class="line">    │   │   └── file4</span><br><span class="line">    │   └── file1</span><br><span class="line">    └── <span class="attribute">src</span></span><br><span class="line">        ├── epollFunc<span class="selector-class">.c</span>         - 封装多路复用</span><br><span class="line">        ├── factoryInit<span class="selector-class">.c</span>       - 封装共享资源初始化</span><br><span class="line">        ├── freeTask<span class="selector-class">.c</span>          - !在线程创建函数中，线程执行结束调用，释放分配的堆区内存，!mallocTaskArg</span><br><span class="line">        ├── getTaskArg<span class="selector-class">.c</span>        - !strtok涉及二级指针和内存分配</span><br><span class="line">        ├── mallocTaskArg<span class="selector-class">.c</span>     - !strtok涉及二级指针和内存分配</span><br><span class="line">        ├── makeWorker<span class="selector-class">.c</span>        - 创建子线程</span><br><span class="line">        ├── netInsert<span class="selector-class">.c</span>         - 链表节点入队操作</span><br><span class="line">        ├── netRemove<span class="selector-class">.c</span>         - 链表节点出队操作 思路要清晰</span><br><span class="line">        ├── parse<span class="selector-class">.c</span>             - 主线程调用的专用于解析命令的功能函数，取参数把对应功能加入任务队列</span><br><span class="line">        ├── get<span class="selector-class">.c</span>               - 服务端发送文件给客户端</span><br><span class="line">        ├── put<span class="selector-class">.c</span>               - 服务端接收文件，对应客户端的功能</span><br><span class="line">        ├── mkDir<span class="selector-class">.c</span>             - 目录流,...</span><br><span class="line">        ├── cd<span class="selector-class">.c</span>                - 目录流,考虑正常切换，错误切换，在根往前切换...</span><br><span class="line">        ├── rm<span class="selector-class">.c</span>                - 目录流,...</span><br><span class="line">        ├── ls<span class="selector-class">.c</span>                - 目录流,注意统一客户端与服务端的信息传输</span><br><span class="line">        ├── pwd<span class="selector-class">.c</span>               - 理论上不需要服务端做什么</span><br><span class="line">        ├── enter<span class="selector-class">.c</span>             - 登录注册</span><br><span class="line">        ├── quit<span class="selector-class">.c</span>			   - 退出</span><br><span class="line">        ├── recv<span class="selector-class">.c</span>              - 封装的收发信息接口</span><br><span class="line">        ├── send<span class="selector-class">.c</span>              - 封装的收发信息接口</span><br><span class="line">        ├── server<span class="selector-class">.c</span>            - 线程池主要逻辑，将此前的事件处理封装成结构体， 再理一下思路</span><br><span class="line">        ├── taskDequeue<span class="selector-class">.c</span>       - 线程被唤醒，会从任务队列中出队一个任务， 执行完释放</span><br><span class="line">        ├── taskEnqueue<span class="selector-class">.c</span>       - 有功能函数要调用时，将它入队，在这个函数中分配内存，创建任务</span><br><span class="line">        ├── tcpInit<span class="selector-class">.c</span>           - 封装服务端网络初始化操作</span><br><span class="line">        └── threadFunc<span class="selector-class">.c</span>        - 线程创建函数，涉及条件变量，锁的使用</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><code>server</code></p>
+<blockquote>
+<p>服务端关于<code>netFd </code>与<code> netList</code>的设计 </p>
+<p>对于<code>netFd</code>，用户连接成功时加入<code>netList</code>，为什么在<code>epoll</code>监听的新命令就绪即有用户指令到达时要将<code>netFd</code>移出<code>netList?</code><br>因为主线程监听到<code>netFd</code>(已登录套接字就绪)有命令到，会调用<code>taskEnque</code>让专用于解析命令的功能函数<code>parse</code>作为一个任务入队。执行<code>parse</code>的线程走完，会让一个命令(用户想要执行的)作为一个任务加入任务队列。而加入任务队列的这些命令(功能函数，包括<code>parse</code>解析到非系统命令的情况)末尾的代码逻辑是让<code>netFd</code>重新加入监听。<br>所以在<code>server</code>主线程中需要在命令执行前将<code>netFd</code>移除，它将在任务执行完毕时加入，而处理任务时出队，处理完再入队是符合逻辑的。</p>
+</blockquote>
+	
+	</div>
+  <a type="button" href="/2022/03/14/Unix-Linux-proj-netdisc/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2022/03/13/10.Unix-Linux-Network-Programming/" >Unix-Linux-Network-Programming</a>
 		</h3>
 		</div>
@@ -648,256 +878,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2022/02/10/4.C-Summarize/" >C Summarize</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2022-02-10  </div>
-		</div>
-	</div>
-	
-
-
-			<!--
-<div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-<p>  对于C的学习，已经反复好多次了，前面一直想要做个系统的梳理，但总是会出各种状况。之前有过跟着视频学习，自己对着书看写例程写课后题等等，最完整的一次梳理是在2020年的寒假，那次花了比较多的时间，从重看翁恺老师的视频开始，后续继续看了《K&amp;R》《C陷阱与缺陷》《C和指针》《C专家编程》等书。前期跟视频以及看《K&amp;R》可能算是做到了专注，精读，但后面有完成任务式的阅读，最终感觉效果不佳。当然，那段时间确实感觉有较大的提升，可后面因为一些事情耽误，很长一段时间没有再碰过。</p>
-<p>最近打算重新系统梳理相关知识。这次打算配合最近捡起的知识点及写的程序，对C做大致的总结梳理。(总结自用，可能不甚严谨)</p>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-历史"><a href="#0-历史" class="headerlink" title="0.历史"></a>0.历史</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ken Thompson为了游戏(Space Travel)</span><br><span class="line">Multics -&gt; Unics(最初汇编PDP-7,移植性问题-&gt;发明BCPL:B语言)-&gt;</span><br><span class="line">Dennis Ritchie加入</span><br><span class="line">Dennis Ritchie-&gt;B不适合Unics(内核)开发:发明C -&gt; 用C重写Unics更名为Unix</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>结论： C用来<strong>开发系统软件</strong> (重写Unics系统,而此系统是K为了发挥PDP-7的全部性能以玩游戏而产生的)：       </p>
-<p>所以C没有try-catch机制(耗费性能)       C与汇编有强对应关系</p>
-</blockquote>
-<h3 id="1-虚拟内存空间"><a href="#1-虚拟内存空间" class="headerlink" title="1.虚拟内存空间"></a>1.虚拟内存空间</h3><blockquote>
-<p>源码经-&gt;预处理-&gt;编译-&gt;汇编-&gt;链接  程序-静态</p>
-</blockquote>
-<blockquote>
-<p>变成了可执行文件，而可执行文件加载进内存变为进程，用于独立的虚拟内存空间 进程-动态</p>
-</blockquote>
-<p><img src="https://s2.loli.net/2022/02/15/fDxObctmSZCYWNM.png" alt="虚拟内存空间.png"></p>
-	
-
-	</div>
-  <a type="button" href="/2022/02/10/4.C-Summarize/#more" class="btn btn-default more">Read More</a>
-</div>
-
--->
-<div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-<p>  对于C的学习，已经反复好多次了，前面一直想要做个系统的梳理，但总是会出各种状况。之前有过跟着视频学习，自己对着书看写例程写课后题等等，最完整的一次梳理是在2020年的寒假，那次花了比较多的时间，从重看翁恺老师的视频开始，后续继续看了《K&amp;R》《C陷阱与缺陷》《C和指针》《C专家编程》等书。前期跟视频以及看《K&amp;R》可能算是做到了专注，精读，但后面有完成任务式的阅读，最终感觉效果不佳。当然，那段时间确实感觉有较大的提升，可后面因为一些事情耽误，很长一段时间没有再碰过。</p>
-<p>最近打算重新系统梳理相关知识。这次打算配合最近捡起的知识点及写的程序，对C做大致的总结梳理。(总结自用，可能不甚严谨)</p>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-历史"><a href="#0-历史" class="headerlink" title="0.历史"></a>0.历史</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ken Thompson为了游戏(Space Travel)</span><br><span class="line">Multics -&gt; Unics(最初汇编PDP-7,移植性问题-&gt;发明BCPL:B语言)-&gt;</span><br><span class="line">Dennis Ritchie加入</span><br><span class="line">Dennis Ritchie-&gt;B不适合Unics(内核)开发:发明C -&gt; 用C重写Unics更名为Unix</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>结论： C用来<strong>开发系统软件</strong> (重写Unics系统,而此系统是K为了发挥PDP-7的全部性能以玩游戏而产生的)：       </p>
-<p>所以C没有try-catch机制(耗费性能)       C与汇编有强对应关系</p>
-</blockquote>
-<h3 id="1-虚拟内存空间"><a href="#1-虚拟内存空间" class="headerlink" title="1.虚拟内存空间"></a>1.虚拟内存空间</h3><blockquote>
-<p>源码经-&gt;预处理-&gt;编译-&gt;汇编-&gt;链接  程序-静态</p>
-</blockquote>
-<blockquote>
-<p>变成了可执行文件，而可执行文件加载进内存变为进程，用于独立的虚拟内存空间 进程-动态</p>
-</blockquote>
-<p><img src="https://s2.loli.net/2022/02/15/fDxObctmSZCYWNM.png" alt="虚拟内存空间.png"></p>
-	
-	</div>
-  <a type="button" href="/2022/02/10/4.C-Summarize/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2022/01/22/3.Hello-New-Worldhistory/" >Hello New Worldhistory</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2022-01-22  </div>
-		</div>
-	</div>
-	
-
-
-			<!--
-<div class="entry">
-  <div class="row">
-	
-	
-		<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60578464">参考</a><br><a target="_blank" rel="noopener" href="https://ares-x.com/2019/12/29/freemind-bithack-readme-zh/">主题参考</a><br><a target="_blank" rel="noopener" href="https://lacsscal.github.io/">实现效果</a></p>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote>
-<p>之前搭过一次，效果不是很好，写了一些可以说是废话的blog，并没有起到总结学习知识点的作用，此后尽量精简，减少引用，对能百度，Google到的知识点用自己的话整理总结。不要有大段的复制粘贴。<br>准备重新开始，blog不用实时更新，但每次写作尽量做到言之有物，至少能对学习成果做些总结内化以及沉淀的作用，再折腾这一次，后面尽量稳定下来。<br>原理：本地撰写MarkDown文档，Hexo解析渲染成具有主题样式的HTML静态网页，推送至GitHub完成发布。</p>
-</blockquote>
-<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol>
-<li> 环境 nodejs, git</li>
-<li> 连接GitHub</li>
-<li> 添加Github SSH秘钥 并验证连接</li>
-<li> 创建GitHub仓库</li>
-<li> 本地安装Hexo博客并测试</li>
-<li> <strong>部署</strong>注意分支名(main/master）到github上</li>
-<li> 验证</li>
-</ol>
-<h2 id="本地Hexo"><a href="#本地Hexo" class="headerlink" title="本地Hexo"></a>本地Hexo</h2><blockquote>
-<p>前面的准备过程跳过，以前搭过，环境还在，环境配置也不难<br>下面从Hexo本地安装开始<br>因为Hexo是基于Node.js的静态博客框架，可以经由npm一键安装</p>
-</blockquote>
-<pre><code>npm install -g hexo-cli #安装命令
-</code></pre>
-<p>安装好后初始化即可，选一个空文件夹初始化并安装所需组件</p>
-<pre><code>hexo init      # 初始化
-npm install    # 安装组件
-</code></pre>
-	
-
-	</div>
-  <a type="button" href="/2022/01/22/3.Hello-New-Worldhistory/#more" class="btn btn-default more">Read More</a>
-</div>
-
--->
-<div class="entry">
-  <div class="row">
-	
-	
-		<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60578464">参考</a><br><a target="_blank" rel="noopener" href="https://ares-x.com/2019/12/29/freemind-bithack-readme-zh/">主题参考</a><br><a target="_blank" rel="noopener" href="https://lacsscal.github.io/">实现效果</a></p>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote>
-<p>之前搭过一次，效果不是很好，写了一些可以说是废话的blog，并没有起到总结学习知识点的作用，此后尽量精简，减少引用，对能百度，Google到的知识点用自己的话整理总结。不要有大段的复制粘贴。<br>准备重新开始，blog不用实时更新，但每次写作尽量做到言之有物，至少能对学习成果做些总结内化以及沉淀的作用，再折腾这一次，后面尽量稳定下来。<br>原理：本地撰写MarkDown文档，Hexo解析渲染成具有主题样式的HTML静态网页，推送至GitHub完成发布。</p>
-</blockquote>
-<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol>
-<li> 环境 nodejs, git</li>
-<li> 连接GitHub</li>
-<li> 添加Github SSH秘钥 并验证连接</li>
-<li> 创建GitHub仓库</li>
-<li> 本地安装Hexo博客并测试</li>
-<li> <strong>部署</strong>注意分支名(main/master）到github上</li>
-<li> 验证</li>
-</ol>
-<h2 id="本地Hexo"><a href="#本地Hexo" class="headerlink" title="本地Hexo"></a>本地Hexo</h2><blockquote>
-<p>前面的准备过程跳过，以前搭过，环境还在，环境配置也不难<br>下面从Hexo本地安装开始<br>因为Hexo是基于Node.js的静态博客框架，可以经由npm一键安装</p>
-</blockquote>
-<pre><code>npm install -g hexo-cli #安装命令
-</code></pre>
-<p>安装好后初始化即可，选一个空文件夹初始化并安装所需组件</p>
-<pre><code>hexo init      # 初始化
-npm install    # 安装组件
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2022/01/22/3.Hello-New-Worldhistory/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2022/01/22/2.test2/" >test2</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2022-01-22  </div>
-		</div>
-	</div>
-	
-
-
-			<!--
-<div class="entry">
-  <div class="row">
-	
-	
-		<p>test 2 <em>version2.0</em></p>
-
-	
-
-	</div>
-  <a type="button" href="/2022/01/22/2.test2/#more" class="btn btn-default more">Read More</a>
-</div>
-
--->
-<div class="entry">
-  <div class="row">
-	
-	
-		<p>test 2 <em>version2.0</em></p>
-
-	
-	</div>
-  <a type="button" href="/2022/01/22/2.test2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2022/01/21/1.hello-world/" >Hello World</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2022-01-21  </div>
-		</div>
-	</div>
-	
-
-
-			<!--
-<div class="entry">
-  <div class="row">
-	
-	
-		<p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-	
-
-	</div>
-  <a type="button" href="/2022/01/21/1.hello-world/#more" class="btn btn-default more">Read More</a>
-</div>
-
--->
-<div class="entry">
-  <div class="row">
-	
-	
-		<p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2022/01/21/1.hello-world/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -907,6 +887,16 @@ npm install    # 安装组件
 		<div class="pagination">
 
    
+    
+           <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+        
+
+        <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+ 
+       <a href="/page/2/" type="button" class="btn btn-default ">Next<i class="fa fa-arrow-circle-o-right"></i></a>     
+        
+
+  
 </div>
 
   		</center>
@@ -937,13 +927,17 @@ npm install    # 安装组件
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
-		
-			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>4</span></a></li>
-		
 			<li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
 		
+			<li><a href="/tags/database/">database<span>1</span></a></li>
+		
+			<li><a href="/tags/Proj/">Proj<span>2</span></a></li>
+		
+			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
+		
 			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
+		
+			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>5</span></a></li>
 		
 		 
 		</ul>
@@ -957,23 +951,23 @@ npm install    # 安装组件
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2022/03/26/Unix-Linux-proj-netDsic-II/" ><i class="fa fa-file-o"></i>Unix-Linux-proj-netDsic-II</a>
+      </li>
+    
+      <li>
+        <a href="/2022/03/14/database/" ><i class="fa fa-file-o"></i>database</a>
+      </li>
+    
+      <li>
+        <a href="/2022/03/14/11.Unix-Linux-NetworkProgramming-II/" ><i class="fa fa-file-o"></i>Unix-Linux-NetworkProgrammi...</a>
+      </li>
+    
+      <li>
+        <a href="/2022/03/14/Unix-Linux-proj-netdisc/" ><i class="fa fa-file-o"></i>netdisk</a>
+      </li>
+    
+      <li>
         <a href="/2022/03/13/10.Unix-Linux-Network-Programming/" ><i class="fa fa-file-o"></i>Unix-Linux-Network-Programm...</a>
-      </li>
-    
-      <li>
-        <a href="/2022/03/09/9.APUE-1-Overview/" ><i class="fa fa-file-o"></i>APUE_1_Overview</a>
-      </li>
-    
-      <li>
-        <a href="/2022/03/07/8.Unix-Linux-Thread/" ><i class="fa fa-file-o"></i>8.Unix-Linux-Thread</a>
-      </li>
-    
-      <li>
-        <a href="/2022/03/02/7.Unix-Linux-Process-management/" ><i class="fa fa-file-o"></i>Unix-Linux-Process-management</a>
-      </li>
-    
-      <li>
-        <a href="/2022/02/26/6.Unix-Linux-file-management/" ><i class="fa fa-file-o"></i>Unix/Linux-file-management</a>
       </li>
     
   </ul>

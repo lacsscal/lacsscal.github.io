@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Unix-Linux-NetworkProgramming-II | lacsscal&#39;s blog</title>
+  <meta name="author" content="chen">
+  
+  <meta name="description" content="序go on
+正文一、select epoll对比?不需询问没就绪的 网络连接高并发 epoll原理
+触发方式
+二、 进程池&amp;amp;线程池第一版0.makefile
+复杂的应用重新写一下makefile"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Unix-Linux-NetworkProgramming-II"/>
+  <meta property="og:site_name" content="lacsscal&#39;s blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="lacsscal&#39;s blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">lacsscal&#39;s blog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Unix-Linux-NetworkProgramming-II</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p><em>go on</em></p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="一、select-epoll对比"><a href="#一、select-epoll对比" class="headerlink" title="一、select epoll对比"></a>一、select epoll对比</h2><p>?不需询问没就绪的 网络连接高并发 <strong>epoll原理</strong></p>
+<p><strong>触发方式</strong></p>
+<h2 id="二、-进程池-amp-线程池"><a href="#二、-进程池-amp-线程池" class="headerlink" title="二、 进程池&amp;线程池"></a>二、 进程池&amp;线程池</h2><h3 id="第一版"><a href="#第一版" class="headerlink" title="第一版"></a>第一版</h3><h4 id="0-makefile"><a href="#0-makefile" class="headerlink" title="0.makefile"></a>0.makefile</h4><blockquote>
+<p>复杂的应用重新写一下makefile</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">SRCS:=<span class="variable">$(<span class="built_in">wildcard</span> *.c)</span></span><br><span class="line">OBJS:=$(SRCS:%.c=%.o)</span><br><span class="line">CC:=gcc</span><br><span class="line"><span class="section">server:<span class="variable">$(OBJS)</span></span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$^</span> -o <span class="variable">$@</span> -lpthread</span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> -c <span class="variable">$^</span> -o <span class="variable">$@</span> -g</span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>:clean rebuild</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	<span class="variable">$(RM)</span> <span class="variable">$(OBJS)</span> server</span><br><span class="line"><span class="section">rebuild:clean server</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="1-初始化进程，网络"><a href="#1-初始化进程，网络" class="headerlink" title="1.初始化进程，网络"></a>1.初始化进程，网络</h4><p>先做进程池再过度到线程池</p>
+<blockquote>
+<p>需求分析</p>
+<p>主进程要负责接收客户端的连接请求，而TCP的初始化工作是一套流程可以封装成函数(在主进程中调用的接口可以先不实现具体内部细节，定义好这些接口，先思考调用这些接口的调用逻辑)</p>
+<p>编码时采用增量编写，写一点测一点，先理清调用逻辑在写具体实现细节。直观的分析服务端需求，应该能够有一个主进程做管理进程，它创建多个子进程，主进程接受来自客户端的连接建立TCP通信，同时管理所有子进程，子进程有空闲将这个子进程用来处理客户端需求(工作派发，但和直觉上的派发不太一样)</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* 进程池的主进程与客户端通信建立连接，管理多个子进程负责分派任务，</span></span><br><span class="line"><span class="comment">    *  ./server 192.168.73.133 1234 [wokerNum] 需要四个参数</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    ARGS_CHECK(argc, <span class="number">4</span>);</span><br><span class="line">	<span class="comment">/*step 1:创建多个子进程*/</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*step 2:作为服务端初始服务端网络连接所需*/</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>要实现多进程可以考虑使用<code>fork()</code></p>
+<blockquote>
+<p>fork的原理，会将父进程的所有用户态信息拷贝一份，同时共享内核态文件对象。而按这个项目的业务逻辑，子进程不应该在创建之初就能够获取与客户端的通信连接(而应该等到主进程的派发)</p>
+<p>因此建立网络连接初始化之前应该创建子进程</p>
+<p>编码时可以先大致确定接口，并先定好接口调用关系，再去实现具体细节</p>
+</blockquote>
+<p>理清逻辑，首先实现主进程创建多个子进程，其次实现主进程作为服务端的TCP相关初始化</p>
+<p>主进程会需要管理多个子进程，可以设计子进程信息的数据结构,多个子进程连成线性表，设计创建子进程的接口时，将这个数据结构作为参数传入。同时后期有需求加入，直接写在这个数据结构中，增加了可读性与可维护性。</p>
+<blockquote>
+<p>为子进程worker设计如下属性</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">enum</span>&#123;</span></span><br><span class="line">    FREE,</span><br><span class="line">    BUSY</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">workerData_s</span>&#123;</span></span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line">    <span class="keyword">int</span> status;<span class="comment">//BUSY or FREE</span></span><br><span class="line">&#125; workerData_t;</span><br><span class="line"><span class="comment">// 为主进程提供一次创建多个子进程的接口，参数是子进程信息的数组和子进程数量</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">makeWorker</span><span class="params">(workerData_t *workerDataArr, <span class="keyword">int</span> workerNum)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>主进程将调用这个接口创建多个子进程管理</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;worker.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ./server 192.168.73.133 1234 [wokerNum]</span></span><br><span class="line">    ARGS_CHECK(argc, <span class="number">4</span>);</span><br><span class="line">    <span class="keyword">int</span> workerNum = atoi(argv[<span class="number">3</span>]);<span class="comment">//创建传入参数个数的子进程</span></span><br><span class="line">    workerData_t *workerDataArr = (workerData_t*)<span class="built_in">calloc</span>(workerNum, <span class="keyword">sizeof</span>(workerData_t));</span><br><span class="line">    makeWorker(workerDataArr, workerNum);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);<span class="comment">//ps -elf |grep server 可以查看这些进程</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>想好了接口的调用关系，有了大致的接口设计思路再去实现这个接口</p>
+<blockquote>
+<p>创建子进程</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主进程需要调用以实现创建多个子进程</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;worker.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">makeWorker</span><span class="params">(workerData_t *workerDataArr, <span class="keyword">int</span> workerNum)</span></span>&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;workerNum; ++i)&#123;</span><br><span class="line">        pid = fork();</span><br><span class="line">        <span class="comment">// 调用fork()返回值是0的为子进程，调函数工作</span></span><br><span class="line">        <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">//子进程做事，封装一个函数</span></span><br><span class="line">            handleEvent();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 父进程，或者说主进程将其返回值(子进程ID)</span></span><br><span class="line">        <span class="comment">//放入做传入传出参数的数组中,方便后续在主进程中管理这些子进程</span></span><br><span class="line">        workerDataArr[i].pid = pid;</span><br><span class="line">        workerDataArr[i].status = FREE;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">handleEvent</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>让主进程阻塞，查看一下<code>ps -elf | grep server</code></p>
+<blockquote>
+<p>$ ps -elf | grep server</p>
+<p>0 R scallacs  44959  43907 19  80   0 -  1129 -      20:34 pts/3    00:00:01 ./server 192.168.37.133 1234 4<br>1 R scallacs  44960  44959 19  80   0 -  1129 -      20:34 pts/3    00:00:01 ./server 192.168.37.133 1234 4<br>1 R scallacs  44961  44959 19  80   0 -  1129 -      20:34 pts/3    00:00:01 ./server 192.168.37.133 1234 4<br>1 R scallacs  44962  44959 19  80   0 -  1129 -      20:34 pts/3    00:00:01 ./server 192.168.37.133 1234 4<br>1 R scallacs  44963  44959 19  80   0 -  1129 -      20:34 pts/3    00:00:01 ./server 192.168.37.133 1234 4</p>
+</blockquote>
+<p>目前来说完成了主进程创建多个子进程的工作，这些子进程的文件描述符放在了一个结构体数组中待用，该结构体数组中还有子进程状态信息，并且还能继续添加其他信息。</p>
+<blockquote>
+<p>编码时为普通功能函数统一创建一个头文件放它们的函数声明，为带结构体设计的函数写单独头的文件，方便管理。保证代码逻辑清晰</p>
+</blockquote>
+<p>接下来，实现主进程作为TCP服务端的连接所需，步骤很固定，可以封装成功能函数移动</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;head.h&quot;</span></span></span><br><span class="line"><span class="comment">// 套接字文件描述符作为传入传出参数,封装作为服务端TCP初始化的一套流程</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tcpInit</span><span class="params">(<span class="keyword">char</span> *ip, <span class="keyword">char</span> *port, <span class="keyword">int</span> *pSocket)</span></span>&#123;</span><br><span class="line">    *pSocket = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">addr</span>;</span></span><br><span class="line">    addr.sin_family = AF_INET;</span><br><span class="line">    addr.sin_port = hton(atoi(port));</span><br><span class="line">    addr.sin_addr.s_addr = inet_addr(ip);</span><br><span class="line">    <span class="keyword">int</span> reuse = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> ret = setsockopt(*pSocket, SOL_SOCKET, SO_REUSEADDR, &amp;reuse, <span class="keyword">sizeof</span>(reuse));</span><br><span class="line">    ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;setsockopt&quot;</span>);</span><br><span class="line">    ret = bind(*pSocket, (struct sockaddr *)&amp;addr, <span class="keyword">sizeof</span>(addr));</span><br><span class="line">    ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;bind&quot;</span>);</span><br><span class="line">    listen(*pSocket, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>再使用while(1)阻塞，看一下是否监听成功(增量编写)</p>
+</blockquote>
+<blockquote>
+<p>$ ./server 192.168.73.133 1234 4</p>
+<p>$ netstat -an | grep 1234<br>tcp        0      0 192.168.73.133:1234     0.0.0.0:*               LISTEN  </p>
+</blockquote>
+<h4 id="2-服务端-任务下到子进程"><a href="#2-服务端-任务下到子进程" class="headerlink" title="2.服务端-任务下到子进程"></a>2.服务端-任务下到子进程</h4><p>再分析一下需求，整体需求大致结构模型如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/%E6%95%B4%E4%BD%93%E6%A8%A1%E5%9E%8B.jpg" alt="结构模型"></p>
+<p>目前服务端主进程能够接受来自客户端的TCP连接，并且创建了多个子进程。接下来需要做的是主进程把来自客户端的需求分配给一个空闲的子进程。换言之，主进程只作为最初的连接口以及完成任务分发，它不应该负责真正的网络传输，这会大大拖累主进程的<strong>正事</strong>在主进程把任务下发之后断掉与客户端的连接也没有关系，接下来去由子进程全权负责与客户端对接。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/%E4%B8%BB%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AD%90%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84netfd%E4%BC%A0%E8%BE%93%EF%BC%8C%E8%AE%A9%E5%AD%90%E8%BF%9B%E7%A8%8B%E5%8E%BB%E5%AF%B9%E6%8E%A5%E5%AE%A2%E6%88%B7%E7%AB%AF.jpg" alt="子进程对接客户端"></p>
+<p>如果能做到上图所示，那么接下来子进程与客户端通过<code>netfd</code>操作内核文件对象进行通信即可。但是为了实现一个主进程多个子进程的架构，设计之初是将子进程的<code>fork</code>创建放在TCP连接建立之前的，父子进程天生不共享内核文件对象<code>netFO</code> , 子进程也就不能通过<code>netfd</code>与客户端通信。</p>
+<blockquote>
+<p>那么有没有办法把主进程文件对象传给子进程</p>
+</blockquote>
+<h5 id="本地套接字-socketpair"><a href="#本地套接字-socketpair" class="headerlink" title="本地套接字 socketpair"></a>本地套接字 socketpair</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socketpair</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol, <span class="keyword">int</span> sv[<span class="number">2</span>])</span></span>;</span><br><span class="line">                   |             |         |                |</span><br><span class="line">             AF_LCOAL固定     流式|消息     <span class="number">0</span>不需要额外协议   管道两端全双工</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>父进程和子进程的地址空间是隔离的，如果两个进程之间需要进行通信，那就要选择一种合适的进程间通信的手段，比较合适的方法是管道。</p>
+<p>除了之前所使用的 pipe 系统调用可以在父子进程间创建管道以外，还有一种方法是<strong>本地套接字</strong>。使用系统调用 socketpair 可以在父子进程间利用 socket 创建一个<strong>全双工</strong>的管道。除此以外，本地套接字可以在同一个操作系统的两个进程之间传递文件描述符。</p>
+</blockquote>
+<h5 id="新文件对象共享法-sendmsg"><a href="#新文件对象共享法-sendmsg" class="headerlink" title="新文件对象共享法 sendmsg"></a>新文件对象共享法 sendmsg</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendmsg</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">const</span> struct msghdr *msg, <span class="keyword">int</span> flags)</span></span>; </span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">recvmsg</span><span class="params">(<span class="keyword">int</span> sockfd, struct msghdr *msg, <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>新的共享文件对象的方法sendmsg</strong> ，它可以发<strong>控制信息</strong>，使用时分作两支，既可传输普通信息msg_iov也能传输控制信息msg_comtrol</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">msghdr</span> &#123;</span> </span><br><span class="line">    <span class="keyword">void</span> *msg_name; <span class="comment">/* optional address */</span> </span><br><span class="line">    <span class="keyword">socklen_t</span> msg_namelen; <span class="comment">/* size of address */</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> *<span class="title">msg_iov</span>;</span> <span class="comment">/* scatter/gather array */</span> </span><br><span class="line">    <span class="keyword">size_t</span> msg_iovlen; <span class="comment">/* # elements in msg_iov */</span> </span><br><span class="line">    <span class="keyword">void</span> *msg_control; <span class="comment">/* ancillary data, see below */</span> </span><br><span class="line">    <span class="keyword">size_t</span> msg_controllen; <span class="comment">/* ancillary data buffer len */</span> </span><br><span class="line">    <span class="keyword">int</span> msg_flags; <span class="comment">/* flags on received message */</span> </span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>&#123;</span> <span class="comment">/* Scatter/gather array items */</span></span><br><span class="line">    <span class="keyword">void</span> *iov_base; <span class="comment">/* Starting address */</span> </span><br><span class="line">    <span class="keyword">size_t</span> iov_len; <span class="comment">/* Number of bytes to transfer */</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315114000645.png" alt="image-20220315114000645"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315114905870.png" alt="image-20220315114905870"></p>
+<blockquote>
+<p>接下来考虑具体实现(在主进程与子进程间传递netfd,)，同样先考虑调用关系与接口， 再实现接口的具体细节</p>
+</blockquote>
+<blockquote>
+<p>确定调用关系，在worker中调用收(封装的接口，底层使用sendmsg，类似跨进程的dup共享文件对象)<em>——需要得到父进程与客户端通信的netFO的文件描述符netfd，只有这个整数是不够的需得共享文件对象</em>。</p>
+<p>主进程调用发。</p>
+<p>父子进程<code>socketpair</code>本地套接字通信，改造数据结构,添加接口(接口动态调整)</p>
+</blockquote>
+<p>为子进程worker的结构体中添加pipeFd字段，这样在fork创建多个子进程时，一并初始化父子进程通信所用本地套接字的文件描述符。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">worker的结构体新增</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">workerData_s</span>&#123;</span></span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line">    <span class="keyword">int</span> status;<span class="comment">//BUSY or FREE</span></span><br><span class="line">    <span class="keyword">int</span> pipeFd;&lt;-------------------------------新增</span><br><span class="line">&#125; workerData_t;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>主进程与子进程的新需求</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">主<span class="function">main</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*step1.创建多个子进程*/</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*step2.初始化服务端网络通信*/</span></span><br><span class="line">    </span><br><span class="line">    新增</span><br><span class="line">    <span class="comment">/*step3.客户端连接到达，服务端创建新的netfd:用一定的手段转给子进程*/</span> &lt;----</span><br><span class="line">	<span class="keyword">int</span> netFd = accept(sockFd, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    sendFd(workerDataArr[<span class="number">0</span>].pipeFd, netFd);</span><br><span class="line">    <span class="comment">/*发来的用来与客户端交互的netfd放在新增的数据结构中*/</span></span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">子worker</span><br><span class="line"><span class="comment">// 主进程需要调用以实现创建多个子进程</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">makeWorker</span><span class="params">(workerData_t *workerDataArr, <span class="keyword">int</span> workerNum)</span></span>&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;workerNum; ++i)&#123;</span><br><span class="line">        <span class="keyword">int</span> pipefds[<span class="number">2</span>];&lt;-----------------------------</span><br><span class="line">        socketpair(AF_LOCAL, SOCK_STREAM, <span class="number">0</span>, pipefds);</span><br><span class="line">        pid = fork();</span><br><span class="line">        <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line">            close(pipefds[<span class="number">0</span>]);<span class="comment">//子进程关闭一端</span></span><br><span class="line">            handleEvent();</span><br><span class="line">        &#125;</span><br><span class="line">        close(pipefds[<span class="number">1</span>]);</span><br><span class="line">        workerDataArr[i].pipeFd = pipefds[<span class="number">0</span>];<span class="comment">//父进程用这端与子进程通信</span></span><br><span class="line">        workerDataArr[i].pid = pid;</span><br><span class="line">        workerDataArr[i].status = FREE;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">handleEvent</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对称的，使用sendfd{底层封装sendmsg}发，就要用一个recvfd{底层用recvmsg}收</p>
+</blockquote>
+<blockquote>
+<p>实现sendfd &amp; recvfd 固定用法</p>
+</blockquote>
+<p><code>sendFd.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sendFd</span><span class="params">(<span class="keyword">int</span> pipeFd, <span class="keyword">int</span> fdToSend)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">msghdr</span> <span class="title">hdr</span>;</span></span><br><span class="line">    bzero(&amp;hdr, <span class="keyword">sizeof</span>(hdr));</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iov</span>[1];</span></span><br><span class="line">    <span class="keyword">char</span> buf[] = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">    iov[<span class="number">0</span>].iov_base = buf;</span><br><span class="line">    iov[<span class="number">0</span>].iov_len = <span class="number">5</span>;</span><br><span class="line">    hdr.msg_iov = iov;</span><br><span class="line">    hdr.msg_iovlen = <span class="number">1</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">cmsghdr</span> *<span class="title">pcmsghdr</span> =</span> (struct cmsghdr *)<span class="built_in">calloc</span>(<span class="number">1</span>, <span class="keyword">sizeof</span>(struct cmsghdr));</span><br><span class="line">    pcmsghdr-&gt;cmsg_len = CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    pcmsghdr-&gt;cmsg_level = SOL_SOCKET;</span><br><span class="line">    pcmsghdr-&gt;cmsg_type = SCM_RIGHTS;</span><br><span class="line">    *(<span class="keyword">int</span> *)CMSG_DATA(pcmsghdr) = fdToSend;</span><br><span class="line">    hdr.msg_control = pcmsghdr;</span><br><span class="line">    hdr.msg_controllen = CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">int</span> ret = sendmsg(pipeFd, &amp;hdr, <span class="number">0</span>);</span><br><span class="line">    ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;sendmsg&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>recvFd.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">recvFd</span><span class="params">(<span class="keyword">int</span> pipeFd, <span class="keyword">int</span> *pFd)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">msghdr</span> <span class="title">hdr</span>;</span></span><br><span class="line">    bzero(&amp;hdr, <span class="keyword">sizeof</span>(struct msghdr));</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iov</span>[1];</span></span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">6</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    iov[<span class="number">0</span>].iov_base = buf;</span><br><span class="line">    iov[<span class="number">0</span>].iov_len = <span class="number">5</span>;</span><br><span class="line">    hdr.msg_iov = iov;</span><br><span class="line">    hdr.msg_iovlen = <span class="number">1</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">cmsghdr</span> *<span class="title">pcmsghdr</span> =</span> (struct cmsghdr *)<span class="built_in">calloc</span>(<span class="number">1</span>, <span class="keyword">sizeof</span>(CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">int</span>))));</span><br><span class="line">    pcmsghdr-&gt;cmsg_len = CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    pcmsghdr-&gt;cmsg_level = SOL_SOCKET;</span><br><span class="line">    pcmsghdr-&gt;cmsg_type = SCM_RIGHTS;</span><br><span class="line">    hdr.msg_control = pcmsghdr;</span><br><span class="line">    hdr.msg_controllen = CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">int</span> ret = recvmsg(pipeFd, &amp;hdr, <span class="number">0</span>);</span><br><span class="line">    ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;resvmsg&quot;</span>);</span><br><span class="line">    *pFd = *(<span class="keyword">int</span> *)CMSG_DATA(pcmsghdr);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>………</p>
+<blockquote>
+<p>测试以上程序做了什么</p>
+</blockquote>
+<blockquote>
+<p>测试好组件再接入项目，写一个小的main测试</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">用read,write传递文件描述符的话，实际传递的只是一个整数，</span><br><span class="line">文件对象没有共享，所以不能用传递所得的文件描述符操作文件对象</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pipefds[<span class="number">2</span>];</span><br><span class="line">    <span class="comment">// char buf[1024];</span></span><br><span class="line">    socketpair(AF_LOCAL, SOCK_STREAM, <span class="number">0</span>, pipefds);</span><br><span class="line">    <span class="keyword">if</span>(fork() == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> recvFd;</span><br><span class="line">        read(pipefds[<span class="number">1</span>], &amp;recvFd, <span class="keyword">sizeof</span>(recvFd));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;recvFd = %d\n&quot;</span>, recvFd);</span><br><span class="line">        <span class="keyword">int</span> ret = write(recvFd, <span class="string">&quot;hello&quot;</span>, <span class="number">5</span>);</span><br><span class="line">        ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;write&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">int</span> fd = open(<span class="string">&quot;file1&quot;</span>, O_RDWR);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fd = %d\n&quot;</span>, fd);</span><br><span class="line">        write(pipefds[<span class="number">0</span>], &amp;fd, <span class="keyword">sizeof</span>(fd));</span><br><span class="line">        wait(<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$ ./sendfd </span><br><span class="line">fd = <span class="number">5</span></span><br><span class="line">recvFd = <span class="number">5</span></span><br><span class="line">write: Bad file descriptor</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>用这个整数write的话，对应的文件对象没传递过来，只是一个整数</p>
+</blockquote>
+<p>改用recvfd的话，父进程使用sendfd(sengmsg函数)发送，父进程中文件描述符数字为5，发过去变成6.因为子进程中打开了一个文件占位占用了5号文件描述符，所以发的不是数字，是对应的文件对象。此时以这个文件描述符是可以操作对应的文件对象的，比如对它写。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pipefds[<span class="number">2</span>];</span><br><span class="line">    <span class="comment">// char buf[1024];</span></span><br><span class="line">    socketpair(AF_LOCAL, SOCK_STREAM, <span class="number">0</span>, pipefds);</span><br><span class="line">    <span class="keyword">if</span>(fork() == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> fd;</span><br><span class="line">        open(<span class="string">&quot;file2&quot;</span>, O_RDWR);<span class="comment">//在开一个文件，什么都不做，只是占一个文件描述符</span></span><br><span class="line">        recvFd(pipefds[<span class="number">1</span>], &amp;fd);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fd = %d\n&quot;</span>, fd);</span><br><span class="line">        <span class="keyword">int</span> ret = write(fd, <span class="string">&quot;hello&quot;</span>, <span class="number">5</span>);</span><br><span class="line">        ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;write&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">int</span> fd = open(<span class="string">&quot;file1&quot;</span>, O_RDWR);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fd = %d\n&quot;</span>, fd);</span><br><span class="line">        write(fd, <span class="string">&quot;world&quot;</span>, <span class="number">5</span>);</span><br><span class="line">        sendFd(pipefds[<span class="number">0</span>], fd);</span><br><span class="line">        wait(<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ ./sendfd </span><br><span class="line">fd = <span class="number">5</span></span><br><span class="line">hello</span><br><span class="line">fd = <span class="number">6</span></span><br><span class="line">$ cat file1</span><br><span class="line">worldhello</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315144239612.png" alt="image-20220315144239612"></p>
+<p>因为是文件对象，所以可以往里写。父子共享文件对象偏移，实现了<strong>跨进程的dup</strong></p>
+<p>走到这一步，父子进程之间可以用新的方式共享文件对象，父进程将与客户端建立的netfd发给子进程，由子进程与客户端对接。而在此之后，即便父进程关掉与客户端的netfd也不影响，类似dup的引用计数，此后文件传输工作全权交由子进程进行即可。</p>
+<p>…………………………………..</p>
+<blockquote>
+<p>再解析一下这两个封装的接口<code>sendfd, recvfd</code></p>
+</blockquote>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315145444571.png" alt="image-20220315145444571"></p>
+<p>载荷由四字节算出</p>
+<p>提供了两种通信机制，普通信息，控制信息红黄两端</p>
+<p>为什么要用sendfd&amp;recvfd???</p>
+<p>回到架构</p>
+<p>netfd子进程天生看不到，无法直接与客户通信，给它发</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315145647040.png" alt="image-20220315145647040"></p>
+<p>引入sendfd </p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315145928715.png" alt="image-20220315145928715"></p>
+<blockquote>
+<p>现在可以更改worker的handleEvent接口，真正的让子进程做一些事了</p>
+</blockquote>
+<p>子进程等，等任务到了做，当主进程将netfd发来说明有任务到了，子进程开始做事</p>
+<p>主进程怎么分配，子进程干完怎么通知?用write走普通信息那端通知</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315150105886.png" alt="image-20220315150105886"></p>
+<blockquote>
+<p>现在主进程会读子进程的任务反馈(任务完成回一个pid)，读客户端的TCP连接，采用IO多路复用将主进程的读行为管理起来。</p>
+</blockquote>
+<p>所以考虑主进程设计</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315150606204.png" alt="image-20220315150606204"></p>
+<blockquote>
+<p>主进程监听两种读行为</p>
+<p>1.sockfd:客户端与服务端的连接建立，建立后将netfd交给子进程，与客户端的连接建立之后将具体传输任务交给子进程去做</p>
+<p>2.pipefd:子进程将任务完成后的反馈，收到后主进程将这个子进程的状态置为FREE</p>
+</blockquote>
+<blockquote>
+<p>使用前先封装epoll</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用IO多路复用监听网络socket和每个子进程本地socket的一端</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epollAdd</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> epfd)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">event</span>;</span></span><br><span class="line">    event.events = EPOLLIN;</span><br><span class="line">    event.data.fd = fd;</span><br><span class="line">    <span class="keyword">int</span> ret = epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &amp;event);</span><br><span class="line">    ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;epoll_ctl add&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epollDel</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> epfd)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">event</span>;</span></span><br><span class="line">    event.events = EPOLLIN;</span><br><span class="line">    event.data.fd = fd;</span><br><span class="line">    <span class="keyword">int</span> ret = epoll_ctl(epfd, EPOLL_CTL_DEL, fd, &amp;event);</span><br><span class="line">    ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;epoll_ctl del&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>主进程go on</p>
+<p>之前将子进程通信预留的管道文件描述符保存到了数组中</p>
+<p>加入监听</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;head.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;worker.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/*step1.创建子进程*/</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*step2.初始化TCP*/</span></span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 连接建立 &amp; 子进程做事返回， 两种读行为IO多路复用epoll管理</span></span><br><span class="line">    <span class="keyword">int</span> epfd = epoll_create(<span class="number">10</span>);</span><br><span class="line">    ERROR_CHECK(epfd, <span class="number">-1</span>, <span class="string">&quot;epoll_create&quot;</span>);</span><br><span class="line">    epollAdd(sockFd, epfd);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; workerNum; ++i)&#123;</span><br><span class="line">        epollAdd(workerDataArr[i].pipeFd, epfd);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> listenSize = workerNum + <span class="number">1</span>;<span class="comment">//子进程+监听套接字</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> *<span class="title">readyList</span> =</span> (struct epoll_event *)</span><br><span class="line">        					<span class="built_in">calloc</span>(listenSize, <span class="keyword">sizeof</span>(struct epoll_event));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//阻塞epoll等待，先分配就绪队列空间，内部分类讨论会发生的事情</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> readyNum = epoll_wait(epfd, readyList, listenSize, <span class="number">-1</span>);</span><br><span class="line">        <span class="comment">//printf(&quot;readyNum = %d\n&quot;, readyNum);</span></span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;epoll ready!&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; readyNum; ++i)&#123;</span><br><span class="line">            <span class="comment">//情况1.分配任务sockFd就绪</span></span><br><span class="line">            <span class="keyword">if</span>(readyList[i].data.fd == sockFd)&#123;<span class="comment">//监听套接字就绪</span></span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">&quot;a client is comming!&quot;</span>);</span><br><span class="line">                <span class="keyword">int</span> netFd = accept(sockFd, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">                <span class="comment">//客户端由网络连接父进程，父进程得到一个已连接socket</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;netfd 1:%d\n&quot;</span>, netFd);</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; workerNum; ++j)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(workerDataArr[j].status == FREE)&#123;</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">&quot;No.%d worker got his job, pid = %d\n&quot;</span>,</span><br><span class="line">                               					j, workerDataArr[j].pid);</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">&quot;netfd 2:%d\n&quot;</span>, netFd);</span><br><span class="line">                        sendFd(workerDataArr[j].pipeFd, netFd);</span><br><span class="line">                        <span class="comment">//选一个空闲子进程把这个已连接socket:netfd传给它</span></span><br><span class="line">                        <span class="comment">// close(netFd);//父进程交给子进程了可关掉，放后面也可</span></span><br><span class="line">                        workerDataArr[j].status = BUSY;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                close(netFd);</span><br><span class="line">            <span class="comment">//情况2.子进程工作完成，回送消息(会把自己的pid发过去)，管道就绪</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;<span class="comment">//子进程工作完成就绪</span></span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">&quot;One worker finish his job&quot;</span>);</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; workerNum; ++j)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(workerDataArr[j].pipeFd == readyList[i].data.fd)&#123;</span><br><span class="line">                        <span class="keyword">pid_t</span> pid;</span><br><span class="line">                        <span class="keyword">int</span> ret = recv(workerDataArr[j].pipeFd, &amp;pid, <span class="keyword">sizeof</span>(pid), <span class="number">0</span>);</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">&quot;%d worker finish his job, pid = %d\n&quot;</span>, j, pid);</span><br><span class="line">                        workerDataArr[j].status = FREE;</span><br><span class="line">                        <span class="comment">//子进程完成任务通知父进程，并设置自己为FREE</span></span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;    </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>效果</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315153224840.png" alt="image-20220315153224840"></p>
+<p>大致完成，结构分析，整体流程</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315155616905.png" alt="image-20220315155616905"></p>
+<p>main</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315155852520.png" alt="image-20220315155852520"></p>
+<p>worker</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315160154097.png" alt="image-20220315160154097"></p>
+<h3 id="第二版-支持更多的逻辑，给子进程加工作量-文件下载功能"><a href="#第二版-支持更多的逻辑，给子进程加工作量-文件下载功能" class="headerlink" title="第二版 支持更多的逻辑，给子进程加工作量 (文件下载功能)"></a>第二版 支持更多的逻辑，给子进程加工作量 (文件下载功能)</h3><p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315160329018.png" alt="image-20220315160329018"></p>
+<p>这段换成处理文件的函数(<strong>服务端</strong>子进程transfile,客户端加一个recvfile)</p>
+<p>truncate -s 200 file1</p>
+<p>服务端的调用</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315161035012.png" alt="image-20220315161035012"></p>
+<p>客户端改造一下</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315161352720.png" alt="image-20220315161352720"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315161424270.png" alt="image-20220315161424270"></p>
+<p>client卡住了</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315161551675.png" alt="image-20220315161551675"></p>
+<p>先发文件名再发文件内容，TCP流式协议，收的时候全收了，不知道消息边界</p>
+<p>把文件内容当文件名收了，<strong>粘包-小文件传输解决粘包</strong></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315161829536.png" alt="image-20220315161829536"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315161757451.png" alt="image-20220315161757451"></p>
+<p>传输层无法解决这个问题，<strong>设计应用层私有协议</strong>小火车</p>
+<p>车头为整数描述内容长度</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315162237780.png" alt="image-20220315162237780"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315162711061.png" alt="image-20220315162711061"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315162821405.png" alt="image-20220315162821405"></p>
+<p>用小火车协议改造后</p>
+<p>两个部分信息都从收一次到收两次</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315163122977.png" alt="image-20220315163122977"></p>
+<p>发送方把信息包装，文件名先发，重新装填为文件内容</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315163553643.png" alt="image-20220315163553643"></p>
+<p>以上，实现小文件传输</p>
+<p>那么大文件(一次发不完的文件)传输怎么做?小文件传输改成循环?</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315164216786.png" alt="image-20220315164216786"></p>
+<p>客户端做对称的事</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315164329858.png" alt="image-20220315164329858"></p>
+<p>truncate -s 100M file1</p>
+<p>简单改造成循环传输大文件</p>
+<p>出错</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220317201341018.png" alt="image-20220317201341018"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315164534282.png" alt="image-20220315164534282"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315164553677.png" alt="image-20220315164553677"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220317201446160.png" alt="image-20220317201446160"></p>
+<p>有一个子进程成为僵尸，子终止父未回收，管道一端终止，另一端无限读</p>
+<p>死因</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315165006273.png" alt="image-20220315165006273"></p>
+<p>不触发信号</p>
+<p>1.改变信号递送行为</p>
+<p>2.给send加属性<img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315171652200.png" alt="image-20220315171652200"></p>
+<p>但没有解决问题根源(sigpipe信号不应该产生)</p>
+<p>这个问题是怎么出现的</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315172255196.png" alt="image-20220315172255196"></p>
+<p>网络设备中不一定有稳定网络传输(磁盘传输稳定)，传输层只保证数据不丢(不保证什么时候到)。因此不保证recv到多少时返回(此时剩余的还没送到){不保证把数据填满你再接受}TCP保证剩余数据还过来，但此时recv已经出问题。如下图所示。recv只指定最大长度</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315172941584.png" alt="image-20220315172941584"></p>
+<p>让recv总是能收完的方案 <strong>解决半包问题-大文件传输</strong>最核心的两个问题 粘包半包</p>
+<p>1.属性MSG_WAITALL<img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315174440936.png" alt="image-20220315174440936"></p>
+<p>2.自行实现MSG_WAITALL的功能 </p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315175210469.png" alt="image-20220315175210469"></p>
+<p>指针偏移 pTmp+total</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315174819332.png" alt="image-20220315174819332"></p>
+<p>怎么判断传输到的文件是否相同？</p>
+<p>使用md5码，摘要散列算法</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315173902444.png" alt="image-20220315173902444"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315174009641.png" alt="image-20220315174009641"></p>
+<p>以上最基本功能实现</p>
+<h3 id="第三版-进度条bar"><a href="#第三版-进度条bar" class="headerlink" title="第三版 + 进度条bar"></a>第三版 + 进度条bar</h3><p>+功能，客户端下载时打印进度条额外传输一个文件大小</p>
+<p>发整个文件大小，不要打印太频繁</p>
+<p>fstat 获取文件大小</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315180001361.png" alt="image-20220315180001361"></p>
+<p>客户端</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315180558203.png" alt="image-20220315180558203"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315180756430.png" alt="image-20220315180756430"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315180926726.png" alt="image-20220315180926726"></p>
+<p>显示在一行怎么做</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220315181135382.png" alt="image-20220315181135382"></p>
+<p>退出时打印个100%</p>
+<h3 id="第四版-提升传输速度"><a href="#第四版-提升传输速度" class="headerlink" title="第四版-提升传输速度"></a>第四版-提升传输速度</h3><p>数据存在用户态到内核态，内核态到用户态拷贝</p>
+<p>mmap零拷贝技术</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316100221247.png" alt="image-20220316100221247"></p>
+<p>mmap不超过2GB</p>
+<p>transfile不再直接发，改用mmap零拷贝</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316100815653.png" alt="image-20220316100815653"></p>
+<p>建立映射，把读写文件看成读写内存</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316100839446.png" alt="image-20220316100839446"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316101910243.png" alt="image-20220316101910243"></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316101550956.png" alt="image-20220316101550956"></p>
+<p>统计效率</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316102603927.png" alt="image-20220316102603927"></p>
+<p>小火车解决粘包，不使用小火车怎么做</p>
+<p>文件内容不使用小火车，直接send， 使用mmap(已经把文件全加载进内存)一次全发完</p>
+<p>接收方，客户端也一次性收完，客户端也使用mmap</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316102939527.png" alt="image-20220316102939527"></p>
+<p>怎么做?</p>
+<p>去掉进度条，一次全收完</p>
+<p>sendfile只能从磁盘到网络</p>
+<p>网络IO是瓶颈</p>
+<p>先写出来再优化，优化时考虑瓶颈</p>
+<h5 id="有序退出"><a href="#有序退出" class="headerlink" title="有序退出"></a>有序退出</h5><p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316112751020.png" alt="image-20220316112751020"></p>
+<p>注册10号信号(默认递送行为：终止)来做这个事情</p>
+<p>粗暴的有序退出，文件还在传输也退出</p>
+<p>优雅的有序退出，等文件传完</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316113025168.png" alt="image-20220316113025168"></p>
+<p>signal与fork的顺序</p>
+<p>子可以继承父的信号递送行为</p>
+<p>子不会继承父的pending集合 man 7 signal</p>
+<p>不希望子继承：先fork再signal</p>
+<p><strong>异步拉起同步策略</strong></p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316114118726.png" alt="image-20220316114118726"></p>
+<p>全局变量不涉及业务数据，只有专用于退出的管道</p>
+<p>父子进程间不用信号，使用退出标志位</p>
+<p>进程池的缺陷</p>
+<p>优势，进程崩溃不会影响其他进程</p>
+<p>劣势 内存空间隔离，依赖IPC机制传递文件对象，非常困难，开销大</p>
+<h2 id="三、线程池"><a href="#三、线程池" class="headerlink" title="三、线程池"></a>三、线程池</h2><p>引入线程池</p>
+<p>线程天生共享文件对象，线程间沟通频率高，更注重性能</p>
+<p>有虚拟机的JVM这样的不能用进程池</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316144503127.png" alt="image-20220316144503127"></p>
+<p>线程数在1~2倍CPU核心数之间</p>
+<p>1倍为CPU密集型，2倍为IO密集型（经验公式）</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316145338571.png" alt="image-20220316145338571"></p>
+<p>之前是主进程加，主进程发，没有竞争条件，现在是主线程加，子线程去取，有</p>
+<p><img src="C:\Users\76403\AppData\Roaming\Typora\typora-user-images\image-20220316145815852.png" alt="image-20220316145815852"></p>
+<p>先写小版本再往上加功能-敏捷开发</p>
+<h1 id="结"><a href="#结" class="headerlink" title="结"></a>结</h1>
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2022/03/14/11.Unix-Linux-NetworkProgramming-II/" class="leancloud-visitors view" data-flag-title="Unix-Linux-NetworkProgramming-II">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2022/03/14/database/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2022/03/14/Unix-Linux-proj-netdisc/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2022-03-14 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Unix-Linux/">Unix/Linux<span>5</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2022 chen's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
