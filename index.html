@@ -114,6 +114,80 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2022/04/24/12-regex/" >12.regex</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-04-24  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>最初是由Unix 的grep 和sed等工具软件普及开的。</p>
+<p>使用单个(模式)字符串描述，匹配一系列匹配某句法规则的字符串</p>
+<p>一个学习的GitHub项目<a target="_blank" rel="noopener" href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md">learn_regex</a></p>
+<p>一个练习题库<a target="_blank" rel="noopener" href="https://regex101.com/">在线题库</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220422200036382.png" alt="POSIX字符组"></p>
+<blockquote>
+<p>正则表达式的POSIX规范，分为:</p>
+<p>基本型正则表达式（Basic Regular Expression，BRE）<br>和扩展型正则表达式（Extended Regular Expression，ERE）两大流派。<br>前者的元字符需要转义，后者的不需要(包括egrep awk)</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">基本正则表达式的元字符：</span><br><span class="line">	字符匹配：</span><br><span class="line">		.: 匹配任意单个字符</span><br><span class="line">		[]: 匹配指定范围内的任意单个字符</span><br><span class="line">			[0-9], [[:digit:]]</span><br><span class="line">			[a-z], [[:lower:]]</span><br><span class="line">			[A-Z], [[:upper:]]</span><br><span class="line">			[[:space:]]</span><br><span class="line">			[[:punct:]]</span><br><span class="line">			[[:alpha:]]</span><br><span class="line">			[[:alnum:]]</span><br><span class="line">		[^]:</span><br><span class="line">	次数匹配元字符：用于实现指定其前面的字符所能够出现的次数</span><br><span class="line">		*: 任意长度，它前面的字符可以出现任意次</span><br><span class="line">			例如：x*y</span><br><span class="line">				xxy, xyy, y, </span><br><span class="line">		\\?: 0次或1次，它前面的字符是可有可无的</span><br><span class="line">			例如：x\\?y</span><br><span class="line">				xy, y, ay</span><br><span class="line">		\\&#123;m\\&#125;: m次，它前的字符要出现m次</span><br><span class="line">			例如：x\\&#123;2\\&#125;y</span><br><span class="line">				xy, xxy, y, xxxxy, xyy</span><br><span class="line">		\\&#123;m,n\\&#125;: 至少m次，至多n次</span><br><span class="line">			例如：x\\&#123;2,5\\&#125;y</span><br><span class="line">				xy, y, xxy</span><br><span class="line">		\\&#123;m,\\&#125;：至少m次</span><br><span class="line">		\\&#123;0,n\\&#125;: 至多n次</span><br><span class="line"></span><br><span class="line">		.*：任意长度的任意字符</span><br><span class="line"></span><br><span class="line">	位置锚定：</span><br><span class="line">		^: 行首锚定；</span><br><span class="line">			写在模式最左侧</span><br><span class="line">		$: 行尾锚定：</span><br><span class="line">			写在模式最右侧</span><br><span class="line">		^$: 空白行</span><br><span class="line">			</span><br><span class="line">			不包含特殊字符的连续字符组成的串叫单词：</span><br><span class="line">		\\&lt;: 词首，出现于单词左侧</span><br><span class="line">			\\&lt;char</span><br><span class="line">		\\&gt;: 词尾，出现于单词右侧</span><br><span class="line">			char\\&gt;</span><br><span class="line">	</span><br><span class="line">	分组...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">扩展正则表达式：</span><br><span class="line">	字符匹配：</span><br><span class="line">		.</span><br><span class="line">		[]</span><br><span class="line">		[^]</span><br><span class="line">	次数匹配：</span><br><span class="line">		*：任意次</span><br><span class="line">		?: 0次或1次</span><br><span class="line">		+: 至少1次；</span><br><span class="line">		&#123;m&#125;: 精确匹配m次</span><br><span class="line">		&#123;m,n&#125;: 至少m次，至多n次</span><br><span class="line">		&#123;m,&#125;</span><br><span class="line">		&#123;0,n&#125;</span><br><span class="line">	位置锚定：</span><br><span class="line">		^</span><br><span class="line">		$</span><br><span class="line">		\&lt;, </span><br><span class="line">		\&gt;, </span><br><span class="line">		^$, ^[[:space:]]*$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="应用到grep"><a href="#应用到grep" class="headerlink" title="应用到grep"></a>应用到grep</h1>
+	
+
+	</div>
+  <a type="button" href="/2022/04/24/12-regex/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>最初是由Unix 的grep 和sed等工具软件普及开的。</p>
+<p>使用单个(模式)字符串描述，匹配一系列匹配某句法规则的字符串</p>
+<p>一个学习的GitHub项目<a target="_blank" rel="noopener" href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md">learn_regex</a></p>
+<p>一个练习题库<a target="_blank" rel="noopener" href="https://regex101.com/">在线题库</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220422200036382.png" alt="POSIX字符组"></p>
+<blockquote>
+<p>正则表达式的POSIX规范，分为:</p>
+<p>基本型正则表达式（Basic Regular Expression，BRE）<br>和扩展型正则表达式（Extended Regular Expression，ERE）两大流派。<br>前者的元字符需要转义，后者的不需要(包括egrep awk)</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">基本正则表达式的元字符：</span><br><span class="line">	字符匹配：</span><br><span class="line">		.: 匹配任意单个字符</span><br><span class="line">		[]: 匹配指定范围内的任意单个字符</span><br><span class="line">			[0-9], [[:digit:]]</span><br><span class="line">			[a-z], [[:lower:]]</span><br><span class="line">			[A-Z], [[:upper:]]</span><br><span class="line">			[[:space:]]</span><br><span class="line">			[[:punct:]]</span><br><span class="line">			[[:alpha:]]</span><br><span class="line">			[[:alnum:]]</span><br><span class="line">		[^]:</span><br><span class="line">	次数匹配元字符：用于实现指定其前面的字符所能够出现的次数</span><br><span class="line">		*: 任意长度，它前面的字符可以出现任意次</span><br><span class="line">			例如：x*y</span><br><span class="line">				xxy, xyy, y, </span><br><span class="line">		\\?: 0次或1次，它前面的字符是可有可无的</span><br><span class="line">			例如：x\\?y</span><br><span class="line">				xy, y, ay</span><br><span class="line">		\\&#123;m\\&#125;: m次，它前的字符要出现m次</span><br><span class="line">			例如：x\\&#123;2\\&#125;y</span><br><span class="line">				xy, xxy, y, xxxxy, xyy</span><br><span class="line">		\\&#123;m,n\\&#125;: 至少m次，至多n次</span><br><span class="line">			例如：x\\&#123;2,5\\&#125;y</span><br><span class="line">				xy, y, xxy</span><br><span class="line">		\\&#123;m,\\&#125;：至少m次</span><br><span class="line">		\\&#123;0,n\\&#125;: 至多n次</span><br><span class="line"></span><br><span class="line">		.*：任意长度的任意字符</span><br><span class="line"></span><br><span class="line">	位置锚定：</span><br><span class="line">		^: 行首锚定；</span><br><span class="line">			写在模式最左侧</span><br><span class="line">		$: 行尾锚定：</span><br><span class="line">			写在模式最右侧</span><br><span class="line">		^$: 空白行</span><br><span class="line">			</span><br><span class="line">			不包含特殊字符的连续字符组成的串叫单词：</span><br><span class="line">		\\&lt;: 词首，出现于单词左侧</span><br><span class="line">			\\&lt;char</span><br><span class="line">		\\&gt;: 词尾，出现于单词右侧</span><br><span class="line">			char\\&gt;</span><br><span class="line">	</span><br><span class="line">	分组...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">扩展正则表达式：</span><br><span class="line">	字符匹配：</span><br><span class="line">		.</span><br><span class="line">		[]</span><br><span class="line">		[^]</span><br><span class="line">	次数匹配：</span><br><span class="line">		*：任意次</span><br><span class="line">		?: 0次或1次</span><br><span class="line">		+: 至少1次；</span><br><span class="line">		&#123;m&#125;: 精确匹配m次</span><br><span class="line">		&#123;m,n&#125;: 至少m次，至多n次</span><br><span class="line">		&#123;m,&#125;</span><br><span class="line">		&#123;0,n&#125;</span><br><span class="line">	位置锚定：</span><br><span class="line">		^</span><br><span class="line">		$</span><br><span class="line">		\&lt;, </span><br><span class="line">		\&gt;, </span><br><span class="line">		^$, ^[[:space:]]*$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="应用到grep"><a href="#应用到grep" class="headerlink" title="应用到grep"></a>应用到grep</h1>
+	
+	</div>
+  <a type="button" href="/2022/04/24/12-regex/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2022/03/26/Unix-Linux-proj-netDsic-II/" >Unix-Linux-proj-netDsic-II</a>
 		</h3>
 		</div>
@@ -740,138 +814,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2022/02/17/5.C-Summarize-with-code/" >C_Summarize_with_code</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2022-02-17  </div>
-		</div>
-	</div>
-	
-
-
-			<!--
-<div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="2-常见排序算法"><a href="#2-常见排序算法" class="headerlink" title="2. 常见排序算法"></a>2. 常见排序算法</h3><blockquote>
-<p>关于排序算法分析</p>
-<p>1.时间复杂度</p>
-<p>冒泡排序，插入排序，简单选择排序无法突破<code>O(n2)</code>时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。</p>
-<ul>
-<li><p>最好，最坏，平均   </p>
-<p>分析时间复杂度，要给出 最好，最坏，平均情况下的时间复杂度(给出最好，最坏情况下对应要排序的原始数据情况)</p>
-<ul>
-<li><p>平均时间复杂度分析</p>
-<p>n个元素有n!种排序，然后统计比较和交换的次数，再计算平均值。想想就十分复杂。</p>
-<p>这里我们采用逆序对的方式来分析。</p>
-<p>有序元素对：<code>arr[i] &lt;= arr[j], i &lt; j  </code></p>
-<p>逆序元素对：<code>arr[i] &gt; arr[j], i &lt; j</code></p>
-<p>有序度：数组中有序元素对的个数</p>
-<p>逆序度：数组中逆序元素对的个数</p>
-<p>满有序度：数组排好序后的有序度。</p>
-<p>假设数组有n个元素，满有序度 =  <code>n(n-1)/2</code></p>
-<p>公式： 满有序度 = 有序度 + 逆序度排序过程就是增加有序度，减少逆序度，最终达到满有序度的过程。</p>
-</li>
-</ul>
-</li>
-<li><p>常数，系数，低阶  </p>
-<p>时间复杂度反应规模n很大时的增长趋势，忽略常数，系数，低阶(考虑规模小的数据时考虑这些因素)</p>
-</li>
-<li><p>比较， 交换  </p>
-<p>基于比较的排序算法涉及元素的比较，交换，分析效率要考虑这些</p>
-</li>
-</ul>
-<p>2.空间复杂度  </p>
-<p>是否是原地算法</p>
-<p>3.稳定性  </p>
-<p>待排序列中存在值相等的元素，排序后这些元素间的前后关系是否不变</p>
-</blockquote>
-<p><code>bubble</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubble_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123; <span class="comment">// i 表示冒泡的次数，也就是比较的趟数</span></span><br><span class="line">        <span class="keyword">bool</span> sorted = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n - i; j++) &#123;<span class="comment">//每趟比较中，j从0开始取相邻两个元素比较(交换),每趟一定有一个元素有序排好，可以利用i</span></span><br><span class="line">            <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                swap(arr, j, j + <span class="number">1</span>);</span><br><span class="line">                sorted = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (sorted) <span class="keyword">break</span>;<span class="comment">//做点优化，使得有序(这趟没执行交换)之后结束排序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>有序度是数组中具有有序关系的元素对的个数。如果一个数组完全有序，有序度就是<code>Cn2 = n(n-1)/2</code>，这种叫做满有序度。</p>
-<p>对于冒泡排序来说，交换会导致：有序度+1， 逆序度-1.</p>
-<p>所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 = <code> n(n-1)/4</code> 比较的次数肯定比交换的次数多，但少于 <code>n(n-1)/2</code>所以平均情况下，时间复杂度为<code>O(n2)</code></p>
-</blockquote>
-	
-
-	</div>
-  <a type="button" href="/2022/02/17/5.C-Summarize-with-code/#more" class="btn btn-default more">Read More</a>
-</div>
-
--->
-<div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="2-常见排序算法"><a href="#2-常见排序算法" class="headerlink" title="2. 常见排序算法"></a>2. 常见排序算法</h3><blockquote>
-<p>关于排序算法分析</p>
-<p>1.时间复杂度</p>
-<p>冒泡排序，插入排序，简单选择排序无法突破<code>O(n2)</code>时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。</p>
-<ul>
-<li><p>最好，最坏，平均   </p>
-<p>分析时间复杂度，要给出 最好，最坏，平均情况下的时间复杂度(给出最好，最坏情况下对应要排序的原始数据情况)</p>
-<ul>
-<li><p>平均时间复杂度分析</p>
-<p>n个元素有n!种排序，然后统计比较和交换的次数，再计算平均值。想想就十分复杂。</p>
-<p>这里我们采用逆序对的方式来分析。</p>
-<p>有序元素对：<code>arr[i] &lt;= arr[j], i &lt; j  </code></p>
-<p>逆序元素对：<code>arr[i] &gt; arr[j], i &lt; j</code></p>
-<p>有序度：数组中有序元素对的个数</p>
-<p>逆序度：数组中逆序元素对的个数</p>
-<p>满有序度：数组排好序后的有序度。</p>
-<p>假设数组有n个元素，满有序度 =  <code>n(n-1)/2</code></p>
-<p>公式： 满有序度 = 有序度 + 逆序度排序过程就是增加有序度，减少逆序度，最终达到满有序度的过程。</p>
-</li>
-</ul>
-</li>
-<li><p>常数，系数，低阶  </p>
-<p>时间复杂度反应规模n很大时的增长趋势，忽略常数，系数，低阶(考虑规模小的数据时考虑这些因素)</p>
-</li>
-<li><p>比较， 交换  </p>
-<p>基于比较的排序算法涉及元素的比较，交换，分析效率要考虑这些</p>
-</li>
-</ul>
-<p>2.空间复杂度  </p>
-<p>是否是原地算法</p>
-<p>3.稳定性  </p>
-<p>待排序列中存在值相等的元素，排序后这些元素间的前后关系是否不变</p>
-</blockquote>
-<p><code>bubble</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubble_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123; <span class="comment">// i 表示冒泡的次数，也就是比较的趟数</span></span><br><span class="line">        <span class="keyword">bool</span> sorted = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n - i; j++) &#123;<span class="comment">//每趟比较中，j从0开始取相邻两个元素比较(交换),每趟一定有一个元素有序排好，可以利用i</span></span><br><span class="line">            <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                swap(arr, j, j + <span class="number">1</span>);</span><br><span class="line">                sorted = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (sorted) <span class="keyword">break</span>;<span class="comment">//做点优化，使得有序(这趟没执行交换)之后结束排序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>有序度是数组中具有有序关系的元素对的个数。如果一个数组完全有序，有序度就是<code>Cn2 = n(n-1)/2</code>，这种叫做满有序度。</p>
-<p>对于冒泡排序来说，交换会导致：有序度+1， 逆序度-1.</p>
-<p>所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 = <code> n(n-1)/4</code> 比较的次数肯定比交换的次数多，但少于 <code>n(n-1)/2</code>所以平均情况下，时间复杂度为<code>O(n2)</code></p>
-</blockquote>
-	
-	</div>
-  <a type="button" href="/2022/02/17/5.C-Summarize-with-code/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -923,15 +865,15 @@
 		
 			<li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
 		
-			<li><a href="/tags/xxxx/">xxxx<span>3</span></a></li>
-		
-			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
-		
-			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>5</span></a></li>
+			<li><a href="/tags/Proj/">Proj<span>2</span></a></li>
 		
 			<li><a href="/tags/database/">database<span>1</span></a></li>
 		
-			<li><a href="/tags/Proj/">Proj<span>2</span></a></li>
+			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>5</span></a></li>
+		
+			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
+		
+			<li><a href="/tags/xxxx/">xxxx<span>4</span></a></li>
 		
 		 
 		</ul>
@@ -943,6 +885,10 @@
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2022/04/24/12-regex/" ><i class="fa fa-file-o"></i>12.regex</a>
+      </li>
     
       <li>
         <a href="/2022/03/26/Unix-Linux-proj-netDsic-II/" ><i class="fa fa-file-o"></i>Unix-Linux-proj-netDsic-II</a>
@@ -958,10 +904,6 @@
     
       <li>
         <a href="/2022/03/14/Unix-Linux-proj-netdisc/" ><i class="fa fa-file-o"></i>netdisk</a>
-      </li>
-    
-      <li>
-        <a href="/2022/03/13/10.Unix-Linux-Network-Programming/" ><i class="fa fa-file-o"></i>Unix-Linux-Network-Programm...</a>
       </li>
     
   </ul>

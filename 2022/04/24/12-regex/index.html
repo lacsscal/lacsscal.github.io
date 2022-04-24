@@ -1,0 +1,369 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>12.regex | lacsscal&#39;s blog</title>
+  <meta name="author" content="chen">
+  
+  <meta name="description" content="概念最初是由Unix 的grep 和sed等工具软件普及开的。
+使用单个(模式)字符串描述，匹配一系列匹配某句法规则的字符串
+一个学习的GitHub项目learn_regex
+一个练习题库在线题库
+
+
+正则表达式的POSIX规范，分为:
+基本型正则表达式（Basic Regular Expression，BRE）和扩展型正则表达式（Extended Regular Expression，ERE）两大流派。前者的元字符需要转义，后者的不需要(包括egrep awk)
+
+123456789101112131415161718192021222324252627282930313233343536373839404142434445基本正则表达式的元字符：	字符匹配：		.: 匹配任意单个字符		[]: 匹配指定范围内的任意单个字符			[0-9], [[:digit:]]			[a-z], [[:lower:]]			[A-Z], [[:upper:]]			[[:space:]]			[[:punct:]]			[[:alpha:]]			[[:alnum:]]		[^]:	次数匹配元字符：用于实现指定其前面的字符所能够出现的次数		*: 任意长度，它前面的字符可以出现任意次			例如：x*y				xxy, xyy, y, 		\\?: 0次或1次，它前面的字符是可有可无的			例如：x\\?y				xy, y, ay		\\&amp;#123;m\\&amp;#125;: m次，它前的字符要出现m次			例如：x\\&amp;#123;2\\&amp;#125;y				xy, xxy, y, xxxxy, xyy		\\&amp;#123;m,n\\&amp;#125;: 至少m次，至多n次			例如：x\\&amp;#123;2,5\\&amp;#125;y				xy, y, xxy		\\&amp;#123;m,\\&amp;#125;：至少m次		\\&amp;#123;0,n\\&amp;#125;: 至多n次		.*：任意长度的任意字符	位置锚定：		^: 行首锚定；			写在模式最左侧		$: 行尾锚定：			写在模式最右侧		^$: 空白行						不包含特殊字符的连续字符组成的串叫单词：		\\&amp;lt;: 词首，出现于单词左侧			\\&amp;lt;char		\\&amp;gt;: 词尾，出现于单词右侧			char\\&amp;gt;		分组...
+
+
+
+1234567891011121314151617181920扩展正则表达式：	字符匹配：		.		[]		[^]	次数匹配：		*：任意次		?: 0次或1次		+: 至少1次；		&amp;#123;m&amp;#125;: 精确匹配m次		&amp;#123;m,n&amp;#125;: 至少m次，至多n次		&amp;#123;m,&amp;#125;		&amp;#123;0,n&amp;#125;	位置锚定：		^		$		\&amp;lt;, 		\&amp;gt;, 		^$, ^[[:space:]]*$
+
+
+
+应用到grep"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="12.regex"/>
+  <meta property="og:site_name" content="lacsscal&#39;s blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="lacsscal&#39;s blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">lacsscal&#39;s blog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 12.regex</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>最初是由Unix 的grep 和sed等工具软件普及开的。</p>
+<p>使用单个(模式)字符串描述，匹配一系列匹配某句法规则的字符串</p>
+<p>一个学习的GitHub项目<a target="_blank" rel="noopener" href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md">learn_regex</a></p>
+<p>一个练习题库<a target="_blank" rel="noopener" href="https://regex101.com/">在线题库</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220422200036382.png" alt="POSIX字符组"></p>
+<blockquote>
+<p>正则表达式的POSIX规范，分为:</p>
+<p>基本型正则表达式（Basic Regular Expression，BRE）<br>和扩展型正则表达式（Extended Regular Expression，ERE）两大流派。<br>前者的元字符需要转义，后者的不需要(包括egrep awk)</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">基本正则表达式的元字符：</span><br><span class="line">	字符匹配：</span><br><span class="line">		.: 匹配任意单个字符</span><br><span class="line">		[]: 匹配指定范围内的任意单个字符</span><br><span class="line">			[0-9], [[:digit:]]</span><br><span class="line">			[a-z], [[:lower:]]</span><br><span class="line">			[A-Z], [[:upper:]]</span><br><span class="line">			[[:space:]]</span><br><span class="line">			[[:punct:]]</span><br><span class="line">			[[:alpha:]]</span><br><span class="line">			[[:alnum:]]</span><br><span class="line">		[^]:</span><br><span class="line">	次数匹配元字符：用于实现指定其前面的字符所能够出现的次数</span><br><span class="line">		*: 任意长度，它前面的字符可以出现任意次</span><br><span class="line">			例如：x*y</span><br><span class="line">				xxy, xyy, y, </span><br><span class="line">		\\?: 0次或1次，它前面的字符是可有可无的</span><br><span class="line">			例如：x\\?y</span><br><span class="line">				xy, y, ay</span><br><span class="line">		\\&#123;m\\&#125;: m次，它前的字符要出现m次</span><br><span class="line">			例如：x\\&#123;2\\&#125;y</span><br><span class="line">				xy, xxy, y, xxxxy, xyy</span><br><span class="line">		\\&#123;m,n\\&#125;: 至少m次，至多n次</span><br><span class="line">			例如：x\\&#123;2,5\\&#125;y</span><br><span class="line">				xy, y, xxy</span><br><span class="line">		\\&#123;m,\\&#125;：至少m次</span><br><span class="line">		\\&#123;0,n\\&#125;: 至多n次</span><br><span class="line"></span><br><span class="line">		.*：任意长度的任意字符</span><br><span class="line"></span><br><span class="line">	位置锚定：</span><br><span class="line">		^: 行首锚定；</span><br><span class="line">			写在模式最左侧</span><br><span class="line">		$: 行尾锚定：</span><br><span class="line">			写在模式最右侧</span><br><span class="line">		^$: 空白行</span><br><span class="line">			</span><br><span class="line">			不包含特殊字符的连续字符组成的串叫单词：</span><br><span class="line">		\\&lt;: 词首，出现于单词左侧</span><br><span class="line">			\\&lt;char</span><br><span class="line">		\\&gt;: 词尾，出现于单词右侧</span><br><span class="line">			char\\&gt;</span><br><span class="line">	</span><br><span class="line">	分组...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">扩展正则表达式：</span><br><span class="line">	字符匹配：</span><br><span class="line">		.</span><br><span class="line">		[]</span><br><span class="line">		[^]</span><br><span class="line">	次数匹配：</span><br><span class="line">		*：任意次</span><br><span class="line">		?: 0次或1次</span><br><span class="line">		+: 至少1次；</span><br><span class="line">		&#123;m&#125;: 精确匹配m次</span><br><span class="line">		&#123;m,n&#125;: 至少m次，至多n次</span><br><span class="line">		&#123;m,&#125;</span><br><span class="line">		&#123;0,n&#125;</span><br><span class="line">	位置锚定：</span><br><span class="line">		^</span><br><span class="line">		$</span><br><span class="line">		\&lt;, </span><br><span class="line">		\&gt;, </span><br><span class="line">		^$, ^[[:space:]]*$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="应用到grep"><a href="#应用到grep" class="headerlink" title="应用到grep"></a>应用到grep</h1><h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><p><code>grep == Global search REgular expression and Print out the line.</code></p>
+<p>grep 会对目标文件进行搜索，显示匹配到的行</p>
+<p>之前大家都用过，不过使用方式比较简单 一般是<code>ps -elf | grep xxx</code></p>
+<p>结合正则表达式可以发挥出更强大的功能。</p>
+<pre><code>语法格式：
+    grep [option]... &#39;PATTERN&#39; FILE...
+
+        --color=auto 
+命令选项：
+        -v: 反向选取
+        -o: 仅显示匹配的字串，而非字串所在的行
+        -i: ignore-case，忽略字符大小写
+        -E: 支持使用扩展正则表达式
+</code></pre>
+<h2 id="grep-egrep-fgrep"><a href="#grep-egrep-fgrep" class="headerlink" title="grep, egrep, fgrep"></a>grep, egrep, fgrep</h2><blockquote>
+<p>基本正则表达式：grep<br>扩展正则表达式: egrep, grep -E<br>fgrep: fast, 不支持使用正则表达式</p>
+<p>这里介绍前两种,  举几个例子看一下</p>
+</blockquote>
+<pre><code>    1、显示/proc/meminfo文件中以大写或小写S开头的行；
+    # grep -i &#39;^s&#39; /proc/meminfo
+    # grep &#39;^[Ss]&#39; /proc/meminfo
+
+    # grep -E &#39;^(S|s)&#39; /proc/meminfo
+
+    2、显示/etc/passwd文件中其默认shell为非/sbin/nologin的用户；
+    # grep -v &quot;/sbin/nologin$&quot; /etc/passwd | cut -d: -f1
+
+    3、显示/etc/passwd文件中其默认shell为/bin/bash的用户；
+        进一步：仅显示上述结果中其ID号最大的用户；
+    # grep &quot;/bin/bash$&quot; /etc/passwd | sort -t: -k3 -n | tail -1 | cut -d: -f1                
+
+    4、找出/etc/passwd文件中的一位数或两位数；
+    # grep &quot;\\&lt;[0-9][0-9]\\?\\&gt;&quot; /etc/passwd
+    # grep &quot;\\&lt;[0-9]\\&#123;1,2\\&#125;\\&gt;&quot; /etc/passwd
+
+    5、显示~/.vimrc中以至少一个空白字符开头的行；
+    # grep &quot;^[[:space:]]\\&#123;1,\\&#125;&quot; ~/.vimrc
+
+    6、显示~/.bashrc文件中，以#开头，后面跟至少一个空白字符，而后又有至少一个非空白字符的行；
+    # grep &quot;^#[[:space:]]\\&#123;1,\\&#125;[^[:space:]]\\&#123;1,\\&#125;&quot;  ~/.bashrc
+
+    7、找出netstat -tan命令执行结果中以&#39;LISTEN&#39;结尾的行；
+    # netstat -tan | grep &quot;LISTEN[[:space:]]*$&quot;    
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">grep -E  &#x27;PATTERN&#x27; FILE...</span><br><span class="line">	egrep &#x27;PATTERN&#x27; FILE...</span><br><span class="line"></span><br><span class="line">	使用扩展的正则表达式</span><br><span class="line">	1、显示当前系统上root、scallacs或test用户的默认shell；</span><br><span class="line">	# grep -E &quot;^(root|scallacs|test)&quot; /etc/passwd | cut -d: -f7</span><br><span class="line"></span><br><span class="line">	2、找出/home/scallacs/cpp/log4cpp/test.cc文件中某单词后跟一组小括号“()”行；</span><br><span class="line">	# grep -o -E &quot;\&lt;[[:alnum:]]+\&gt;\(\)&quot; /home/scallacs/cpp/log4cpp/test.cc</span><br><span class="line"></span><br><span class="line">	3、使用echo命令输出一个路径，而后使用grep取出路径中各个字段；</span><br><span class="line">		echo &quot;/home/scallacs/cpp/log4cpp&quot; | grep -o -E &quot;[[:alnum:]]+/?&quot;</span><br><span class="line"></span><br><span class="line">	4、找出ifconfig命令结果中的1-255之间的数字；</span><br><span class="line">	# ifconfig | grep -o -E &quot;\&lt;([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\&gt;&quot;</span><br><span class="line"></span><br><span class="line">	5、匹配ipv4地址；</span><br><span class="line">	# ifconfig | grep -E -o &quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上规则在vim中 使用 <code>:%s/xxx/xxx/g</code> 长命令做替换时也适用, 一堆///看得眼花可以其他字符替换比如@</p>
+<h1 id="应用到C"><a href="#应用到C" class="headerlink" title="应用到C++"></a>应用到C++</h1><p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220424133608994.png" alt="image-20220424133608994"></p>
+<p>选择使用的正则表达式文法</p>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/Proj-NetDisc/v1/image-20220422214628903.png" alt="选择正则文法"></p>
+<p>例子1</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;regex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::regex;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test0</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::string qq;</span><br><span class="line">    cin &gt;&gt; qq;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 1. 判断位数是否合法</span></span><br><span class="line">    <span class="keyword">if</span> (qq.<span class="built_in">length</span>() &gt;= <span class="number">5</span> &amp;&amp; qq.<span class="built_in">length</span>() &lt;= <span class="number">11</span>)&#123;</span><br><span class="line">    	<span class="comment">// 2. 判断是否非&#x27;0&#x27;开头</span></span><br><span class="line">    	<span class="keyword">if</span> (qq[<span class="number">0</span>] != <span class="string">&#x27;0&#x27;</span>)&#123;</span><br><span class="line">    		<span class="comment">// 3. 判断是否为纯数字</span></span><br><span class="line">    		<span class="keyword">auto</span> pos = std::<span class="built_in">find_if</span>(qq.<span class="built_in">begin</span>(), qq.<span class="built_in">end</span>(), [](<span class="keyword">const</span> <span class="keyword">char</span>&amp; ch) &#123;</span><br><span class="line">    			<span class="keyword">return</span> ch &lt; <span class="string">&#x27;0&#x27;</span> || ch &gt; <span class="string">&#x27;9&#x27;</span>;</span><br><span class="line">    		&#125;);</span><br><span class="line">            <span class="keyword">if</span> (pos == qq.<span class="built_in">end</span>())&#123;</span><br><span class="line">    			cout &lt;&lt; <span class="string">&quot;valid&quot;</span> &lt;&lt; endl;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                cout&lt;&lt; <span class="string">&quot;invalid.&quot;</span> &lt;&lt; endl;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            cout&lt;&lt; <span class="string">&quot;invalid.&quot;</span> &lt;&lt; endl;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        cout&lt;&lt; <span class="string">&quot;invalid.&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">regex <span class="title">qq_reg</span><span class="params">(<span class="string">&quot;[0-9]&#123;4,11&#125;&quot;</span>, std::regex::egrep)</span></span>;</span><br><span class="line">    string qq = <span class="string">&quot;123456789&quot;</span>;</span><br><span class="line">    <span class="comment">/* string qq = &quot;qwer12345&quot;; */</span></span><br><span class="line">    <span class="comment">/* string qq = &quot;0000qe345&quot;; */</span></span><br><span class="line">    <span class="comment">/* regex qq_reg(&quot;[1-9]\\d&#123;4,11&#125;&quot;); */</span></span><br><span class="line">    <span class="keyword">bool</span> ret = std::<span class="built_in">regex_match</span>(qq, qq_reg);</span><br><span class="line">    cout &lt;&lt; (ret ? <span class="string">&quot;valid&quot;</span> : <span class="string">&quot;invalid&quot;</span>) &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">test0</span>();</span><br><span class="line">    <span class="comment">/* test1(); */</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Match"><a href="#Match" class="headerlink" title="Match"></a>Match</h2><p>基本用法：匹配字符串，字符串符合匹配规则，返回bool值，主要用于if条件表达式中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">regex_match</span><span class="params">( <span class="keyword">const</span> CharT* str,</span></span></span><br><span class="line"><span class="params"><span class="function">                  regex 模式串对象,</span></span></span><br><span class="line"><span class="params"><span class="function">                )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Search"><a href="#Search" class="headerlink" title="Search"></a>Search</h2><p>基本用法：搜索匹配子串，搜索字符串中存在符合规则的子字符串。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">regex_search</span><span class="params">( <span class="keyword">const</span> CharT* str,</span></span></span><br><span class="line"><span class="params"><span class="function">                   regex 模式串对象,</span></span></span><br><span class="line"><span class="params"><span class="function">                )</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Replace"><a href="#Replace" class="headerlink" title="Replace"></a>Replace</h2><p>是替换匹配，可以将符合匹配规则的子字符串替换为其他字符串。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::basic_string&lt;CharT&gt;</span></span><br><span class="line"><span class="function">    <span class="title">regex_replace</span><span class="params">( <span class="keyword">const</span> CharT* s,</span></span></span><br><span class="line"><span class="params"><span class="function">                   regex 模式串对象,</span></span></span><br><span class="line"><span class="params"><span class="function">                   <span class="keyword">const</span> CharT* fmt)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;regex&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* regex reg(&quot;[0-9]&#123;4,11&#125;&quot;, std::regex::egrep);//egrep regex */</span></span><br><span class="line">    <span class="comment">/* string num = &quot;123456789&quot;; */</span></span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; <span class="built_in">regex_match</span>(<span class="string">&quot;123&quot;</span>, <span class="built_in">regex</span>(<span class="string">&quot;[[:digit:]]&quot;</span>, std::regex::egrep)) &lt;&lt; endl;		<span class="comment">//结果为0</span></span><br><span class="line">    cout &lt;&lt; <span class="built_in">regex_match</span>(<span class="string">&quot;123&quot;</span>, <span class="built_in">regex</span>(<span class="string">&quot;[[:digit:]]&#123;3&#125;&quot;</span>, std::regex::egrep)) &lt;&lt; endl;		<span class="comment">//结果为1</span></span><br><span class="line">    cout &lt;&lt; <span class="built_in">regex_search</span>(<span class="string">&quot;123&quot;</span>, <span class="built_in">regex</span>(<span class="string">&quot;[[:digit:]]&quot;</span>, std::regex::egrep)) &lt;&lt; endl;		<span class="comment">//结果为1</span></span><br><span class="line"></span><br><span class="line">    string str = <span class="string">&quot;Hell$%R%%&amp;%o World&quot;</span>;</span><br><span class="line">    <span class="comment">/* regex src_pattern(&quot;^[[:lower:]]*$&quot;, std::regex::egrep); */</span></span><br><span class="line">    <span class="comment">/* regex dst_pattern(&quot;[[[:punct:]]]*&quot;, std::regex::egrep); */</span></span><br><span class="line">    <span class="function">regex <span class="title">dst_pattern</span><span class="params">(<span class="string">&quot;[^[:alnum:][:space:]]&quot;</span>, std::regex::egrep)</span></span>;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">regex_replace</span>(str, dst_pattern, <span class="string">&quot;&quot;</span> ) &lt;&lt; endl;	</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;regex&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* regex xml_pattern(&quot;/&lt;&lt;.*&gt;/&gt;&quot;, std::regex::egrep); */</span></span><br><span class="line">    <span class="function">regex <span class="title">xml_pattern</span><span class="params">(<span class="string">&quot;&lt;[^&gt;]*&gt;&quot;</span>, std::regex::egrep)</span></span>;</span><br><span class="line">    string xml = <span class="string">&quot;&lt;p&gt;另外，一些公司还使用了生物密码来进行用户的身份验证，&quot;</span>\</span><br><span class="line">                  <span class="string">&quot;比如人脸识别,但是，我个人觉得人脸识别或是生物识别是比较糟糕的方式，&quot;</span>\</span><br><span class="line">                  <span class="string">&quot;因为：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;目前能被验证的生物信息（如人脸和指纹）太容易被别人获得和伪造了。&quot;</span>\</span><br><span class="line">                  <span class="string">&quot;&lt;/li&gt;&lt;li&gt;这样东西不能被变更和吊销，密码可以被吊销和重置，人脸则不能。&lt;/li&gt;&lt;/ul&gt; &lt;h4&gt;密钥对和证书&lt;/h4&gt;&quot;</span>;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">regex_replace</span>(xml, xml_pattern, <span class="string">&quot;&quot;</span> ) &lt;&lt; endl;	</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>参考： </p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/coolcpp/p/cpp-regex.html">https://www.cnblogs.com/coolcpp/p/cpp-regex.html</a></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2022/04/24/12-regex/" class="leancloud-visitors view" data-flag-title="12.regex">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2022/03/26/Unix-Linux-proj-netDsic-II/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2022-04-24 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/xxxx/">xxxx<span>4</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2022 chen's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
