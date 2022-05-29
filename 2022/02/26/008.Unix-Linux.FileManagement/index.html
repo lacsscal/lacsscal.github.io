@@ -9,23 +9,25 @@
   <title>Unix/Linux-file-management | lacsscal&#39;s blog</title>
   <meta name="author" content="chen">
   
-  <meta name="description" content="写在前面(序)
-
-正文0 .一点历史
-还是从一点历史引入，感觉了解一些历史缘由，会更好地理解采用某种特定实现技术的原因
-看了一点《The art of Unix Programming》 序中有一句话挺吸引我
-Unix is not so much an operating system as an oral history.  —-Neal Stephenson
-
-1234567891011121314151617-&amp;gt;(早期)批处理OS-&amp;gt;(1960)MIT分时OS:多终端+大型机-&amp;gt;(1965)AT&amp;amp;T:Bell+MIT+GE(通用电气):Multics计划(全面通用分时OS:bye)-&amp;gt;(1969)Bell认为该计划GG,退出 (不算失败，有些成果) ：Ken Thompson 写了 Space Travle, PDP-7小型机移植，对它重写OS内核并移植 称Unics-&amp;gt;Unics(核心哲学:一切皆文件, 程序的目的只有一个-有效的完成目标 : 与Multics理念不同《The Art of Unix Programming》)-&amp;gt;(1969)Linus Torvalds 在芬兰诞生-&amp;gt;尝试用高级语言解决移植问题BCPL, PASCAL-&amp;gt;编译出的内核性能不够好-&amp;gt;根据BCPL发明C-&amp;gt;(1973)Deneish Richie(C的主要发明者)用C重写了Unics系统(提供了管道等重要功能),更名为Unix-&amp;gt;(1977)AT&amp;amp;T将Unix源代码(用C写的,高可移植性)发给学术界-&amp;gt;UC Berkeley-&amp;gt;Bill Joy professor 编译成适合自己机器的系统，增减一些功能:命名为BSD(Berkeley Software Distribution)-&amp;gt;(1979)AT&amp;amp;T:推出System V(five(Sun - Solaris)):第七版(不再开源:商业纠纷开始):特性:可以支持x86架构的个人计算机-&amp;gt;(1984)不再开源对教授OS的professor产生了影响:Andrew TannenBaum-&amp;gt;自己写个Mini Unix -&amp;gt; Minix-&amp;gt;(1986)完成Minix, 并出版《Operating System : Design and Implementation》附带Minix的源代码        《Modern Operating System》也是他写的-&amp;gt;同期 Richard Stallman 发起了GNU计划:GNU:Gnu is not Unix!(GCC, Emacs, Bash Shell, GDB...)目标创建一套完全自由的Unix OS(当时的Unix与硬件捆绑销售)但是缺少Unix内核-&amp;gt;草拟 GPL协议(General Publilc License | 🙂 copyleft &amp;lt;!-&amp;gt; copyright:著作权) 开源 != 免费(维护可以收费)-&amp;gt;(1988)IEEE:POSIX标准(旨在:保证各个OS间的兼容性) (IEEE-IX-&amp;gt;POSIX:Portable Operating System Interface X:(Unix))可移植...-&amp;gt;(1993)Linus:宏内核构造的Linux内核面世
-
-1. 命令
-感觉之前学过很多次，并且每次学习也有用纸质或者文档记录，博客记录学到，使用过的命令，但大多情况学过不用就忘了，不是长久之计，这次就不记录这些。尽量多用以熟练。同时，本文的侧重点不在使用这方面，想要更深入的学习一些东西。
+  <meta name="description" content="文件管理
+关于一切皆文件这个理念
+对于这个Unix设计哲学，之前是知道这个名词，但是要具体来说可能说不出什么，结合一些文件操作来理解可能更为清晰。(图画的丑: ))在程序的运行过程中，计算机是怎样去操作磁盘上的文件的? 在一个程序运行时，由CPU去代码段取一条条指令，并将指令执行生成的数据放入堆栈等数据区。那么指令的操作数在哪？在内存上，内存的数据是从磁盘上取出的，最终也会持久化的存储在磁盘上。从中取，往回存这两个操作是怎么做到的，把磁盘看做程序运行时的外部设备，它在内存上建立了映射区—称作文件缓冲区。文件缓冲区在内存上，但是影响外部设备。
 
 
-如果有不会的熟练使用 $man
-一点准备工作，环境使用的Ubuntu18.04 帮助手册不全sudo apt install manpages-posix-dev
 
-2.架构"> 
+以此类推，目录文件，设备文件，管道文件等等，理念是一致的，对于众多的文件类型使用通用的方式去操作它们。文件操作操作的是内存上的数据，影响的是外部设备。对于Linux而言存在内核态与用户态，当文件操作涉及外部硬件时，用户态将这些操作委托给内核态去完成，这就离不开系统调用。
+理解了这一点，就可以通过学习文件操作更深入的理解(操作文件会影响外部硬件，这个函数就不是普通的函数而是系统调用)。使用库函数和系统调用来操作文件，从库函数–&amp;gt;系统调用。
+基于文件指针的文件操作函数(ANSI 标准库函数) –&amp;gt; 基于系统调用的文件操作
+
+1.1 文件操作 - 基于(库函数)文件指针FILE*
+从普通文件的打开与操作开始
+
+流：表示任意输入src, 任意输出dst ，屏蔽硬件设备之间的差异，使得C像读写文件一样读写任意设备。
+
+内存与硬件设备存在读写性能上的鸿沟，OS在内存上为流设置缓冲区，C通过文件指针FILE*实现对流的访问, 启动任意进程OS将打开三个标准流stdin , stdout,  stderr.它们都默认与硬件关联。
+
+从普通文件操作开始, 读写之前先打开
+12345678910111213返回值是指针:暗含的意思-&amp;gt;返回值指针指向必定不在被调函数栈帧(而在用户态某个空间，需用户自行释放)返回文件指针访问流|FILE* fopen(const char* filename, const char* mode);                                                |                                            打开模式(考虑后续操作)                                            &amp;quot;r&amp;quot; :只读打开                                            &amp;quot;r+&amp;quot;:读写打开 文件必须存在                                            &amp;quot;w&amp;quot; :只写创建 文件不需要存在                                            &amp;quot;w+&amp;quot;:读写创建 文件存在就清空                                            &amp;quot;a+&amp;quot;:读写追加 在原有数据后写入新值                                                    int fclose(FILE* stream);"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -129,35 +131,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 	<div class="mypage">		
 	  		
 
-	  <h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-一点历史"><a href="#0-一点历史" class="headerlink" title="0 .一点历史"></a>0 .一点历史</h3><blockquote>
-<p>还是从一点历史引入，感觉了解一些历史缘由，会更好地理解采用某种特定实现技术的原因</p>
-<p>看了一点《The art of Unix Programming》 序中有一句话挺吸引我</p>
-<p><em>Unix is not so much an operating system as an oral history.  —-Neal Stephenson</em></p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt;(早期)批处理OS</span><br><span class="line">-&gt;(1960)MIT分时OS:多终端+大型机</span><br><span class="line">-&gt;(1965)AT&amp;T:Bell+MIT+GE(通用电气):Multics计划(全面通用分时OS:bye)</span><br><span class="line">-&gt;(1969)Bell认为该计划GG,退出 (不算失败，有些成果) ：Ken Thompson 写了 Space Travle, PDP-7小型机移植，对它重写OS内核并移植 称Unics</span><br><span class="line">-&gt;Unics(核心哲学:一切皆文件, 程序的目的只有一个-有效的完成目标 : 与Multics理念不同《The Art of Unix Programming》)</span><br><span class="line">-&gt;(1969)Linus Torvalds 在芬兰诞生</span><br><span class="line">-&gt;尝试用高级语言解决移植问题BCPL, PASCAL-&gt;编译出的内核性能不够好-&gt;根据BCPL发明C</span><br><span class="line">-&gt;(1973)Deneish Richie(C的主要发明者)用C重写了Unics系统(提供了管道等重要功能),更名为Unix</span><br><span class="line">-&gt;(1977)AT&amp;T将Unix源代码(用C写的,高可移植性)发给学术界-&gt;UC Berkeley-&gt;Bill Joy professor 编译成适合自己机器的系统，增减一些功能:命名为BSD(Berkeley Software Distribution)</span><br><span class="line">-&gt;(1979)AT&amp;T:推出System V(five(Sun - Solaris)):第七版(不再开源:商业纠纷开始):特性:可以支持x86架构的个人计算机</span><br><span class="line">-&gt;(1984)不再开源对教授OS的professor产生了影响:Andrew TannenBaum-&gt;自己写个Mini Unix -&gt; Minix</span><br><span class="line">-&gt;(1986)完成Minix, 并出版《Operating System : Design and Implementation》附带Minix的源代码</span><br><span class="line">        《Modern Operating System》也是他写的</span><br><span class="line">-&gt;同期 Richard Stallman 发起了GNU计划:GNU:Gnu is not Unix!(GCC, Emacs, Bash Shell, GDB...)目标创建一套完全自由的Unix OS(当时的Unix与硬件捆绑销售)但是缺少Unix内核</span><br><span class="line">-&gt;草拟 GPL协议(General Publilc License | 🙂 copyleft &lt;!-&gt; copyright:著作权) 开源 != 免费(维护可以收费)</span><br><span class="line">-&gt;(1988)IEEE:POSIX标准(旨在:保证各个OS间的兼容性) (IEEE-IX-&gt;POSIX:Portable Operating System Interface X:(Unix))可移植...</span><br><span class="line">-&gt;(1993)Linus:宏内核构造的Linux内核面世</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-命令"><a href="#1-命令" class="headerlink" title="1. 命令"></a>1. 命令</h3><blockquote>
-<p>感觉之前学过很多次，并且每次学习也有用纸质或者文档记录，博客记录学到，使用过的命令，但大多情况学过不用就忘了，不是长久之计，这次就不记录这些。尽量多用以熟练。同时，本文的侧重点不在使用这方面，想要更深入的学习一些东西。</p>
-</blockquote>
-<blockquote>
-<p>如果有不会的熟练使用 <code>$man</code></p>
-<p>一点准备工作，环境使用的Ubuntu18.04 帮助手册不全<code>sudo apt install manpages-posix-dev</code></p>
-</blockquote>
-<h3 id="2-架构"><a href="#2-架构" class="headerlink" title="2.架构"></a>2.架构</h3><blockquote>
-<p>这是一张来自《Advanced Programing in the UNIX Environment》的图</p>
-</blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/imgUnix%E6%9E%B6%E6%9E%84.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Kernel：OS内核：管理硬件资源，给上层程序提供运行环境(所以有很多驱动，提供很多接口，服务)</span><br><span class="line">System calls：系统调用：内核给上层程序提供的接口(有些繁琐复杂，做些封装-&gt;系统库)程序由系统调用使用内核提供的功能</span><br><span class="line">Library routines:库函数 (printf, scanf:对系统调用做一次封装)上层程序不能直接与硬件交互，需调用底层接口(对System calls封装)</span><br><span class="line">Shell：命令行解释器(bash:Bourne-again shell:/bin/bash):命令，脚本(命令的集合)， 访问内核资源</span><br><span class="line">Applications:应用程序:可以直接使用系统调用调用内核功能，也能使用系统库提供内核功能</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>在学习C的过程中，用到过不少库函数，按照这幅图从 库函数-&gt;System call-&gt;Kernel 由外层到里层深入的学习确实是此前没有接触过的全新思路，当然，任务也很艰巨《APUE》《内核源码》都是大部头，希望后面有毅力能啃完吧 : )</p>
-</blockquote>
-<blockquote>
-<p>接下来按照OS的功能划分，以文件管理,进程管理,内存管理,IO管理 来分块学习。</p>
-</blockquote>
-<h3 id="3-文件管理"><a href="#3-文件管理" class="headerlink" title="3. 文件管理"></a>3. 文件管理</h3><blockquote>
+	  <h3 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h3><blockquote>
 <p>关于一切皆文件这个理念</p>
 <p>对于这个Unix设计哲学，之前是知道这个名词，但是要具体来说可能说不出什么，结合一些文件操作来理解可能更为清晰。(图画的丑: ))在程序的运行过程中，计算机是怎样去操作磁盘上的文件的? 在一个程序运行时，由CPU去代码段取一条条指令，并将指令执行生成的数据放入堆栈等数据区。那么指令的操作数在哪？在内存上，内存的数据是从磁盘上取出的，最终也会持久化的存储在磁盘上。从中取，往回存这两个操作是怎么做到的，把磁盘看做程序运行时的外部设备，它在内存上建立了映射区—称作文件缓冲区。文件缓冲区在内存上，但是影响外部设备。</p>
 </blockquote>
@@ -167,7 +141,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 <p>理解了这一点，就可以通过学习文件操作更深入的理解(操作文件会影响外部硬件，这个函数就不是普通的函数而是系统调用)。使用库函数和系统调用来操作文件，从库函数–&gt;系统调用。</p>
 <p>基于文件指针的文件操作函数(ANSI 标准库函数) –&gt; 基于系统调用的文件操作</p>
 </blockquote>
-<h4 id="3-1-文件操作-基于-库函数-文件指针FILE"><a href="#3-1-文件操作-基于-库函数-文件指针FILE" class="headerlink" title="3.1 文件操作 - 基于(库函数)文件指针FILE*"></a>3.1 文件操作 - 基于(库函数)文件指针FILE*</h4><blockquote>
+<h4 id="1-1-文件操作-基于-库函数-文件指针FILE"><a href="#1-1-文件操作-基于-库函数-文件指针FILE" class="headerlink" title="1.1 文件操作 - 基于(库函数)文件指针FILE*"></a>1.1 文件操作 - 基于(库函数)文件指针FILE*</h4><blockquote>
 <p>从普通文件的打开与操作开始</p>
 </blockquote>
 <p><code>流</code>：表示任意输入<code>src</code>, 任意输出<code>dst</code> ，屏蔽硬件设备之间的差异，使得C像读写文件一样读写任意设备。</p>
@@ -195,7 +169,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 
 
 
-<p>关于<code>fopen</code>与<code>open</code>的底层联系,见3.3</p>
+<p>关于<code>fopen</code>与<code>open</code>的底层联系,见1.3</p>
 <blockquote>
 <p> [补充]：</p>
 <p> 对于之前程序中经常会用到的两种操作，抽取成两个带参宏：</p>
@@ -223,7 +197,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 <blockquote>
 <p><code>puts(str); == printf(&quot;%s\n&quot;,str);</code>   <code>scanf</code> 从非空白读到空白  <code>gets</code> 从开始读到换行</p>
 </blockquote>
-<h4 id="3-2-目录操作"><a href="#3-2-目录操作" class="headerlink" title="3.2 目录操作"></a>3.2 目录操作</h4><blockquote>
+<h4 id="1-2-目录操作"><a href="#1-2-目录操作" class="headerlink" title="1.2 目录操作"></a>1.2 目录操作</h4><blockquote>
 <p>先学习一些库函数和系统调用，然后组合使用他们实现一些系统命令。</p>
 </blockquote>
 <p>CHMOD(2)</p>
@@ -288,7 +262,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 
 
 
-<h4 id="3-3-基于文件描述符操作文件-文件操作-基于系统调用-不带缓冲的文件IO"><a href="#3-3-基于文件描述符操作文件-文件操作-基于系统调用-不带缓冲的文件IO" class="headerlink" title="3.3 基于文件描述符操作文件 || 文件操作-基于系统调用(不带缓冲的文件IO)"></a>3.3 基于文件描述符操作文件 || 文件操作-基于系统调用(不带缓冲的文件IO)</h4><blockquote>
+<h4 id="1-3-基于文件描述符操作文件-文件操作-基于系统调用-不带缓冲的文件IO"><a href="#1-3-基于文件描述符操作文件-文件操作-基于系统调用-不带缓冲的文件IO" class="headerlink" title="1.3 基于文件描述符操作文件 || 文件操作-基于系统调用(不带缓冲的文件IO)"></a>1.3 基于文件描述符操作文件 || 文件操作-基于系统调用(不带缓冲的文件IO)</h4><blockquote>
 <p>所谓的不带缓冲，不带的是用户态文件缓冲区。如下图所示 注意也是内存中，只是相对在内核部分</p>
 </blockquote>
 <p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/%E4%B8%8D%E5%B8%A6%E7%BC%93%E5%86%B2IO.png" alt="不带缓冲的文件IO"></p>
@@ -336,7 +310,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新建一个文件，里边内容为hello，通过mmap映射该文件后，修改hello为world，然后解除映射。</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;func.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ./mmap file</span></span><br><span class="line">    ARGS_CHECK(argc, <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">int</span> fd = open(argv[<span class="number">1</span>], O_RDWR|O_CREAT, <span class="number">0666</span>);</span><br><span class="line">    ERROR_CHECK(fd, <span class="number">-1</span>, <span class="string">&quot;open&quot;</span>);</span><br><span class="line">    <span class="keyword">int</span> ret = write(fd, <span class="string">&quot;hello&quot;</span>, <span class="number">5</span>);</span><br><span class="line">    ERROR_CHECK(ret, <span class="number">-1</span>, <span class="string">&quot;write&quot;</span>);</span><br><span class="line">    <span class="keyword">int</span> cut = ftruncate(fd, <span class="number">5</span>);</span><br><span class="line">    ERROR_CHECK(cut, <span class="number">-1</span>, <span class="string">&quot;ftruncate&quot;</span>);</span><br><span class="line">    <span class="comment">//建立映射关系</span></span><br><span class="line">    <span class="keyword">char</span> *p = (<span class="keyword">char</span>*)mmap(<span class="literal">NULL</span>, <span class="number">5</span>, PROT_READ|PROT_WRITE, MAP_SHARED, fd, <span class="number">0</span>); </span><br><span class="line">    ERROR_CHECK(p, MAP_FAILED, <span class="string">&quot;mmap&quot;</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(p, <span class="string">&quot;world&quot;</span>);</span><br><span class="line">    munmap(p,<span class="number">5</span>);</span><br><span class="line">    close(fd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="3-4-IO多路转接模型"><a href="#3-4-IO多路转接模型" class="headerlink" title="3.4 IO多路转接模型"></a>3.4 IO多路转接模型</h4><h2 id="写在后面-结"><a href="#写在后面-结" class="headerlink" title="写在后面(结)"></a>写在后面(结)</h2><blockquote>
+<h4 id="1-4-IO多路转接模型"><a href="#1-4-IO多路转接模型" class="headerlink" title="1.4 IO多路转接模型"></a>1.4 IO多路转接模型</h4><h2 id="写在后面-结"><a href="#写在后面-结" class="headerlink" title="写在后面(结)"></a>写在后面(结)</h2><blockquote>
 <p>还是太菜，任重而道远</p>
 </blockquote>
 
@@ -348,7 +322,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 	</div>
 
 	
-	<span id="/2022/02/26/6.Unix-Linux-file-management/" class="leancloud-visitors view" data-flag-title="Unix/Linux-file-management">
+	<span id="/2022/02/26/008.Unix-Linux.FileManagement/" class="leancloud-visitors view" data-flag-title="Unix/Linux-file-management">
 		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
 	</span>
 	
@@ -365,7 +339,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2022/02/17/5.C-Summarize-with-code/" type="button" class="btn btn-default ">Next<i
+    <a href="/2022/02/26/007.Unix.Linux.start/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
@@ -410,7 +384,7 @@ Unix is not so much an operating system as an oral history.  —-Neal Stephenson
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/Unix-Linux/">Unix/Linux<span>5</span></a></li>
+  <li><a href="/tags/Unix-Linux/">Unix/Linux<span>6</span></a></li>
     </ul>
 	</div>
 		

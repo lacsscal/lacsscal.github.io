@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Recursion | lacsscal&#39;s blog</title>
+  <meta name="author" content="chen">
+  
+  <meta name="description" content="……
+
+递归 recursion定义时调用本身 (传统引例为:斐波那契数列求和，其实这并不是一个很好的例子(画出递归树可知有太多重复计算性能差))
+但作为分析案例是合适的
+它满足以下条件：
+
+大问题分解为小问题
+大小问题求解方式一致，只是规模不同
+小问题的解可合成大问题的解
+
+可是使用递归，但注意在递归代码书写时，一定要有:
+
+边界条件(没有的话会调用下去直到Stack Overflow)
+
+递归公式要考虑重复计算问题:
+
+
+以斐波那契为例，由于存在重复计算问题，其实效率不高
+总结：得出递归公式，知道边界条件且解决重复计算问题可用递归"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Recursion"/>
+  <meta property="og:site_name" content="lacsscal&#39;s blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="lacsscal&#39;s blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">lacsscal&#39;s blog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Recursion</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>  ……</p>
+</blockquote>
+<h3 id="递归-recursion"><a href="#递归-recursion" class="headerlink" title="递归 recursion"></a><strong>递归 recursion</strong></h3><p>定义时调用本身 (传统引例为:斐波那契数列求和，其实这并不是一个很好的例子(画出递归树可知有<strong>太多重复计算</strong>性能差))</p>
+<p><strong>但作为分析案例是合适的</strong></p>
+<p>它满足以下条件：</p>
+<ul>
+<li>大问题分解为小问题</li>
+<li>大小问题求解方式一致，只是规模不同</li>
+<li>小问题的解可合成大问题的解</li>
+</ul>
+<p>可是使用递归，但注意在递归代码书写时，一定要有:</p>
+<ul>
+<li><p>边界条件(没有的话会调用下去直到Stack Overflow)</p>
+</li>
+<li><p>递归公式要考虑重复计算问题:</p>
+</li>
+</ul>
+<p>以斐波那契为例，由于存在重复计算问题，其实效率不高</p>
+<p>总结：<strong>得出递归公式，知道边界条件且解决重复计算问题可用递归</strong></p>
+<p>更经典的例子:</p>
+<p><strong>汉诺塔问题 Hanoi</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hanoi</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">char</span> start, <span class="keyword">char</span> middle, <span class="keyword">char</span> end)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    hanoi(<span class="number">3</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hanoi</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">char</span> start, <span class="keyword">char</span> middle, <span class="keyword">char</span> end)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span>)&#123;</span><br><span class="line">       <span class="built_in">printf</span>(<span class="string">&quot;%c --&gt; %c\n&quot;</span>, start, end); <span class="comment">//记得设置边界条件，不然会一直递归下去</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        hanoi(n<span class="number">-1</span>, start, end, middle);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%c --&gt; %c\n&quot;</span>, start, end);</span><br><span class="line">        hanoi(n<span class="number">-1</span>, middle, start, end);</span><br><span class="line">    &#125;<span class="comment">//抽象的思考问题，不要考虑具体实现细节，交个计算机来做，只想这一步该完成什么(这里即:将前n-1个经end移至middle)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>约瑟夫问题 Joseph (只是其中一种，隔一个杀一个的情况)</strong></p>
+<p><img src="https://s2.loli.net/2022/02/15/nX2uet4WBZEpqib.png" alt="约瑟夫环.png"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">jos</span><span class="params">(<span class="keyword">int</span> n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,  jos(<span class="number">6</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">jos</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span> || n == <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">//边界条件</span></span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(n % <span class="number">2</span> == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * jos(n / <span class="number">2</span>) - <span class="number">1</span>; <span class="comment">//输入偶数的规模与编号关系</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * jos((n - <span class="number">1</span>) / <span class="number">2</span>) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="comment">//隔一个杀一个的Joseph环，推导一定次数之后  得出规律</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结论：递归是一种考虑问题的思想，可以降低问题的复杂度</strong></p>
+<p><strong>使用递归时，不要用脑向下展开模拟，站在较高的角度，抽象的考虑当前这步：</strong></p>
+<p><strong><code>hanoi</code>比较典型</strong></p>
+<p><strong>当前这步将最大的圆盘n从 start –&gt; end而为了实现这步，需要将其上的n-1个盘从start –&gt; end –&gt; middle</strong></p>
+<p><strong>当最大盘到end之后，将此时在middle上的n-1个盘 middle –&gt; start –&gt; end</strong></p>
+<p><strong>anyway：中间的具体实现不去管它，交给计算机去一层层分解。</strong></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2022/02/10/005.recursion/" class="leancloud-visitors view" data-flag-title="Recursion">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2022/02/10/004.C-Summarize/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2022/01/22/003.Hello-New-World-build-history/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2022-02-10 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/C-C/">C/C++<span>3</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2022 chen's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

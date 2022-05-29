@@ -6,16 +6,10 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>C_Summarize_with_code | lacsscal&#39;s blog</title>
+  <title>Sort-Algorithm | lacsscal&#39;s blog</title>
   <meta name="author" content="chen">
   
-  <meta name="description" content="写在前面(序)
-
-正文1.基本数据结构1....
-
-
-
-2. 常见排序算法
+  <meta name="description" content=". 常见排序算法
 关于排序算法分析
 1.时间复杂度
 冒泡排序，插入排序，简单选择排序无法突破O(n2)时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。
@@ -54,12 +48,23 @@ bubble
 
 有序度是数组中具有有序关系的元素对的个数。如果一个数组完全有序，有序度就是Cn2 = n(n-1)/2，这种叫做满有序度。
 对于冒泡排序来说，交换会导致：有序度+1， 逆序度-1.
-所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 =  n(n-1)/4 比较的次数肯定比交换的次数多，但少于 n(n-1)/2所以平均情况下，时间复杂度为O(n2)"> 
+所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 =  n(n-1)/4 比较的次数肯定比交换的次数多，但少于 n(n-1)/2所以平均情况下，时间复杂度为O(n2)
+
+selection
+12345678910void selection_sort(int arr[], int n) &amp;#123;    for (int i = 0; i &amp;lt; n - 1; i++) &amp;#123; // i表示选择元素的索引        int minIdx = i;//先预设当前索引所指数为最小        for (int j = i + 1; j &amp;lt; n; j++) &amp;#123;//j从后一个元素开始向后找有无更小的            if (arr[j] &amp;lt; arr[minIdx])                minIdx = j;        &amp;#125;        swap(arr, i, minIdx);    &amp;#125;&amp;#125;
+
+
+每趟先假定本趟开头为最小元素，记录其索引，从其后一个元素开始向后遍历，找到更小的，更新最小元索引记录一趟走完交换本趟开头与最小发生长距离的交换 所以不稳定
+[5, 5, 1, 2, 3, 0, ]第一个5换到第二个5后面
+O(n2) 不存在最好最坏，都是O(n2)
+
+insertion
+123456789101112void insertion_sort(int arr[], int n) &amp;#123;    for (int i = 1; i &amp;lt; n; i++) &amp;#123;// i代表待插入元素的索引，从第二个元素开始        int val = arr[i];//先记录，如果要插到前面的话需要前方元素后移，可能会覆盖它        int j = i - 1;//找到待插元素的前一个元素        // 元素(比记录的待插元素大)往后移(凡比ta大的都后移，留出ta的位置)        while (j &amp;gt;= 0 &amp;amp;&amp;amp; arr[j] &amp;gt; val) &amp;#123;            arr[j + 1] = arr[j];            j--;        &amp;#125;        arr[j + 1] = val;    &amp;#125;&amp;#125;"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="C_Summarize_with_code"/>
+  <meta property="og:title" content="Sort-Algorithm"/>
   <meta property="og:site_name" content="lacsscal&#39;s blog"/>
 
   
@@ -141,7 +146,7 @@ bubble
 
 	
 		<div class="page-header">
-			<h1> C_Summarize_with_code</h1>
+			<h1> Sort-Algorithm</h1>
 		</div>
 	
 
@@ -158,13 +163,7 @@ bubble
 	<div class="mypage">		
 	  		
 
-	  <h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="2-常见排序算法"><a href="#2-常见排序算法" class="headerlink" title="2. 常见排序算法"></a>2. 常见排序算法</h3><blockquote>
+	  <h3 id="常见排序算法"><a href="#常见排序算法" class="headerlink" title=". 常见排序算法"></a>. 常见排序算法</h3><blockquote>
 <p>关于排序算法分析</p>
 <p>1.时间复杂度</p>
 <p>冒泡排序，插入排序，简单选择排序无法突破<code>O(n2)</code>时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。</p>
@@ -308,22 +307,12 @@ bubble
 
 
 
-<h3 id="3-其他"><a href="#3-其他" class="headerlink" title="3. 其他"></a>3. 其他</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">......</span><br></pre></td></tr></table></figure>
 
 
 
 
 
 
-
-
-
-
-
-<h2 id="写在后面-结"><a href="#写在后面-结" class="headerlink" title="写在后面(结)"></a>写在后面(结)</h2><blockquote>
-<p>本次关于C的整理梳理工作暂时告一段落，总的来说，起初的基础知识方面的整理有些浮躁，不耐烦，但是在重看过程中发现了不少之前未注意到的点，多对自己提问，试图站在作者的角度思考这个问题的产生与解决，分析需求并给出解决办法是有好处的，新的视角会带来一些未曾有过的思考。</p>
-<p>同时也发现学过或者说学过不止一遍不代表就是懂得，就是精通。越发感觉此前的学习方式存在不少问题。<strong>Talk is cheap. Show me the code.</strong></p>
-</blockquote>
 
 	  <div class="article-footer-copyright">
 
@@ -333,7 +322,7 @@ bubble
 	</div>
 
 	
-	<span id="/2022/02/17/5.C-Summarize-with-code/" class="leancloud-visitors view" data-flag-title="C_Summarize_with_code">
+	<span id="/2022/02/17/006.sort-algorithm/" class="leancloud-visitors view" data-flag-title="Sort-Algorithm">
 		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
 	</span>
 	
@@ -344,13 +333,13 @@ bubble
 
     
     
-    <a href="/2022/02/26/6.Unix-Linux-file-management/" type="button" class="btn btn-default"><i
+    <a href="/2022/02/26/007.Unix.Linux.start/" type="button" class="btn btn-default"><i
                 class="fa fa-arrow-circle-o-left"></i> Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2022/02/10/4.C-Summarize/" type="button" class="btn btn-default ">Next<i
+    <a href="/2022/02/10/004.C-Summarize/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
@@ -395,7 +384,7 @@ bubble
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
+  <li><a href="/tags/C-C/">C/C++<span>3</span></a></li>
     </ul>
 	</div>
 		

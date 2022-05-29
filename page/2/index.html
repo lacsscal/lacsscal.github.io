@@ -114,7 +114,79 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2022/02/17/5.C-Summarize-with-code/" >C_Summarize_with_code</a>
+			<a href="/2022/02/26/007.Unix.Linux.start/" >Unix/Linux-file-management</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-02-26  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
+</blockquote>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-一点历史"><a href="#0-一点历史" class="headerlink" title="0 .一点历史"></a>0 .一点历史</h3><blockquote>
+<p>还是从一点历史引入，感觉了解一些历史缘由，会更好地理解采用某种特定实现技术的原因</p>
+<p>看了一点《The art of Unix Programming》 序中有一句话挺吸引我</p>
+<p><em>Unix is not so much an operating system as an oral history.  —-Neal Stephenson</em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt;(早期)批处理OS</span><br><span class="line">-&gt;(1960)MIT分时OS:多终端+大型机</span><br><span class="line">-&gt;(1965)AT&amp;T:Bell+MIT+GE(通用电气):Multics计划(全面通用分时OS:bye)</span><br><span class="line">-&gt;(1969)Bell认为该计划GG,退出 (不算失败，有些成果) ：Ken Thompson 写了 Space Travle, PDP-7小型机移植，对它重写OS内核并移植 称Unics</span><br><span class="line">-&gt;Unics(核心哲学:一切皆文件, 程序的目的只有一个-有效的完成目标 : 与Multics理念不同《The Art of Unix Programming》)</span><br><span class="line">-&gt;(1969)Linus Torvalds 在芬兰诞生</span><br><span class="line">-&gt;尝试用高级语言解决移植问题BCPL, PASCAL-&gt;编译出的内核性能不够好-&gt;根据BCPL发明C</span><br><span class="line">-&gt;(1973)Deneish Richie(C的主要发明者)用C重写了Unics系统(提供了管道等重要功能),更名为Unix</span><br><span class="line">-&gt;(1977)AT&amp;T将Unix源代码(用C写的,高可移植性)发给学术界-&gt;UC Berkeley-&gt;Bill Joy professor 编译成适合自己机器的系统，增减一些功能:命名为BSD(Berkeley Software Distribution)</span><br><span class="line">-&gt;(1979)AT&amp;T:推出System V(five(Sun - Solaris)):第七版(不再开源:商业纠纷开始):特性:可以支持x86架构的个人计算机</span><br><span class="line">-&gt;(1984)不再开源对教授OS的professor产生了影响:Andrew TannenBaum-&gt;自己写个Mini Unix -&gt; Minix</span><br><span class="line">-&gt;(1986)完成Minix, 并出版《Operating System : Design and Implementation》附带Minix的源代码</span><br><span class="line">        《Modern Operating System》也是他写的</span><br><span class="line">-&gt;同期 Richard Stallman 发起了GNU计划:GNU:Gnu is not Unix!(GCC, Emacs, Bash Shell, GDB...)目标创建一套完全自由的Unix OS(当时的Unix与硬件捆绑销售)但是缺少Unix内核</span><br><span class="line">-&gt;草拟 GPL协议(General Publilc License | 🙂 copyleft &lt;!-&gt; copyright:著作权) 开源 != 免费(维护可以收费)</span><br><span class="line">-&gt;(1988)IEEE:POSIX标准(旨在:保证各个OS间的兼容性) (IEEE-IX-&gt;POSIX:Portable Operating System Interface X:(Unix))可移植...</span><br><span class="line">-&gt;(1993)Linus:宏内核构造的Linux内核面世</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-命令"><a href="#1-命令" class="headerlink" title="1. 命令"></a>1. 命令</h3><blockquote>
+<p>感觉之前学过很多次，并且每次学习也有用纸质或者文档记录，博客记录学到，使用过的命令，但大多情况学过不用就忘了，不是长久之计，这次就不记录这些。尽量多用以熟练。同时，本文的侧重点不在使用这方面，想要更深入的学习一些东西。</p>
+</blockquote>
+<blockquote>
+<p>如果有不会的熟练使用 <code>$man</code></p>
+<p>一点准备工作，环境使用的Ubuntu18.04 帮助手册不全<code>sudo apt install manpages-posix-dev</code></p>
+</blockquote>
+<h3 id="2-架构"><a href="#2-架构" class="headerlink" title="2.架构"></a>2.架构</h3>
+	
+
+	</div>
+  <a type="button" href="/2022/02/26/007.Unix.Linux.start/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
+</blockquote>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-一点历史"><a href="#0-一点历史" class="headerlink" title="0 .一点历史"></a>0 .一点历史</h3><blockquote>
+<p>还是从一点历史引入，感觉了解一些历史缘由，会更好地理解采用某种特定实现技术的原因</p>
+<p>看了一点《The art of Unix Programming》 序中有一句话挺吸引我</p>
+<p><em>Unix is not so much an operating system as an oral history.  —-Neal Stephenson</em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-&gt;(早期)批处理OS</span><br><span class="line">-&gt;(1960)MIT分时OS:多终端+大型机</span><br><span class="line">-&gt;(1965)AT&amp;T:Bell+MIT+GE(通用电气):Multics计划(全面通用分时OS:bye)</span><br><span class="line">-&gt;(1969)Bell认为该计划GG,退出 (不算失败，有些成果) ：Ken Thompson 写了 Space Travle, PDP-7小型机移植，对它重写OS内核并移植 称Unics</span><br><span class="line">-&gt;Unics(核心哲学:一切皆文件, 程序的目的只有一个-有效的完成目标 : 与Multics理念不同《The Art of Unix Programming》)</span><br><span class="line">-&gt;(1969)Linus Torvalds 在芬兰诞生</span><br><span class="line">-&gt;尝试用高级语言解决移植问题BCPL, PASCAL-&gt;编译出的内核性能不够好-&gt;根据BCPL发明C</span><br><span class="line">-&gt;(1973)Deneish Richie(C的主要发明者)用C重写了Unics系统(提供了管道等重要功能),更名为Unix</span><br><span class="line">-&gt;(1977)AT&amp;T将Unix源代码(用C写的,高可移植性)发给学术界-&gt;UC Berkeley-&gt;Bill Joy professor 编译成适合自己机器的系统，增减一些功能:命名为BSD(Berkeley Software Distribution)</span><br><span class="line">-&gt;(1979)AT&amp;T:推出System V(five(Sun - Solaris)):第七版(不再开源:商业纠纷开始):特性:可以支持x86架构的个人计算机</span><br><span class="line">-&gt;(1984)不再开源对教授OS的professor产生了影响:Andrew TannenBaum-&gt;自己写个Mini Unix -&gt; Minix</span><br><span class="line">-&gt;(1986)完成Minix, 并出版《Operating System : Design and Implementation》附带Minix的源代码</span><br><span class="line">        《Modern Operating System》也是他写的</span><br><span class="line">-&gt;同期 Richard Stallman 发起了GNU计划:GNU:Gnu is not Unix!(GCC, Emacs, Bash Shell, GDB...)目标创建一套完全自由的Unix OS(当时的Unix与硬件捆绑销售)但是缺少Unix内核</span><br><span class="line">-&gt;草拟 GPL协议(General Publilc License | 🙂 copyleft &lt;!-&gt; copyright:著作权) 开源 != 免费(维护可以收费)</span><br><span class="line">-&gt;(1988)IEEE:POSIX标准(旨在:保证各个OS间的兼容性) (IEEE-IX-&gt;POSIX:Portable Operating System Interface X:(Unix))可移植...</span><br><span class="line">-&gt;(1993)Linus:宏内核构造的Linux内核面世</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-命令"><a href="#1-命令" class="headerlink" title="1. 命令"></a>1. 命令</h3><blockquote>
+<p>感觉之前学过很多次，并且每次学习也有用纸质或者文档记录，博客记录学到，使用过的命令，但大多情况学过不用就忘了，不是长久之计，这次就不记录这些。尽量多用以熟练。同时，本文的侧重点不在使用这方面，想要更深入的学习一些东西。</p>
+</blockquote>
+<blockquote>
+<p>如果有不会的熟练使用 <code>$man</code></p>
+<p>一点准备工作，环境使用的Ubuntu18.04 帮助手册不全<code>sudo apt install manpages-posix-dev</code></p>
+</blockquote>
+<h3 id="2-架构"><a href="#2-架构" class="headerlink" title="2.架构"></a>2.架构</h3>
+	
+	</div>
+  <a type="button" href="/2022/02/26/007.Unix.Linux.start/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2022/02/17/006.sort-algorithm/" >Sort-Algorithm</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
@@ -129,13 +201,7 @@
   <div class="row">
 	
 	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="2-常见排序算法"><a href="#2-常见排序算法" class="headerlink" title="2. 常见排序算法"></a>2. 常见排序算法</h3><blockquote>
+		<h3 id="常见排序算法"><a href="#常见排序算法" class="headerlink" title=". 常见排序算法"></a>. 常见排序算法</h3><blockquote>
 <p>关于排序算法分析</p>
 <p>1.时间复杂度</p>
 <p>冒泡排序，插入排序，简单选择排序无法突破<code>O(n2)</code>时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。</p>
@@ -176,10 +242,20 @@
 <p>对于冒泡排序来说，交换会导致：有序度+1， 逆序度-1.</p>
 <p>所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 = <code> n(n-1)/4</code> 比较的次数肯定比交换的次数多，但少于 <code>n(n-1)/2</code>所以平均情况下，时间复杂度为<code>O(n2)</code></p>
 </blockquote>
+<p><code>selection</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selection_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123; <span class="comment">// i表示选择元素的索引</span></span><br><span class="line">        <span class="keyword">int</span> minIdx = i;<span class="comment">//先预设当前索引所指数为最小</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; j++) &#123;<span class="comment">//j从后一个元素开始向后找有无更小的</span></span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIdx])</span><br><span class="line">                minIdx = j;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(arr, i, minIdx);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>每趟先假定本趟开头为最小元素，记录其索引，从其后一个元素开始向后遍历，找到更小的，更新最小元索引记录一趟走完交换本趟开头与最小<br>发生长距离的交换 所以不稳定</p>
+<p>[5, 5, 1, 2, 3, 0, ]第一个5换到第二个5后面</p>
+<p><code>O(n2) </code>不存在最好最坏，都是<code>O(n2)</code></p>
+</blockquote>
+<p><code>insertion</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertion_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;<span class="comment">// i代表待插入元素的索引，从第二个元素开始</span></span><br><span class="line">        <span class="keyword">int</span> val = arr[i];<span class="comment">//先记录，如果要插到前面的话需要前方元素后移，可能会覆盖它</span></span><br><span class="line">        <span class="keyword">int</span> j = i - <span class="number">1</span>;<span class="comment">//找到待插元素的前一个元素</span></span><br><span class="line">        <span class="comment">// 元素(比记录的待插元素大)往后移(凡比ta大的都后移，留出ta的位置)</span></span><br><span class="line">        <span class="keyword">while</span> (j &gt;= <span class="number">0</span> &amp;&amp; arr[j] &gt; val) &#123;</span><br><span class="line">            arr[j + <span class="number">1</span>] = arr[j];</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[j + <span class="number">1</span>] = val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 	
 
 	</div>
-  <a type="button" href="/2022/02/17/5.C-Summarize-with-code/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/02/17/006.sort-algorithm/#more" class="btn btn-default more">Read More</a>
 </div>
 
 -->
@@ -187,13 +263,7 @@
   <div class="row">
 	
 	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-</blockquote>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="2-常见排序算法"><a href="#2-常见排序算法" class="headerlink" title="2. 常见排序算法"></a>2. 常见排序算法</h3><blockquote>
+		<h3 id="常见排序算法"><a href="#常见排序算法" class="headerlink" title=". 常见排序算法"></a>. 常见排序算法</h3><blockquote>
 <p>关于排序算法分析</p>
 <p>1.时间复杂度</p>
 <p>冒泡排序，插入排序，简单选择排序无法突破<code>O(n2)</code>时间复杂度，因为其有序化过程中都是一个一个来减少逆序度的，当逆序度为0时整个序列有序，相对的希尔，并归，快排，堆排能突破是因为其不依赖相邻元素逐个排序。</p>
@@ -234,9 +304,19 @@
 <p>对于冒泡排序来说，交换会导致：有序度+1， 逆序度-1.</p>
 <p>所以 交换的次数 = 逆序度。可以简单的认为平均情况下，逆序度 = <code> n(n-1)/4</code> 比较的次数肯定比交换的次数多，但少于 <code>n(n-1)/2</code>所以平均情况下，时间复杂度为<code>O(n2)</code></p>
 </blockquote>
+<p><code>selection</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selection_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123; <span class="comment">// i表示选择元素的索引</span></span><br><span class="line">        <span class="keyword">int</span> minIdx = i;<span class="comment">//先预设当前索引所指数为最小</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; j++) &#123;<span class="comment">//j从后一个元素开始向后找有无更小的</span></span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[minIdx])</span><br><span class="line">                minIdx = j;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(arr, i, minIdx);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>每趟先假定本趟开头为最小元素，记录其索引，从其后一个元素开始向后遍历，找到更小的，更新最小元索引记录一趟走完交换本趟开头与最小<br>发生长距离的交换 所以不稳定</p>
+<p>[5, 5, 1, 2, 3, 0, ]第一个5换到第二个5后面</p>
+<p><code>O(n2) </code>不存在最好最坏，都是<code>O(n2)</code></p>
+</blockquote>
+<p><code>insertion</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertion_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;<span class="comment">// i代表待插入元素的索引，从第二个元素开始</span></span><br><span class="line">        <span class="keyword">int</span> val = arr[i];<span class="comment">//先记录，如果要插到前面的话需要前方元素后移，可能会覆盖它</span></span><br><span class="line">        <span class="keyword">int</span> j = i - <span class="number">1</span>;<span class="comment">//找到待插元素的前一个元素</span></span><br><span class="line">        <span class="comment">// 元素(比记录的待插元素大)往后移(凡比ta大的都后移，留出ta的位置)</span></span><br><span class="line">        <span class="keyword">while</span> (j &gt;= <span class="number">0</span> &amp;&amp; arr[j] &gt; val) &#123;</span><br><span class="line">            arr[j + <span class="number">1</span>] = arr[j];</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[j + <span class="number">1</span>] = val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 	
 	</div>
-  <a type="button" href="/2022/02/17/5.C-Summarize-with-code/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/02/17/006.sort-algorithm/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -246,7 +326,7 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2022/02/10/4.C-Summarize/" >C Summarize</a>
+			<a href="/2022/02/10/004.C-Summarize/" >C Summarize</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
@@ -261,9 +341,8 @@
   <div class="row">
 	
 	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-<p>  对于C的学习，已经反复好多次了，前面一直想要做个系统的梳理，但总是会出各种状况。之前有过跟着视频学习，自己对着书看写例程写课后题等等，最完整的一次梳理是在2020年的寒假，那次花了比较多的时间，从重看翁恺老师的视频开始，后续继续看了《K&amp;R》《C陷阱与缺陷》《C和指针》《C专家编程》等书。前期跟视频以及看《K&amp;R》可能算是做到了专注，精读，但后面有完成任务式的阅读，最终感觉效果不佳。当然，那段时间确实感觉有较大的提升，可后面因为一些事情耽误，很长一段时间没有再碰过。</p>
-<p>最近打算重新系统梳理相关知识。这次打算配合最近捡起的知识点及写的程序，对C做大致的总结梳理。(总结自用，可能不甚严谨)</p>
+		<blockquote>
+<p>  ……</p>
 </blockquote>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-历史"><a href="#0-历史" class="headerlink" title="0.历史"></a>0.历史</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ken Thompson为了游戏(Space Travel)</span><br><span class="line">Multics -&gt; Unics(最初汇编PDP-7,移植性问题-&gt;发明BCPL:B语言)-&gt;</span><br><span class="line">Dennis Ritchie加入</span><br><span class="line">Dennis Ritchie-&gt;B不适合Unics(内核)开发:发明C -&gt; 用C重写Unics更名为Unix</span><br></pre></td></tr></table></figure>
 
@@ -278,10 +357,11 @@
 <p>变成了可执行文件，而可执行文件加载进内存变为进程，用于独立的虚拟内存空间 进程-动态</p>
 </blockquote>
 <p><img src="https://s2.loli.net/2022/02/15/fDxObctmSZCYWNM.png" alt="虚拟内存空间.png"></p>
+<p>每个进程有自己的虚拟内存空间，而这个图可以辅助理解一些语言以及程序的相关特性。</p>
 	
 
 	</div>
-  <a type="button" href="/2022/02/10/4.C-Summarize/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/02/10/004.C-Summarize/#more" class="btn btn-default more">Read More</a>
 </div>
 
 -->
@@ -289,9 +369,8 @@
   <div class="row">
 	
 	
-		<h2 id="写在前面-序"><a href="#写在前面-序" class="headerlink" title="写在前面(序)"></a>写在前面(序)</h2><blockquote>
-<p>  对于C的学习，已经反复好多次了，前面一直想要做个系统的梳理，但总是会出各种状况。之前有过跟着视频学习，自己对着书看写例程写课后题等等，最完整的一次梳理是在2020年的寒假，那次花了比较多的时间，从重看翁恺老师的视频开始，后续继续看了《K&amp;R》《C陷阱与缺陷》《C和指针》《C专家编程》等书。前期跟视频以及看《K&amp;R》可能算是做到了专注，精读，但后面有完成任务式的阅读，最终感觉效果不佳。当然，那段时间确实感觉有较大的提升，可后面因为一些事情耽误，很长一段时间没有再碰过。</p>
-<p>最近打算重新系统梳理相关知识。这次打算配合最近捡起的知识点及写的程序，对C做大致的总结梳理。(总结自用，可能不甚严谨)</p>
+		<blockquote>
+<p>  ……</p>
 </blockquote>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="0-历史"><a href="#0-历史" class="headerlink" title="0.历史"></a>0.历史</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ken Thompson为了游戏(Space Travel)</span><br><span class="line">Multics -&gt; Unics(最初汇编PDP-7,移植性问题-&gt;发明BCPL:B语言)-&gt;</span><br><span class="line">Dennis Ritchie加入</span><br><span class="line">Dennis Ritchie-&gt;B不适合Unics(内核)开发:发明C -&gt; 用C重写Unics更名为Unix</span><br></pre></td></tr></table></figure>
 
@@ -306,9 +385,10 @@
 <p>变成了可执行文件，而可执行文件加载进内存变为进程，用于独立的虚拟内存空间 进程-动态</p>
 </blockquote>
 <p><img src="https://s2.loli.net/2022/02/15/fDxObctmSZCYWNM.png" alt="虚拟内存空间.png"></p>
+<p>每个进程有自己的虚拟内存空间，而这个图可以辅助理解一些语言以及程序的相关特性。</p>
 	
 	</div>
-  <a type="button" href="/2022/02/10/4.C-Summarize/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/02/10/004.C-Summarize/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -318,7 +398,85 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2022/01/22/3.Hello-New-World-history/" >Hello New Worldhistory</a>
+			<a href="/2022/02/10/005.recursion/" >Recursion</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-02-10  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>  ……</p>
+</blockquote>
+<h3 id="递归-recursion"><a href="#递归-recursion" class="headerlink" title="递归 recursion"></a><strong>递归 recursion</strong></h3><p>定义时调用本身 (传统引例为:斐波那契数列求和，其实这并不是一个很好的例子(画出递归树可知有<strong>太多重复计算</strong>性能差))</p>
+<p><strong>但作为分析案例是合适的</strong></p>
+<p>它满足以下条件：</p>
+<ul>
+<li>大问题分解为小问题</li>
+<li>大小问题求解方式一致，只是规模不同</li>
+<li>小问题的解可合成大问题的解</li>
+</ul>
+<p>可是使用递归，但注意在递归代码书写时，一定要有:</p>
+<ul>
+<li><p>边界条件(没有的话会调用下去直到Stack Overflow)</p>
+</li>
+<li><p>递归公式要考虑重复计算问题:</p>
+</li>
+</ul>
+<p>以斐波那契为例，由于存在重复计算问题，其实效率不高</p>
+<p>总结：<strong>得出递归公式，知道边界条件且解决重复计算问题可用递归</strong></p>
+	
+
+	</div>
+  <a type="button" href="/2022/02/10/005.recursion/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>  ……</p>
+</blockquote>
+<h3 id="递归-recursion"><a href="#递归-recursion" class="headerlink" title="递归 recursion"></a><strong>递归 recursion</strong></h3><p>定义时调用本身 (传统引例为:斐波那契数列求和，其实这并不是一个很好的例子(画出递归树可知有<strong>太多重复计算</strong>性能差))</p>
+<p><strong>但作为分析案例是合适的</strong></p>
+<p>它满足以下条件：</p>
+<ul>
+<li>大问题分解为小问题</li>
+<li>大小问题求解方式一致，只是规模不同</li>
+<li>小问题的解可合成大问题的解</li>
+</ul>
+<p>可是使用递归，但注意在递归代码书写时，一定要有:</p>
+<ul>
+<li><p>边界条件(没有的话会调用下去直到Stack Overflow)</p>
+</li>
+<li><p>递归公式要考虑重复计算问题:</p>
+</li>
+</ul>
+<p>以斐波那契为例，由于存在重复计算问题，其实效率不高</p>
+<p>总结：<strong>得出递归公式，知道边界条件且解决重复计算问题可用递归</strong></p>
+	
+	</div>
+  <a type="button" href="/2022/02/10/005.recursion/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2022/01/22/003.Hello-New-World-build-history/" >Hello New Worldhistory</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
@@ -358,7 +516,7 @@ npm install    # 安装组件
 	
 
 	</div>
-  <a type="button" href="/2022/01/22/3.Hello-New-World-history/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/01/22/003.Hello-New-World-build-history/#more" class="btn btn-default more">Read More</a>
 </div>
 
 -->
@@ -390,7 +548,7 @@ npm install    # 安装组件
 </code></pre>
 	
 	</div>
-  <a type="button" href="/2022/01/22/3.Hello-New-World-history/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/01/22/003.Hello-New-World-build-history/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -400,7 +558,7 @@ npm install    # 安装组件
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2022/01/22/2.test2/" >test2</a>
+			<a href="/2022/01/22/002.test2/" >test2</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
@@ -420,7 +578,7 @@ npm install    # 安装组件
 	
 
 	</div>
-  <a type="button" href="/2022/01/22/2.test2/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/01/22/002.test2/#more" class="btn btn-default more">Read More</a>
 </div>
 
 -->
@@ -432,7 +590,7 @@ npm install    # 安装组件
 
 	
 	</div>
-  <a type="button" href="/2022/01/22/2.test2/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/01/22/002.test2/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -442,7 +600,7 @@ npm install    # 安装组件
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2022/01/21/1.hello-world/" >Hello World</a>
+			<a href="/2022/01/21/001.hello-world/" >Hello World</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
@@ -468,7 +626,7 @@ npm install    # 安装组件
 	
 
 	</div>
-  <a type="button" href="/2022/01/21/1.hello-world/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/01/21/001.hello-world/#more" class="btn btn-default more">Read More</a>
 </div>
 
 -->
@@ -486,7 +644,7 @@ npm install    # 安装组件
 <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 	
 	</div>
-  <a type="button" href="/2022/01/21/1.hello-world/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2022/01/21/001.hello-world/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -539,17 +697,17 @@ npm install    # 安装组件
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
-		
-			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>5</span></a></li>
-		
 			<li><a href="/tags/xxxx/">xxxx<span>4</span></a></li>
+		
+			<li><a href="/tags/database/">database<span>1</span></a></li>
+		
+			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>6</span></a></li>
+		
+			<li><a href="/tags/C-C/">C/C++<span>3</span></a></li>
 		
 			<li><a href="/tags/Proj/">Proj<span>2</span></a></li>
 		
-			<li><a href="/tags/C-C/">C/C++<span>2</span></a></li>
-		
-			<li><a href="/tags/database/">database<span>1</span></a></li>
+			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -563,7 +721,7 @@ npm install    # 安装组件
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2022/04/24/12-regex/" ><i class="fa fa-file-o"></i>12.regex</a>
+        <a href="/2022/04/24/12.regex/" ><i class="fa fa-file-o"></i>12.regex</a>
       </li>
     
       <li>
@@ -571,7 +729,7 @@ npm install    # 安装组件
       </li>
     
       <li>
-        <a href="/2022/03/14/database/" ><i class="fa fa-file-o"></i>database</a>
+        <a href="/2022/03/14/13.database1/" ><i class="fa fa-file-o"></i>database1</a>
       </li>
     
       <li>
