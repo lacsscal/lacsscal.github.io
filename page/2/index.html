@@ -114,6 +114,82 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2022/02/26/008.Unix-Linux.FileManagement/" >Unix/Linux-file-management</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2022-02-26  </div>
+		</div>
+	</div>
+	
+
+
+			<!--
+<div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h3><blockquote>
+<p>关于一切皆文件这个理念</p>
+<p>对于这个Unix设计哲学，之前是知道这个名词，但是要具体来说可能说不出什么，结合一些文件操作来理解可能更为清晰。(图画的丑: ))在程序的运行过程中，计算机是怎样去操作磁盘上的文件的? 在一个程序运行时，由CPU去代码段取一条条指令，并将指令执行生成的数据放入堆栈等数据区。那么指令的操作数在哪？在内存上，内存的数据是从磁盘上取出的，最终也会持久化的存储在磁盘上。从中取，往回存这两个操作是怎么做到的，把磁盘看做程序运行时的外部设备，它在内存上建立了映射区—称作文件缓冲区。文件缓冲区在内存上，但是影响外部设备。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/img%E6%96%87%E4%BB%B6_%E6%93%8D%E4%BD%9C.jpg"></p>
+<blockquote>
+<p>以此类推，目录文件，设备文件，管道文件等等，理念是一致的，对于众多的文件类型使用通用的方式去操作它们。文件操作操作的是内存上的数据，影响的是外部设备。对于Linux而言存在内核态与用户态，当文件操作涉及外部硬件时，用户态将这些操作委托给内核态去完成，这就离不开系统调用。</p>
+<p>理解了这一点，就可以通过学习文件操作更深入的理解(操作文件会影响外部硬件，这个函数就不是普通的函数而是系统调用)。使用库函数和系统调用来操作文件，从库函数–&gt;系统调用。</p>
+<p>基于文件指针的文件操作函数(ANSI 标准库函数) –&gt; 基于系统调用的文件操作</p>
+</blockquote>
+<h4 id="1-1-文件操作-基于-库函数-文件指针FILE"><a href="#1-1-文件操作-基于-库函数-文件指针FILE" class="headerlink" title="1.1 文件操作 - 基于(库函数)文件指针FILE*"></a>1.1 文件操作 - 基于(库函数)文件指针FILE*</h4><blockquote>
+<p>从普通文件的打开与操作开始</p>
+</blockquote>
+<p><code>流</code>：表示任意输入<code>src</code>, 任意输出<code>dst</code> ，屏蔽硬件设备之间的差异，使得C像读写文件一样读写任意设备。</p>
+<blockquote>
+<p>内存与硬件设备存在读写性能上的鸿沟，OS在内存上为<code>流</code>设置缓冲区，C通过文件指针<code>FILE*</code>实现对流的访问, 启动任意进程OS将打开三个标准流<code>stdin</code> , <code>stdout</code>,  <code>stderr</code>.它们都默认与硬件关联。</p>
+</blockquote>
+<p>从普通文件操作开始, 读写之前先打开</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">返回值是指针:暗含的意思-&gt;返回值指针指向必定不在被调函数栈帧(而在用户态某个空间，需用户自行释放)</span><br><span class="line">返回文件指针访问流</span><br><span class="line">|</span><br><span class="line"><span class="function">FILE* <span class="title">fopen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* filename, <span class="keyword">const</span> <span class="keyword">char</span>* mode)</span></span>;</span><br><span class="line">                                                |</span><br><span class="line">                                            打开模式(考虑后续操作)</span><br><span class="line">                                            <span class="string">&quot;r&quot;</span> :只读打开</span><br><span class="line">                                            <span class="string">&quot;r+&quot;</span>:读写打开 文件必须存在</span><br><span class="line">                                            <span class="string">&quot;w&quot;</span> :只写创建 文件不需要存在</span><br><span class="line">                                            <span class="string">&quot;w+&quot;</span>:读写创建 文件存在就清空</span><br><span class="line">                                            <span class="string">&quot;a+&quot;</span>:读写追加 在原有数据后写入新值</span><br><span class="line">                                                    </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fclose</span><span class="params">(FILE* stream)</span></span>;                                                    </span><br></pre></td></tr></table></figure>
+	
+
+	</div>
+  <a type="button" href="/2022/02/26/008.Unix-Linux.FileManagement/#more" class="btn btn-default more">Read More</a>
+</div>
+
+-->
+<div class="entry">
+  <div class="row">
+	
+	
+		<h3 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h3><blockquote>
+<p>关于一切皆文件这个理念</p>
+<p>对于这个Unix设计哲学，之前是知道这个名词，但是要具体来说可能说不出什么，结合一些文件操作来理解可能更为清晰。(图画的丑: ))在程序的运行过程中，计算机是怎样去操作磁盘上的文件的? 在一个程序运行时，由CPU去代码段取一条条指令，并将指令执行生成的数据放入堆栈等数据区。那么指令的操作数在哪？在内存上，内存的数据是从磁盘上取出的，最终也会持久化的存储在磁盘上。从中取，往回存这两个操作是怎么做到的，把磁盘看做程序运行时的外部设备，它在内存上建立了映射区—称作文件缓冲区。文件缓冲区在内存上，但是影响外部设备。</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/lacsscal/pictureBed/img%E6%96%87%E4%BB%B6_%E6%93%8D%E4%BD%9C.jpg"></p>
+<blockquote>
+<p>以此类推，目录文件，设备文件，管道文件等等，理念是一致的，对于众多的文件类型使用通用的方式去操作它们。文件操作操作的是内存上的数据，影响的是外部设备。对于Linux而言存在内核态与用户态，当文件操作涉及外部硬件时，用户态将这些操作委托给内核态去完成，这就离不开系统调用。</p>
+<p>理解了这一点，就可以通过学习文件操作更深入的理解(操作文件会影响外部硬件，这个函数就不是普通的函数而是系统调用)。使用库函数和系统调用来操作文件，从库函数–&gt;系统调用。</p>
+<p>基于文件指针的文件操作函数(ANSI 标准库函数) –&gt; 基于系统调用的文件操作</p>
+</blockquote>
+<h4 id="1-1-文件操作-基于-库函数-文件指针FILE"><a href="#1-1-文件操作-基于-库函数-文件指针FILE" class="headerlink" title="1.1 文件操作 - 基于(库函数)文件指针FILE*"></a>1.1 文件操作 - 基于(库函数)文件指针FILE*</h4><blockquote>
+<p>从普通文件的打开与操作开始</p>
+</blockquote>
+<p><code>流</code>：表示任意输入<code>src</code>, 任意输出<code>dst</code> ，屏蔽硬件设备之间的差异，使得C像读写文件一样读写任意设备。</p>
+<blockquote>
+<p>内存与硬件设备存在读写性能上的鸿沟，OS在内存上为<code>流</code>设置缓冲区，C通过文件指针<code>FILE*</code>实现对流的访问, 启动任意进程OS将打开三个标准流<code>stdin</code> , <code>stdout</code>,  <code>stderr</code>.它们都默认与硬件关联。</p>
+</blockquote>
+<p>从普通文件操作开始, 读写之前先打开</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">返回值是指针:暗含的意思-&gt;返回值指针指向必定不在被调函数栈帧(而在用户态某个空间，需用户自行释放)</span><br><span class="line">返回文件指针访问流</span><br><span class="line">|</span><br><span class="line"><span class="function">FILE* <span class="title">fopen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* filename, <span class="keyword">const</span> <span class="keyword">char</span>* mode)</span></span>;</span><br><span class="line">                                                |</span><br><span class="line">                                            打开模式(考虑后续操作)</span><br><span class="line">                                            <span class="string">&quot;r&quot;</span> :只读打开</span><br><span class="line">                                            <span class="string">&quot;r+&quot;</span>:读写打开 文件必须存在</span><br><span class="line">                                            <span class="string">&quot;w&quot;</span> :只写创建 文件不需要存在</span><br><span class="line">                                            <span class="string">&quot;w+&quot;</span>:读写创建 文件存在就清空</span><br><span class="line">                                            <span class="string">&quot;a+&quot;</span>:读写追加 在原有数据后写入新值</span><br><span class="line">                                                    </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fclose</span><span class="params">(FILE* stream)</span></span>;                                                    </span><br></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2022/02/26/008.Unix-Linux.FileManagement/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2022/02/26/007.Unix.Linux.start/" >Unix/Linux-file-management</a>
 		</h3>
 		</div>
@@ -697,17 +773,17 @@ npm install    # 安装组件
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/xxxx/">xxxx<span>4</span></a></li>
-		
 			<li><a href="/tags/database/">database<span>1</span></a></li>
 		
-			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>6</span></a></li>
+			<li><a href="/tags/xxxx/">xxxx<span>4</span></a></li>
+		
+			<li><a href="/tags/Unix-Linux/">Unix/Linux<span>7</span></a></li>
 		
 			<li><a href="/tags/C-C/">C/C++<span>3</span></a></li>
 		
-			<li><a href="/tags/Proj/">Proj<span>2</span></a></li>
-		
 			<li><a href="/tags/UNIX-APUE/">UNIX APUE<span>1</span></a></li>
+		
+			<li><a href="/tags/Proj/">Proj<span>2</span></a></li>
 		
 		 
 		</ul>
